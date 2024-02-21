@@ -1,0 +1,11 @@
+<nb-card size="giant">
+  <nb-card-header>
+    Users
+    <button style="float: right;" (click)="addUser()" nbButton>Add User</button>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table class="order-table" [settings]="settings" [source]="source"
+      (custom)="customFunction($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
