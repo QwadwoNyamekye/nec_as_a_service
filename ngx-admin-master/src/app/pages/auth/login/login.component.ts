@@ -8,20 +8,19 @@ import { NbAuthResult } from "@nebular/auth";
 })
 export class LoginComponent extends NbLoginComponent {
   login(): void {
-    console.log("+++++++++++++++++++++++++++++++++++")
     this.errors = [];
     this.messages = [];
     this.submitted = true;
-
-    const data = {
-      variables: this.user,
-      query:
-        "mutation($username: String!, $password: String!) { login(username: $username, password: $password) { token } }",
-    };
+    
+    console.log(this.user)
     this.service
-      .authenticate(this.strategy, data)
+      .authenticate("email", this.user)
       .subscribe((result: NbAuthResult) => {
         this.submitted = false;
+
+        console.log(result)
+        console.log('***************')
+        console.log(result.getToken().getValue())
 
         if (result.isSuccess()) {
           this.messages = result.getMessages();

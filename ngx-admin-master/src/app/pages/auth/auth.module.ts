@@ -11,7 +11,7 @@ import {
 } from "@nebular/theme";
 import { LoginComponent } from "./login/login.component";
 import { ReactiveFormsModule } from "@angular/forms";
-import { NbPasswordAuthStrategy, NbAuthModule } from "@nebular/auth";
+import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from "@nebular/auth";
 
 const formSetting: any = {
   redirectDelay: 0,
@@ -35,12 +35,21 @@ const formSetting: any = {
     NbAuthModule.forRoot({
       strategies: [
         NbPasswordAuthStrategy.setup({
-          name: "email",
+          name: "email",             
+          token: {
+            class: NbAuthJWTToken,
+           
+            key: 'token', // this parameter tells where to look for the token
+          },
 
           baseEndpoint: "http://172.27.21.210:8089",
           login: {
-            endpoint: "/user/api/v1/authenticate",
+            endpoint: "/auth/api/v1/authenticate",
             method: "post",
+            redirect: {
+              success: '/pages/nec/single',
+              failure: null, // stay on the same page
+            },
           },
           register: {
             endpoint: "/user/api/v1/create_user",
