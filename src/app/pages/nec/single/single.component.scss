@@ -1,0 +1,24 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  nb-card {
+    transform: translate3d(0, 0, 0);
+    border-radius: 12px;
+  }
+}
+
+.full-screen {
+  width: 100%
+}
+
+:host ::ng-deep ng2-smart-table thead th {
+  text-align: center;
+}
+
+:host ::ng-deep ng2-smart-table tbody>tr>td {
+  text-align: center;
+}
+
+:host ::ng-deep ng2-smart-table thead input-filter input {
+  text-align: center;
+}

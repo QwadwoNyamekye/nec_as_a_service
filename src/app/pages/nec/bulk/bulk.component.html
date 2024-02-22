@@ -1,0 +1,11 @@
+<nb-card size="giant">
+  <nb-card-header>
+    Bulk NEC Requests
+    <button style="float: right;" (click)="openWindowForm()" nbButton>Upload File</button>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (edit)="onEditRowSelect($event)"
+      (createConfirm)="create($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
