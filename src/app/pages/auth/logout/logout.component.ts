@@ -3,11 +3,13 @@ import { NbLoginComponent, NbLogoutComponent } from "@nebular/auth";
 import { NbAuthResult } from "@nebular/auth";
 
 @Component({
-  selector: "ngx-login",
-  templateUrl: "./login.component.html",
+  selector: "ngx-logout",
+  templateUrl: "./logout.component.html",
 })
 export class LogoutComponent extends NbLogoutComponent {
   logout(strategy: string): void {
+    console.log("JJJJJJJJJJJJJJJJJJJJ")
+    localStorage.clear()
     this.service.logout(strategy).subscribe((result: NbAuthResult) => {
       const redirect = result.getRedirect();
       if (redirect) {

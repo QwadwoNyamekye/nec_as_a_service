@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { LocalDataSource } from "ng2-smart-table";
 import { NbWindowService, NbDialogService } from "@nebular/theme";
 import { NecService } from "../../../@core/mock/nec.service";
@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: "./institution-dashboard.component.html",
   styleUrls: ["./institution-dashboard.component.scss"],
 })
-export class InstitutionDashboardComponent {
+export class InstitutionDashboardComponent implements OnInit{
   colour: string;
   name: string;
   getHtmlForCell(value: string) {
@@ -94,8 +94,21 @@ export class InstitutionDashboardComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
+  listener: any;
+  receivedData: any;
 
   institutions: any;
+
+  ngOnInit(): void {
+    this.listener = (event: MessageEvent) => {
+      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
+      this.receivedData = event.data;
+      this.source.append(this.receivedData.institution)
+      console.log(this.receivedData);
+    };
+    window.addEventListener("message", this.listener);
+    // this.service.initializeWebSocketConnection()
+  }
 
   constructor(
     private service: NecService,

@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 
@@ -21,7 +21,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
   `,
   styleUrls: ["change-institution-status.component.scss"],
 })
-export class ChangeInstitutionStatusComponent {
+export class ChangeInstitutionStatusComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
@@ -30,7 +30,9 @@ export class ChangeInstitutionStatusComponent {
     protected ref: NbDialogRef<ChangeInstitutionStatusComponent>,
     public service: NecService
   ) {}
-
+  ngOnInit(): void {
+    // this.service.initializeWebSocketConnection()
+  }
   dismiss() {
     this.ref.close();
   }

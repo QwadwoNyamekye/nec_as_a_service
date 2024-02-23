@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 import { NbToastrService } from "@nebular/theme";
@@ -22,7 +22,7 @@ import { NbToastrService } from "@nebular/theme";
   `,
   styleUrls: ["submit-for-processing.component.scss"],
 })
-export class SubmitForProcessingComponent {
+export class SubmitForProcessingComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
@@ -32,7 +32,9 @@ export class SubmitForProcessingComponent {
     public service: NecService,
     private toastrService: NbToastrService
   ) {}
-
+  ngOnInit(): void {
+    // this.service.initializeWebSocketConnection();
+  }
   dismiss() {
     this.ref.close();
   }
@@ -48,18 +50,24 @@ export class SubmitForProcessingComponent {
         console.log("################");
         console.log(this.response);
         if (this.response.errorCode != "0") {
-          this.toastrService.show("File Processing Failed", "File Processing", {
-            status: "danger", destroyByClick: true, duration: 200000
-          });
+          this.toastrService.warning(
+            "File Processing Failed: " + this.response.errorMessage,
+            "Bulk File Processing",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
         } else {
-          this.toastrService.show(
+          this.toastrService.success(
             "File Processing Success",
             "File Processing",
-            { status: "success", destroyByClick: true, duration: 200000 }
+            { status: "success", destroyByClick: true, duration: 100000 }
           );
+          this.ref.close();
         }
       }
     );
-    this.ref.close();
   }
 }

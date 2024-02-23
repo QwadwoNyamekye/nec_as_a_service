@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 
@@ -21,7 +21,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
   `,
   styleUrls: ["reset-user-password.component.scss"],
 })
-export class ResetUserPasswordComponent {
+export class ResetUserPasswordComponent implements OnInit{
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
@@ -30,14 +30,16 @@ export class ResetUserPasswordComponent {
     protected ref: NbDialogRef<ResetUserPasswordComponent>,
     public service: NecService
   ) {}
-
+  ngOnInit(): void {
+    // this.service.initializeWebSocketConnection();
+  }
   dismiss() {
     this.ref.close();
   }
   submit() {
     this.response = this.service.resetUserPassword({
       email: "asalia@ghipss.com",
-      createdBy: "asalia@ghipss.com",
+      createdBy: this.service.user.email,
     });
     console.log(this.response);
     this.ref.close();

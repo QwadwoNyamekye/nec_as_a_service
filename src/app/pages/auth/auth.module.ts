@@ -3,6 +3,9 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { AuthRoutingModule } from "./auth-routing.module";
+import { NbAuthComponent } from "./auth.component";
+import { NbLayoutModule } from "@nebular/theme";
+import { NbCardModule } from "@nebular/theme";
 import {
   NbAlertModule,
   NbButtonModule,
@@ -10,6 +13,7 @@ import {
   NbInputModule,
 } from "@nebular/theme";
 import { LoginComponent } from "./login/login.component";
+import { LogoutComponent } from "./logout/logout.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import {
   NbPasswordAuthStrategy,
@@ -17,6 +21,9 @@ import {
   NbAuthJWTToken,
   NbTokenService,
 } from "@nebular/auth";
+import { Injector } from '@angular/core';
+
+export let AppInjector: Injector;
 
 const formSetting: any = {
   redirectDelay: 0,
@@ -27,6 +34,8 @@ const formSetting: any = {
 
 @NgModule({
   imports: [
+    NbCardModule,
+    NbLayoutModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -63,11 +72,11 @@ const formSetting: any = {
             method: "post",
           },
           requestPass: {
-            endpoint: "/auth/request-pass",
+            endpoint: "/user/api/v1/forgot_password",
             method: "post",
           },
           resetPass: {
-            endpoint: "/auth/reset-pass",
+            endpoint: "/user/api/v1/reset_password",
             method: "post",
           },
         }),
@@ -83,7 +92,11 @@ const formSetting: any = {
       },
     }),
   ],
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, NbAuthComponent, LogoutComponent],
   // providers: [{ provide: NbTokenService, useClass: NbAuthJWTToken }],
 })
-export class NgxAuthModule {}
+export class NgxAuthModule {
+  constructor(private injector: Injector) {
+    AppInjector = this.injector;
+  }
+}

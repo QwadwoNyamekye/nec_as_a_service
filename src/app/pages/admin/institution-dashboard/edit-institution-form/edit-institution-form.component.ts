@@ -57,10 +57,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
 })
 export class EditInstitutionFormComponent implements OnInit {
   form: FormGroup;
-  constructor(
-    public windowRef: NbWindowRef,
-    private service: NecService
-  ) {}
+  constructor(public windowRef: NbWindowRef, private service: NecService) {}
   statuses: NbComponentStatus[] = [
     "primary",
     "success",
@@ -76,6 +73,7 @@ export class EditInstitutionFormComponent implements OnInit {
       status: new FormControl("", [Validators.required]),
       phone: new FormControl("", Validators.required),
     });
+    // this.service.initializeWebSocketConnection();
   }
   submitInstitutionEdit(): void {
     var object = {

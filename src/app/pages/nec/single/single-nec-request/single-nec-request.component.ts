@@ -1,12 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Output , OnInit} from "@angular/core";
 import { NbWindowRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
-import {
-  NbComponentShape,
-  NbComponentStatus,
-} from "@nebular/theme";
+import { EventEmitter } from "@angular/core";
+import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
 
 @Component({
   template: `
@@ -20,12 +18,7 @@ import {
         type="text"
       />
       <label class="text-label" for="text">Banks/FI:</label>
-      <nb-select
-        fullWidth
-        formControlName="bank"
-        [(selected)]="bankList"
-        placeholder="Banks/FI"
-      >
+      <nb-select fullWidth formControlName="destBank" placeholder="Banks/FI">
         <nb-option *ngFor="let i of this.bankList" [value]="i.bankCode">
           {{ i.bankName }}
         </nb-option>
@@ -45,6 +38,7 @@ import {
   styleUrls: ["single-nec-request.component.scss"],
 })
 export class SingleNECRequestComponent {
+  @Output() newItemEvent = new EventEmitter<any>();
   statuses: NbComponentStatus[] = [
     "primary",
     "success",
@@ -58,15 +52,13 @@ export class SingleNECRequestComponent {
   form: FormGroup;
   object: any;
   bankList: any;
-  constructor(
-    public windowRef: NbWindowRef,
-    private service: NecService
-  ) {}
+  constructor(public windowRef: NbWindowRef, private service: NecService) {}
+  
   ngOnInit(): void {
     // Initialize the form model with three form controls
     this.form = new FormGroup({
       destAccount: new FormControl("", Validators.required),
-      bank: new FormControl("", Validators.required),
+      destBank: new FormControl("", Validators.required),
     });
     this.service.getBanks().subscribe(
       (data) => {
@@ -80,17 +72,28 @@ export class SingleNECRequestComponent {
         console.log(this.bankList);
       }
     );
+      // this.service.initializeWebSocketConnection();
+    
   }
   onSubmit(): void {
     this.object = {
       destAccount: this.form.value.destAccount,
-      bank: this.form.value.bank,
-      createdBy: "asalia@ghipss.com",
+      destBank: this.form.value.destBank,
+      createdBy: this.service.user.email,
     };
-    this.service.makeSingleNECRequest(this.object);
+     this.service.makeSingleNECRequest(this.object).subscribe(
+      (response) => {
+        console.log("========================");
+        console.log(response);
+        window.parent.postMessage(response);
+        return response;
+      },
+      (error) => console.error(error)
+    );
     this.close();
   }
   close() {
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@");
     this.windowRef.close();
   }
 }

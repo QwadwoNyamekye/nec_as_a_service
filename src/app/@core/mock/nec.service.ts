@@ -3,11 +3,18 @@ import { HttpClient } from "@angular/common/http";
 import { map, catchError, timeout } from "rxjs/operators";
 import { HttpHeaders } from "@angular/common/http";
 import { NbAuthService, NbAuthJWTToken } from "@nebular/auth";
+import { Stomp } from "@stomp/stompjs";
+import * as SockJS from "sockjs-client";
+import { NbToastrService } from "@nebular/theme";
 
 @Injectable({ providedIn: "root" })
 export class NecService {
   user: any;
-  constructor(private http: HttpClient, private authService: NbAuthService) {
+  constructor(
+    private http: HttpClient,
+    private authService: NbAuthService,
+    private toastrService: NbToastrService
+  ) {
     this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
       if (token.isValid()) {
         this.headers = new HttpHeaders().set(
@@ -21,11 +28,42 @@ export class NecService {
     });
   }
 
-  websocket = "http://172.27.21.210:8089/nec"
+  websocket = "http://172.27.21.210:8088/nec";
   baseUrl = "http://172.27.21.210:8089";
   bankUrl = "http://172.27.10.230:8003";
   data: any;
   headers: any;
+  stompClient: any;
+
+  initializeWebSocketConnection() {
+    const serverUrl = this.websocket;
+    const ws = new SockJS(serverUrl);
+    this.stompClient = Stomp.over(ws);
+    const that = this;
+    console.log("????????????????????????")
+    console.log(this.stompClient.status)
+    this.stompClient.connect({}, function (frame) {
+      console.log("LLLLLLLLLLLLLLL");
+      that.stompClient.subscribe("/realtime/alert", (message) => {
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        console.log(message);
+        console.log(message.body.split(":"));
+        var websocketdata = message.body.split(":");
+        var websocketMessage = websocketdata[0];
+        var websocketUser = websocketdata[1];
+        console.log("JJJJJJJJJJJJJJJJJJJJJ");
+        console.log(that.user);
+        if (websocketMessage != "" && websocketUser == that.user.id) {
+          that.toastrService.success(websocketMessage, "Bulk File Processing", {
+            duration: 100000,
+            destroyByClick: true,
+            duplicatesBehaviour: 'previous',
+            preventDuplicates: true
+          });
+        }
+      });
+    });
+  }
 
   //-------------BULK--------------
 
@@ -60,12 +98,7 @@ export class NecService {
         file,
         { headers: this.headers }
       )
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+      .pipe(map((response) => response));
   }
 
   //-------------------BANKS------------------
@@ -86,13 +119,7 @@ export class NecService {
       .post(this.baseUrl + "/single/api/v1/nec", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response))
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+      .pipe(map((response) => response));
   }
 
   //-------------- USERS APIS------------------
@@ -114,12 +141,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/create_user", user, {
         headers: this.headers,
       })
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+      .pipe(map((response) => response));
   }
 
   unlockUser(user) {
@@ -178,12 +200,6 @@ export class NecService {
         headers: this.headers,
       })
       .pipe(map((response) => response))
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
   }
 
   editInstitution(data) {

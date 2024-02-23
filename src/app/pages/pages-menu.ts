@@ -39,11 +39,6 @@ export const MENU_ITEMS: NbMenuItem[] = (function () {
         home: true,
       },
       {
-        title: "Institution",
-        icon: "home-outline",
-        link: "/pages/institution-dashboard",
-      },
-      {
         title: "Single NEC",
         icon: "shopping-cart-outline",
         link: "/pages/nec/single",

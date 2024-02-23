@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { LocalDataSource } from "ng2-smart-table";
 import { NbWindowService, NbDialogService } from "@nebular/theme";
 import { AddUserFormComponent } from "./add-user-form/add-user-form.component";
@@ -14,7 +14,7 @@ import { ChangeUserStatusComponent } from "./change-user-status/change-user-stat
   templateUrl: "./user-dashboard.component.html",
   styleUrls: ["./user-dashboard.component.scss"],
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit{
   colour: string;
   name: string;
   getHtmlForCell(value: string) {
@@ -29,6 +29,9 @@ export class AdminDashboardComponent {
       `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
     );
   } 
+  ngOnInit(): void {
+    // this.service.initializeWebSocketConnection()
+  }
   getHtmlForStatusCell(value: string) {
     if (value) {
       this.colour = "red";

@@ -4,7 +4,11 @@ import { NecService } from "../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
 import { LocalDataSource } from "ng2-smart-table";
-import { NbComponentShape, NbComponentSize, NbComponentStatus } from '@nebular/theme';
+import {
+  NbComponentShape,
+  NbComponentSize,
+  NbComponentStatus,
+} from "@nebular/theme";
 
 @Component({
   template: `
@@ -42,8 +46,8 @@ import { NbComponentShape, NbComponentSize, NbComponentStatus } from '@nebular/t
         type="submit"
         (click)="onSaveFile()"
         [disabled]="!form.valid"
-        [status]=statuses[0]
-        [shape]=shapes[1]
+        [status]="statuses[0]"
+        [shape]="shapes[1]"
       >
         Submit
       </button>
@@ -58,14 +62,17 @@ export class BulkNEComponent implements OnInit {
   institutions: any = [];
   roles: any = [];
   filesToUpload: File[] | null = [];
-  statuses: NbComponentStatus[] = [ 'primary', 'success', 'info', 'warning', 'danger' ];
-  shapes: NbComponentShape[] = [ 'rectangle', 'semi-round', 'round' ];
+  statuses: NbComponentStatus[] = [
+    "primary",
+    "success",
+    "info",
+    "warning",
+    "danger",
+  ];
+  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   source: LocalDataSource = new LocalDataSource();
   response: any;
-  constructor(
-    public windowRef: NbWindowRef,
-    private service: NecService
-  ) {}
+  constructor(public windowRef: NbWindowRef, private service: NecService) {}
 
   ngOnInit(): void {
     // Initialize the form model with three form controls
@@ -74,29 +81,45 @@ export class BulkNEComponent implements OnInit {
       description: new FormControl("", Validators.required),
       count: new FormControl("", Validators.required),
     });
-  }  
+    // this.service.initializeWebSocketConnection();
+  }
 
   onFileSelected(event: FileList) {
     for (let index = 0; index < event.length; index++) {
-    this.filesToUpload.push(event.item(index))
+      this.filesToUpload.push(event.item(index));
     }
   }
   onSaveFile() {
     const formData: FormData = new FormData();
     console.log(this.filesToUpload);
-    this.filesToUpload.forEach((file) => { formData.append('files', file); });
-    this.response = this.service.uploadFile(
-      formData,
-      this.form.value.description,
-      "asalia@ghipss.com",
-      this.form.value.count
-    );
-    console.log(this.response)
-    this.close()
+    this.filesToUpload.forEach((file) => {
+      formData.append("files", file);
+    });
+    this.response = this.service
+      .uploadFile(
+        formData,
+        this.form.value.description,
+        this.service.user.email,
+        this.form.value.count
+      )
+      .subscribe(
+        (response) => {
+          console.log("AAAAAAAAAAAAAAAAAAAAA");
+          console.log(response);
+          this.close();
+        },
+        (error) => console.error(error)
+      );
   }
   close() {
     this.filesToUpload = [];
-    window.location.reload()
+    // window.location.reload()
     this.windowRef.close();
   }
+  //   reloadCurrentRoute() {
+  //     let currentUrl = this.router.url;
+  //     this.router.navigateByUrl('/dashboard', {skipLocationChange: true}).then(() => {
+  //         this.router.navigate([currentUrl]);
+  //     });
+  // }
 }

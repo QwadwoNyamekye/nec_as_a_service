@@ -1,18 +1,16 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { LocalDataSource } from "ng2-smart-table";
 import { NbWindowService } from "@nebular/theme";
 import { NecService } from "../../../@core/mock/nec.service";
 import { SingleNECRequestComponent } from "./single-nec-request/single-nec-request.component";
 import { DatePipe } from "@angular/common";
-import { Stomp } from "@stomp/stompjs";
-import * as SockJS from "sockjs-client";
 
 @Component({
   selector: "ngx-single",
   templateUrl: "./single.component.html",
   styleUrls: ["./single.component.scss"],
 })
-export class SingleNECComponent {
+export class SingleNECComponent implements OnInit, OnDestroy {
   settings = {
     pager: {
       perPage: 15,
@@ -55,10 +53,6 @@ export class SingleNECComponent {
         title: "Account Name",
         type: "string",
       },
-      amount: {
-        title: "Amount",
-        type: "string",
-      },
       actionCode: {
         title: "Action Code",
         type: "string",
@@ -77,6 +71,9 @@ export class SingleNECComponent {
 
   singleNECList: any;
   stompClient: any;
+  response: any;
+  listener: any;
+  receivedData: any;
 
   constructor(
     private service: NecService,
@@ -94,29 +91,28 @@ export class SingleNECComponent {
         this.source.load(this.singleNECList);
       }
     );
-    this.initializeWebSocketConnection()
+  }
+  ngOnInit() {
+    this.listener = (event: MessageEvent) => {
+      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
+      this.receivedData = event.data;
+      this.source.load(this.receivedData);
+      console.log(this.receivedData);
+    };
+    window.addEventListener("message", this.listener);
+    // this.service.initializeWebSocketConnection()
   }
 
-  initializeWebSocketConnection() {
-    const serverUrl = this.service.websocket;
-    const ws = new SockJS(serverUrl);
-    this.stompClient = Stomp.over(ws);
-    const that = this;
-
-    this.stompClient.connect({}, function (frame) {
-      that.stompClient.subscribe("/realtime/alert", (message) => {
-        let txn = JSON.parse(message);
-        console.log(message)
-      });
-    });
+  ngOnDestroy() {
+    window.removeEventListener("message", this.listener);
   }
-
 
   makeNECRequest() {
-    this.windowService.open(SingleNECRequestComponent, {
+    this.response = this.windowService.open(SingleNECRequestComponent, {
       title: `Make NEC Request`,
       windowClass: `admin-form-window`,
     });
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$");
   }
 
   onEditRowSelect(event): void {

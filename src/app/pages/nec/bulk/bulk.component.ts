@@ -9,13 +9,14 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { DataSource } from 'ng2-smart-table/lib/lib/data-source/data-source';
 import { Deferred } from 'ng2-smart-table/lib/lib/helpers';
 import { DatePipe } from '@angular/common';
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: "ngx-bulk",
   templateUrl: "./bulk.component.html",
   styleUrls: ["./bulk.component.scss"],
 })
-export class BulkUploadComponent {
+export class BulkUploadComponent implements OnInit{
   colour: string;
   name: string;
   getHtmlForCell(value: string) {
@@ -104,16 +105,21 @@ export class BulkUploadComponent {
   files: any;
   selectedRow: any;
   renderValue: string;
+  listener: any;
+  receivedData: any;
 
   constructor(
     private service: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private toastrService: NbToastrService
   ) {
     this.getUploads()
   }
-
+  ngOnInit(): void {
+    // this.service.initializeWebSocketConnection()
+  }
   getUploads(){
     this.service.getUploads().subscribe(
       (data) => {
@@ -138,9 +144,9 @@ export class BulkUploadComponent {
     console.log(event);
     this.dialogService.open(SubmitForProcessingComponent, {
       context: {
-        title: `Do you want to submit ${event.data.fileName} for processing?`,
+        title: `Do you want to submit ${event.data.fileName} for authorization?`,
         batchId: event.data.batchId,
-        submittedBy: "asalia@gmail.com",
+        submittedBy: this.service.user.email,
       },
     });
   }

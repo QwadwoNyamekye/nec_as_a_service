@@ -4,10 +4,13 @@ import { NecService } from "../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
 import { LocalDataSource } from "ng2-smart-table";
-import { NbComponentShape, NbComponentSize, NbComponentStatus } from '@nebular/theme';
+import {
+  NbComponentShape,
+  NbComponentSize,
+  NbComponentStatus,
+} from "@nebular/theme";
 
 @Component({
-
   template: `
     <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <label for="text">First Name:</label>
@@ -75,8 +78,8 @@ import { NbComponentShape, NbComponentSize, NbComponentStatus } from '@nebular/t
         id="button"
         type="submit"
         class="button"
-        [status]=statuses[0]
-        [shape]=shapes[1]
+        [status]="statuses[0]"
+        [shape]="shapes[1]"
       >
         Submit
       </button>
@@ -85,8 +88,14 @@ import { NbComponentShape, NbComponentSize, NbComponentStatus } from '@nebular/t
   styleUrls: ["edit-user-form.component.scss"],
 })
 export class EditUserFormComponent implements OnInit {
-  statuses: NbComponentStatus[] = [ 'primary', 'success', 'info', 'warning', 'danger' ];
-  shapes: NbComponentShape[] = [ 'rectangle', 'semi-round', 'round' ];
+  statuses: NbComponentStatus[] = [
+    "primary",
+    "success",
+    "info",
+    "warning",
+    "danger",
+  ];
+  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   items: any;
   form: FormGroup;
   selectedOption: any;
@@ -96,10 +105,7 @@ export class EditUserFormComponent implements OnInit {
   selectedRoles: any;
 
   source: LocalDataSource = new LocalDataSource();
-  constructor(
-    public windowRef: NbWindowRef,
-    private service: NecService
-  ) {}
+  constructor(public windowRef: NbWindowRef, private service: NecService) {}
   ngOnInit(): void {
     this.service.getInstitutions().subscribe(
       (data) => {
@@ -132,6 +138,7 @@ export class EditUserFormComponent implements OnInit {
       role: new FormControl("", Validators.required),
       emailAddress: new FormControl("", Validators.required),
     });
+    // this.service.initializeWebSocketConnection();
   }
   // Define a method to handle the form submission
   onSubmit(): void {

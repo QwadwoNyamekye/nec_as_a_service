@@ -4,8 +4,12 @@ import { NecService } from "../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
 import { LocalDataSource } from "ng2-smart-table";
-import { NbComponentShape, NbComponentSize, NbComponentStatus } from '@nebular/theme';
-
+import {
+  NbComponentShape,
+  NbComponentSize,
+  NbComponentStatus,
+} from "@nebular/theme";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   template: `
@@ -75,8 +79,8 @@ import { NbComponentShape, NbComponentSize, NbComponentStatus } from '@nebular/t
         id="button"
         type="submit"
         class="button"
-        [status]=statuses[0]
-        [shape]=shapes[1]
+        [status]="statuses[0]"
+        [shape]="shapes[1]"
       >
         Submit
       </button>
@@ -85,8 +89,14 @@ import { NbComponentShape, NbComponentSize, NbComponentStatus } from '@nebular/t
   styleUrls: ["add-user-form.component.scss"],
 })
 export class AddUserFormComponent implements OnInit {
-  statuses: NbComponentStatus[] = [ 'primary', 'success', 'info', 'warning', 'danger' ];
-  shapes: NbComponentShape[] = [ 'rectangle', 'semi-round', 'round' ];
+  statuses: NbComponentStatus[] = [
+    "primary",
+    "success",
+    "info",
+    "warning",
+    "danger",
+  ];
+  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   items: any;
   form: FormGroup;
   selectedOption: any;
@@ -94,11 +104,13 @@ export class AddUserFormComponent implements OnInit {
   roles: any = [];
   selectedItems: any;
   selectedRoles: any;
+  response: any;
 
   source: LocalDataSource = new LocalDataSource();
   constructor(
     public windowRef: NbWindowRef,
-    private service: NecService
+    private service: NecService,
+    private toastrService: NbToastrService
   ) {}
   ngOnInit(): void {
     this.service.getInstitutions().subscribe(
@@ -113,6 +125,8 @@ export class AddUserFormComponent implements OnInit {
         console.log(this.institutions);
       }
     );
+
+    // this.service.initializeWebSocketConnection();
 
     this.service.getRoles().subscribe(
       (data) => {
@@ -139,13 +153,40 @@ export class AddUserFormComponent implements OnInit {
   onSubmit(): void {
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
-      institutionName: this.form.value.institution,
+      institutionCode: this.form.value.institution,
       role_name: this.form.value.role,
       email: this.form.value.emailAddress,
     };
     // Send a post request to the server endpoint with the FormData object
-    this.service.postUsers(object);
-    this.windowRef.close()
+    this.service.postUsers(object).subscribe(
+      (data) => {
+        console.log(data);
+        this.response = data;
+      },
+      (error) => console.error(error),
+      () => {
+        console.log("################");
+        console.log(this.response);
+        if (this.response.errorCode != "0") {
+          this.toastrService.show(
+            "User Creation Failed: " + this.response.errorMessage,
+            "User Creation",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        } else {
+          this.toastrService.show("User Creation Success", "User Creation", {
+            status: "success",
+            destroyByClick: true,
+            duration: 100000,
+          });
+          this.windowRef.close();
+        }
+      }
+    );
   }
   close() {
     this.windowRef.close();

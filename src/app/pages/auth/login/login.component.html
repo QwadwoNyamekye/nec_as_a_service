@@ -1,7 +1,9 @@
-<h1 id="title" class="title">Sign In</h1>
+<!-- <img src="../../../../assets/ghipss_logo.jpg" alt="GHIPSS Logo" class="center"> -->
+<h3 style="text-align: center;">NEC AS A SERVICE</h3>
+<h4 id="title" class="title">Sign In</h4>
 
 <nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger" role="alert">
-  <p class="alert-title"><b>Oh snap!</b></p>
+  <!-- <p class="alert-title"><b>Oh snap!</b></p> -->
   <ul class="alert-message-list">
     <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
   </ul>
@@ -18,18 +20,10 @@
 
   <div class="form-control-group">
     <label class="label" for="input-email">Email address:</label>
-    <input nbInput
-           fullWidth
-           [(ngModel)]="user.email"
-           #email="ngModel"
-           name="email"
-           id="input-email"
-           pattern=".+@.+\..+"
-           placeholder="Email address"
-           autofocus
-           [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : 'basic'"
-           [required]="getConfigValue('forms.validation.email.required')"
-           [attr.aria-invalid]="email.invalid && email.touched ? true : null">
+    <input nbInput fullWidth [(ngModel)]="user.email" #email="ngModel" name="email" id="input-email" pattern=".+@.+\..+"
+      placeholder="Email address" autofocus [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : 'basic'"
+      [required]="getConfigValue('forms.validation.email.required')"
+      [attr.aria-invalid]="email.invalid && email.touched ? true : null">
     <ng-container *ngIf="email.invalid && email.touched">
       <p class="caption status-danger" *ngIf="email.errors?.required">
         Email is required!
@@ -42,19 +36,13 @@
 
   <div class="form-control-group">
     <label class="label" for="input-password">Password:</label>
-    <input nbInput
-           fullWidth
-           [(ngModel)]="user.password"
-           #password="ngModel"
-           name="password"
-           type="password"
-           id="input-password"
-           placeholder="Password"
-           [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
-           [required]="getConfigValue('forms.validation.password.required')"
-           [minlength]="getConfigValue('forms.validation.password.minLength')"
-           [maxlength]="getConfigValue('forms.validation.password.maxLength')"
-           [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+    <input nbInput fullWidth [(ngModel)]="user.password" #password="ngModel" name="password" type="password"
+      id="input-password" placeholder="Password"
+      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
+      [required]="getConfigValue('forms.validation.password.required')"
+      [minlength]="getConfigValue('forms.validation.password.minLength')"
+      [maxlength]="getConfigValue('forms.validation.password.maxLength')"
+      [attr.aria-invalid]="password.invalid && password.touched ? true : null">
     <ng-container *ngIf="password.invalid && password.touched ">
       <p class="caption status-danger" *ngIf="password.errors?.required">
         Password is required!
@@ -73,11 +61,7 @@
     <a class="forgot-password" routerLink="../request-password">Forgot Password?</a>
   </div>
 
-  <button nbButton
-          fullWidth
-          status="success"
-          [disabled]="submitted || !form.valid"
-          [class.btn-pulse]="submitted">
+  <button nbButton fullWidth status="success" [disabled]="submitted || !form.valid" [class.btn-pulse]="submitted">
     Sign In
   </button>
 </form>

@@ -14,6 +14,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import {NbButtonModule, NbCardModule, NbRowComponent} from '@nebular/theme';
 import {NbTableModule} from '@nebular/theme';
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { NbAuthComponent } from "./pages/auth/auth.component";
 import {
   NbChatModule,
   NbDatepickerModule,

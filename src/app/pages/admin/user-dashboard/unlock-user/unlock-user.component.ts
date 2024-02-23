@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 
@@ -21,7 +21,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
   `,
   styleUrls: ["unlock-user.component.scss"],
 })
-export class UnlockUserComponent {
+export class UnlockUserComponent implements OnInit{
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
@@ -30,7 +30,9 @@ export class UnlockUserComponent {
     protected ref: NbDialogRef<UnlockUserComponent>,
     public service: NecService
   ) {}
-
+  ngOnInit(): void {
+    // this.service.initializeWebSocketConnection();
+  }
   dismiss() {
     this.ref.close();
   }
@@ -38,7 +40,7 @@ export class UnlockUserComponent {
     this.response = this.service.unlockUser(
       {
         "email":"asalia@ghipss.com",
-        "createdBy":"asalia@ghipss.com"
+        "createdBy":this.service.user.email
       }
     );
     console.log(this.response);

@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 
@@ -21,7 +21,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
   `,
   styleUrls: ["change-user-status.component.scss"],
 })
-export class ChangeUserStatusComponent {
+export class ChangeUserStatusComponent implements OnInit{
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
@@ -30,7 +30,9 @@ export class ChangeUserStatusComponent {
     protected ref: NbDialogRef<ChangeUserStatusComponent>,
     public service: NecService
   ) {}
-
+  ngOnInit(): void {
+    // this.service.initializeWebSocketConnection()
+  }
   dismiss() {
     this.ref.close();
   }
@@ -38,7 +40,7 @@ export class ChangeUserStatusComponent {
     this.response = this.service.changeUserStatus(
       {
         "email":"asalia@ghipss.com",
-        "createdBy":"asalia@ghipss.com"
+        "createdBy":this.service.user.email
       }
     );
     console.log(this.response);
