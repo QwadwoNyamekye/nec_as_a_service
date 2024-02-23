@@ -168,7 +168,7 @@ export class AddUserFormComponent implements OnInit {
         console.log("################");
         console.log(this.response);
         if (this.response.errorCode != "0") {
-          this.toastrService.show(
+          this.toastrService.warning(
             "User Creation Failed: " + this.response.errorMessage,
             "User Creation",
             {
@@ -178,7 +178,7 @@ export class AddUserFormComponent implements OnInit {
             }
           );
         } else {
-          this.toastrService.show("User Creation Success", "User Creation", {
+          this.toastrService.success("User Creation Success", "User Creation", {
             status: "success",
             destroyByClick: true,
             duration: 100000,

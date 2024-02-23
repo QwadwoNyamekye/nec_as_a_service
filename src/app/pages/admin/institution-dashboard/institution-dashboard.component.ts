@@ -6,23 +6,23 @@ import { AddInstitutionFormComponent } from "./add-institution-form/add-institut
 import { DomSanitizer } from "@angular/platform-browser";
 import { EditInstitutionFormComponent } from "./edit-institution-form/edit-institution-form.component";
 import { ChangeInstitutionStatusComponent } from "./change-institution-status/change-institution-status.component";
-import { DatePipe } from '@angular/common';
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "ngx-admin-institution-dashboard",
   templateUrl: "./institution-dashboard.component.html",
   styleUrls: ["./institution-dashboard.component.scss"],
 })
-export class InstitutionDashboardComponent implements OnInit{
+export class InstitutionDashboardComponent implements OnInit {
   colour: string;
   name: string;
   getHtmlForCell(value: string) {
     if (value) {
-      this.colour = "red";
-      this.name = "LOCKED";
-    } else {
       this.colour = "green";
-      this.name = "UNLOCKED";
+      this.name = "ENABLED";
+    } else {
+      this.colour = "red";
+      this.name = "DISABLED";
     }
     return this.domSanitizer.bypassSecurityTrustHtml(
       `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
@@ -87,7 +87,7 @@ export class InstitutionDashboardComponent implements OnInit{
         title: "Created By",
         type: "string",
         valuePrepareFunction: (date) => {
-          return new DatePipe('en-US').transform(date, 'YYYY-MM-dd HH:m:ss');
+          return new DatePipe("en-US").transform(date, "YYYY-MM-dd HH:m:ss");
         },
       },
     },
@@ -103,7 +103,12 @@ export class InstitutionDashboardComponent implements OnInit{
     this.listener = (event: MessageEvent) => {
       console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
       this.receivedData = event.data;
-      this.source.append(this.receivedData.institution)
+      if (this.receivedData.institution) {
+        this.source.append(this.receivedData.institution);
+      }
+      else{
+        window.location.reload()
+      }
       console.log(this.receivedData);
     };
     window.addEventListener("message", this.listener);
@@ -134,7 +139,7 @@ export class InstitutionDashboardComponent implements OnInit{
     if (event.action == "edit") {
       this.editInstitution();
     } else if (event.action == "unlock") {
-      this.changeInstitutionStatus();
+      this.changeInstitutionStatus(event);
     }
   }
   editInstitution(): void {
@@ -143,10 +148,14 @@ export class InstitutionDashboardComponent implements OnInit{
       windowClass: `admin-form-window`,
     });
   }
-  changeInstitutionStatus(): void {
+  changeInstitutionStatus(event): void {
+    console.log(event);
+    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     this.dialogService.open(ChangeInstitutionStatusComponent, {
       context: {
         title: "Change Institution Status",
+        status_: event.data.status,
+        code: event.data.code,
       },
     });
   }

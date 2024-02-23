@@ -11,7 +11,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
       >
       <nb-card-body>
         <button nbButton hero status="success" (click)="submit($event)">
-          Disable
+          {{ action }}
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
           Dismiss
@@ -25,6 +25,9 @@ export class ChangeInstitutionStatusComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
+  @Input() status_: boolean;
+  @Input() code: string;
+  action: any;
   response: any;
   constructor(
     protected ref: NbDialogRef<ChangeInstitutionStatusComponent>,
@@ -32,19 +35,32 @@ export class ChangeInstitutionStatusComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     // this.service.initializeWebSocketConnection()
+    if (this.status_) {
+      this.action = "Disable";
+    } else {
+      this.action = "Enable";
+    }
   }
   dismiss() {
     this.ref.close();
   }
   submit(event) {
-    console.log("+++++++")
-    console.log(event)
-    this.response = this.service.changeInstitutionStatus(
-      {
-        "code":event.data.code,
-        "status":event.data.code
-      }
-    );
+    console.log("+++++++");
+    console.log(event);
+    this.response = this.service
+      .changeInstitutionStatus({
+        code: this.code,
+        status: !this.status_,
+        createdBy: this.service.user.email
+      })
+      .subscribe(
+        (response) => {
+          console.log(response);
+          window.parent.postMessage(response);
+          return response;
+        },
+        (error) => console.error(error)
+      );
     console.log(this.response);
     this.ref.close();
   }

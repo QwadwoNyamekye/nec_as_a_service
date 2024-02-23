@@ -85,6 +85,15 @@ export class NecService {
       .pipe(map((response) => response));
   }
 
+  submitForAuthorization(batchId, submittedBy) {
+    return this.http
+      .get(
+        this.baseUrl +
+          `/upload/api/v1/submit_upload_for_authorization/${batchId}/${submittedBy}`,
+        { headers: this.headers }
+      )
+      .pipe(map((response) => response));
+  }
   uploadFile(file, description, createdBy, count) {
     return this.http
       .post(
@@ -223,13 +232,7 @@ export class NecService {
       .post(this.baseUrl + "/institution/api/v1/change_status", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response))
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+      .pipe(map((response) => response));
   }
 
   editUser(user) {

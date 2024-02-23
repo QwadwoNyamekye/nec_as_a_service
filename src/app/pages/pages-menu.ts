@@ -26,7 +26,7 @@ export const MENU_ITEMS: NbMenuItem[] = (function () {
       },
       {
         title: "Bulk NEC",
-        icon: "shopping-cart-outline",
+        icon: "bookmark",
         link: "/pages/nec/bulk",
       },
     ];
@@ -46,6 +46,30 @@ export const MENU_ITEMS: NbMenuItem[] = (function () {
       {
         title: "Bulk NEC",
         icon: "shopping-cart-outline",
+        link: "/pages/nec/bulk",
+      },
+    ];
+  } else {
+    menu_items = [
+      {
+        title: "User",
+        icon: "briefcase",
+        link: "/pages/user-dashboard",
+        home: true,
+      },
+      {
+        title: "Institution",
+        icon: "home-outline",
+        link: "/pages/institution-dashboard",
+      },
+      {
+        title: "Single NEC",
+        icon: "shopping-cart-outline",
+        link: "/pages/nec/single",
+      },
+      {
+        title: "Bulk NEC",
+        icon: "bookmark",
         link: "/pages/nec/bulk",
       },
     ];

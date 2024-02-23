@@ -24,6 +24,7 @@ import { SingleNECComponent } from "./single/single.component";
 import { SingleNECRequestComponent } from "./single/single-nec-request/single-nec-request.component";
 import { BulkNEComponent } from "./bulk/bulk-nec-request/bulk-nec-request.component";
 import { SubmitForProcessingComponent } from "./bulk/submit-for-processing/submit-for-processing.component";
+import { SubmitProcessingComponent } from "./bulk/submit_processing/submit-for-processing.component";
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import { SubmitForProcessingComponent } from "./bulk/submit-for-processing/submi
     BulkUploadComponent,
     SingleNECRequestComponent,
     BulkNEComponent,
-    SubmitForProcessingComponent
+    SubmitForProcessingComponent,
+    SubmitProcessingComponent
   ],
 })
 export class NECModule {}

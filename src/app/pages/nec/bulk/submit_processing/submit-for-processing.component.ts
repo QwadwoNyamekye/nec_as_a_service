@@ -22,13 +22,13 @@ import { NbToastrService } from "@nebular/theme";
   `,
   styleUrls: ["submit-for-processing.component.scss"],
 })
-export class SubmitForProcessingComponent implements OnInit {
+export class SubmitProcessingComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
   response: any;
   constructor(
-    protected ref: NbDialogRef<SubmitForProcessingComponent>,
+    protected ref: NbDialogRef<SubmitProcessingComponent>,
     public service: NecService,
     private toastrService: NbToastrService
   ) {}
@@ -39,7 +39,7 @@ export class SubmitForProcessingComponent implements OnInit {
     this.ref.close();
   }
   submit() {
-    this.service.submitForProcessing(this.batchId, this.service.user.email).subscribe(
+    this.service.submitForAuthorization(this.batchId, this.service.user.email).subscribe(
       (data) => {
         this.response = data;
       },
@@ -51,8 +51,8 @@ export class SubmitForProcessingComponent implements OnInit {
         console.log(this.response);
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
-            "File Processing Failed: " + this.response.errorMessage,
-            "Bulk File Processing",
+            "File Authorization Failed: " + this.response.errorMessage,
+            "Bulk File Authorization",
             {
               status: "danger",
               destroyByClick: true,
@@ -61,8 +61,8 @@ export class SubmitForProcessingComponent implements OnInit {
           );
         } else {
           this.toastrService.success(
-            "File Processing Success: " + this.response.errorMessage,
-            "File Processing",
+            "File Authorization Success",
+            "File Authorization",
             { status: "success", destroyByClick: true, duration: 100000 }
           );
           this.ref.close();

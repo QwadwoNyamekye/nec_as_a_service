@@ -9,7 +9,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { DataSource } from 'ng2-smart-table/lib/lib/data-source/data-source';
 import { Deferred } from 'ng2-smart-table/lib/lib/helpers';
 import { DatePipe } from '@angular/common';
-import { NbToastrService } from "@nebular/theme";
+import { SubmitProcessingComponent } from "./submit_processing/submit-for-processing.component";
 
 @Component({
   selector: "ngx-bulk",
@@ -45,9 +45,9 @@ export class BulkUploadComponent implements OnInit{
     hideSubHeader: true,
     actions: {
       position: "right",
-      add: false, //  if you want to remove add button
+      // add: false, //  if you want to remove add button
       // edit: false,     //  if you want to remove edit button
-      delete: false, //  if you want to remove delete button
+      // delete: false, //  if you want to remove delete button
     },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -60,7 +60,7 @@ export class BulkUploadComponent implements OnInit{
       cancelButtonContent: '<i class="nb-close"></i>',
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash" aria-hidden="true"></i>',
+      deleteButtonContent: '<i class="nb-checkmark" aria-hidden="true"></i>',
       confirmDelete: true,
     },
     columns: {
@@ -95,7 +95,7 @@ export class BulkUploadComponent implements OnInit{
         title: 'Created At',
         type: 'string',
         valuePrepareFunction: (date) => {
-          return new DatePipe('en-US').transform(date, 'YYYY-MM-dd HH:m:ss');
+          return new DatePipe('en-US').transform(date, 'YYYY-MM-dd HH:mm:ss');
         },
       },
     },
@@ -112,8 +112,7 @@ export class BulkUploadComponent implements OnInit{
     private service: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
-    private domSanitizer: DomSanitizer,
-    private toastrService: NbToastrService
+    private domSanitizer: DomSanitizer
   ) {
     this.getUploads()
   }
@@ -140,11 +139,22 @@ export class BulkUploadComponent implements OnInit{
     event.confirm.reject();
   }
 
+  submitForAuthorization(event): void {
+    console.log(event);
+    this.dialogService.open(SubmitProcessingComponent, {
+      context: {
+        title: `Do you want to submit ${event.data.fileName} for authorization?`,
+        batchId: event.data.batchId,
+        submittedBy: this.service.user.email,
+      },
+    });
+  }
+
   onEditRowSelect(event): void {
     console.log(event);
     this.dialogService.open(SubmitForProcessingComponent, {
       context: {
-        title: `Do you want to submit ${event.data.fileName} for authorization?`,
+        title: `Do you want to submit ${event.data.fileName} for processing?`,
         batchId: event.data.batchId,
         submittedBy: this.service.user.email,
       },
