@@ -55,7 +55,10 @@ export class ChangeInstitutionStatusComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log(response);
-          window.parent.postMessage(response);
+          window.parent.postMessage({
+            key: "change_institution",
+            data: response,
+          });
           return response;
         },
         (error) => console.error(error)

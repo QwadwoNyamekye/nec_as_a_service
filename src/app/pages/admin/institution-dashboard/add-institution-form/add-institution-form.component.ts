@@ -83,7 +83,10 @@ export class AddInstitutionFormComponent implements OnInit {
     this.service.addInstitution(this.object).subscribe(
       (response) => {
         console.log(response);
-        window.parent.postMessage(response);
+        window.parent.postMessage({
+          key: "add_institution",
+          data: response,
+        });
         return response;
       },
       (error) => console.error(error),

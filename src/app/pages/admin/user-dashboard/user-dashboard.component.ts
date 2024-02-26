@@ -27,6 +27,7 @@ export class AdminDashboardComponent implements OnInit {
   receivedData: any;
   source: LocalDataSource = new LocalDataSource();
   users: any;
+  row: any;
 
   ngOnInit(): void {
     this.getUsers();
@@ -36,7 +37,7 @@ export class AdminDashboardComponent implements OnInit {
       if (this.receivedData.key == "add") {
         this.source.load(this.receivedData.data.user);
       } else if (this.receivedData.key == "edit") {
-        this.source.update(event.data, this.receivedData.data.user);
+        this.source.update(this.row, this.receivedData.data.user);
       }
     };
     window.addEventListener("message", this.listener);
@@ -194,6 +195,7 @@ export class AdminDashboardComponent implements OnInit {
 
   editUser(event): void {
     console.log(event);
+    this.row = event;
     this.windowService.open(EditUserFormComponent, {
       context: {
         title: `Edit User`,

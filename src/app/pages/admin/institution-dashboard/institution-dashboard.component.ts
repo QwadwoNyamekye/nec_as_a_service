@@ -20,6 +20,7 @@ export class InstitutionDashboardComponent implements OnInit {
   listener: any;
   receivedData: any;
   institutions: any;
+  row: any;
 
   getHtmlForCell(value: string) {
     if (value) {
@@ -102,9 +103,14 @@ export class InstitutionDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.listener = (event: MessageEvent) => {
       console.log(event);
-      this.receivedData = event.data;
-      if (this.receivedData.institution) {
+      this.receivedData = event.data.data;
+      if (
+        event.data.key == "add_institution" &&
+        this.receivedData.institution
+      ) {
         this.source.append(this.receivedData.institution);
+      } else if (event.data.key == "change_institution") {
+        this.source.update(this.row, this.receivedData.data.institution);
       } else {
         window.location.reload();
       }
@@ -136,13 +142,13 @@ export class InstitutionDashboardComponent implements OnInit {
 
   customFunction(event) {
     if (event.action == "edit") {
-      this.editInstitution();
+      this.editInstitution(event);
     } else if (event.action == "unlock") {
       this.changeInstitutionStatus(event);
     }
   }
 
-  editInstitution(): void {
+  editInstitution(event): void {
     this.windowService.open(EditInstitutionFormComponent, {
       title: `Edit Institution`,
       windowClass: `admin-form-window`,
@@ -160,7 +166,8 @@ export class InstitutionDashboardComponent implements OnInit {
     });
   }
 
-  openWindowForm() {
+  openWindowForm(event) {
+    this.row = event.data;
     this.windowService.open(AddInstitutionFormComponent, {
       title: `Add Institution`,
       windowClass: `admin-form-window`,
@@ -169,22 +176,6 @@ export class InstitutionDashboardComponent implements OnInit {
 
   onEditRowSelect(event): void {
     if (window.open()) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
-  }
-
-  onCreateConfirm(event: any): void {
-    console.log(event);
-  }
-
-  editData(event: any): void {
-    console.log(Event);
-  }
-
-  onDeleteConfirm(event): void {
-    if (window.confirm("Are you sure you want to delete?")) {
       event.confirm.resolve();
     } else {
       event.confirm.reject();
