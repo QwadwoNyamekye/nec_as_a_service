@@ -87,7 +87,7 @@ export class InstitutionDashboardComponent implements OnInit {
         title: "Created By",
         type: "string",
         valuePrepareFunction: (date) => {
-          return new DatePipe("en-US").transform(date, "YYYY-MM-dd HH:m:ss");
+          return new DatePipe("en-US").transform(date, "YYYY-MM-dd HH:mm:ss");
         },
       },
     },

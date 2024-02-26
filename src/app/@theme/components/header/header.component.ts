@@ -12,6 +12,7 @@ import { map, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { NbAuthService } from "@nebular/auth";
 import { NbAuthJWTToken } from "@nebular/auth";
+import { NecService } from "../../../@core/mock/nec.service";
 
 @Component({
   selector: "ngx-header",
@@ -54,14 +55,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private breakpointService: NbMediaBreakpointsService,
     private router: Router,
-    private authService: NbAuthService
+    private authService: NbAuthService,
+    private service: NecService
   ) {
     this.authService
       .authenticate("email")
       .subscribe((data: any) => console.log("+++++++++++++++++"));
     this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
       if (token.isValid()) {
-        this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
+        console.log("############################")
+        console.log(this.service.user)
+        this.user = {"name":this.service.user.name, picture: 'assets/images/nick.png' }
+        // this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
       }
     });
   }
@@ -69,10 +74,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
 
-    this.userService
-      .getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((users: any) => (this.user = users.nick));
+    // this.userService
+    //   .getUsers()
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((users: any) => (this.user = users.nick));
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService

@@ -154,13 +154,15 @@ export class AddUserFormComponent implements OnInit {
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
       institutionCode: this.form.value.institution,
-      role_name: this.form.value.role,
+      role_id: this.form.value.role,
       email: this.form.value.emailAddress,
+      createdBy: this.service.user.email,
     };
     // Send a post request to the server endpoint with the FormData object
     this.service.postUsers(object).subscribe(
       (data) => {
         console.log(data);
+        window.parent.postMessage({"data":data, "key":"add"});
         this.response = data;
       },
       (error) => console.error(error),

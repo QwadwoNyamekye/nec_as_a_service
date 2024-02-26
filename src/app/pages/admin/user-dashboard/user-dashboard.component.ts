@@ -1,4 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { LocalDataSource } from "ng2-smart-table";
 import { NbWindowService, NbDialogService } from "@nebular/theme";
 import { AddUserFormComponent } from "./add-user-form/add-user-form.component";
@@ -13,10 +18,13 @@ import { ChangeUserStatusComponent } from "./change-user-status/change-user-stat
   selector: "ngx-admin-dashboard",
   templateUrl: "./user-dashboard.component.html",
   styleUrls: ["./user-dashboard.component.scss"],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class AdminDashboardComponent implements OnInit{
+export class AdminDashboardComponent implements OnInit {
   colour: string;
   name: string;
+  listener: any;
+  receivedData: any;
   getHtmlForCell(value: string) {
     if (value) {
       this.colour = "red";
@@ -28,8 +36,19 @@ export class AdminDashboardComponent implements OnInit{
     return this.domSanitizer.bypassSecurityTrustHtml(
       `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
     );
-  } 
+  }
   ngOnInit(): void {
+    this.listener = (event: MessageEvent) => {
+      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
+      console.log(event.data);
+      this.receivedData = event.data;
+      if (this.receivedData.key == "add") {
+        this.source.load(this.receivedData.data.user);
+      } else if (this.receivedData.key == "edit") {
+        this.source.update(event.data, this.receivedData.data.user);
+      }
+    };
+    window.addEventListener("message", this.listener);
     // this.service.initializeWebSocketConnection()
   }
   getHtmlForStatusCell(value: string) {
@@ -132,7 +151,8 @@ export class AdminDashboardComponent implements OnInit{
     private service: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private cd: ChangeDetectorRef
   ) {
     this.getUsers();
   }
@@ -153,13 +173,13 @@ export class AdminDashboardComponent implements OnInit{
   }
   customFunction(event) {
     if (event.action == "unlock") {
-      this.unlockUser();
+      this.unlockUser(event);
     } else if (event.action == "edit") {
-      this.editUser();
+      this.editUser(event);
     } else if (event.action == "userStatus") {
-      this.changeUserStatus();
+      this.changeUserStatus(event);
     } else if (event.action == "reset") {
-      this.resetUserPassword();
+      this.resetUserPassword(event);
     }
   }
   addUser() {
@@ -169,33 +189,42 @@ export class AdminDashboardComponent implements OnInit{
     });
   }
 
-  editUser(): void {
+  editUser(event): void {
+    console.log("//////////////////////////////////");
+    console.log(event);
     this.windowService.open(EditUserFormComponent, {
-      title: `Edit User`,
-      windowClass: `admin-form-window`,
+      context: {
+        title: `Edit User`,
+        windowClass: `admin-form-window`,
+        email: event.data.email,
+      },
     });
+    // event.confirm.resolve()
   }
 
-  changeUserStatus(): void {
+  changeUserStatus(event): void {
     this.dialogService.open(ChangeUserStatusComponent, {
       context: {
         title: "Change User Status",
+        email: event.data.email,
       },
     });
   }
 
-  unlockUser(): void {
+  unlockUser(event): void {
     this.dialogService.open(UnlockUserComponent, {
       context: {
         title: "Unlock User",
+        email: event.data.email,
       },
     });
   }
 
-  resetUserPassword(): void {
+  resetUserPassword(event): void {
     this.dialogService.open(ResetUserPasswordComponent, {
       context: {
         title: "Reset User Password",
+        email: event.data.email,
       },
     });
     this.getUsers();

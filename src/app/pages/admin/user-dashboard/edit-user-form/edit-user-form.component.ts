@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,Input } from "@angular/core";
 import { NbWindowRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
@@ -62,15 +62,6 @@ import {
         </div>
       </div>
 
-      <label class="text-label" for="text">Email Address:</label>
-      <input
-        nbInput
-        fullWidth
-        formControlName="emailAddress"
-        id="text"
-        type="text"
-        placeholder="Email Address"
-      />
       <br />
       <button
         nbButton
@@ -88,6 +79,7 @@ import {
   styleUrls: ["edit-user-form.component.scss"],
 })
 export class EditUserFormComponent implements OnInit {
+  @Input() email: string;
   statuses: NbComponentStatus[] = [
     "primary",
     "success",
@@ -136,7 +128,7 @@ export class EditUserFormComponent implements OnInit {
       lastName: new FormControl("", [Validators.required]),
       institution: new FormControl("", Validators.required),
       role: new FormControl("", Validators.required),
-      emailAddress: new FormControl("", Validators.required),
+      // emailAddress: new FormControl("", Validators.required),
     });
     // this.service.initializeWebSocketConnection();
   }
@@ -144,12 +136,20 @@ export class EditUserFormComponent implements OnInit {
   onSubmit(): void {
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
-      institutionName: this.form.value.institution,
+      institutionCode: this.form.value.institution,
       role_id: this.form.value.role,
-      email: this.form.value.emailAddress,
+      email: this.email,
     };
     // Send a post request to the server endpoint with the FormData object
-    this.service.editUser(object);
+    this.service.editUser(object)
+    .subscribe(
+      (response) => {
+        console.log(response);
+        window.parent.postMessage({"data":response, "key":"edit"});
+        this.close();
+      },
+      (error) => console.error(error)
+    );
   }
   close() {
     this.windowRef.close();

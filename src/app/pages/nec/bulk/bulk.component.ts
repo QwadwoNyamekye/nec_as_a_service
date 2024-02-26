@@ -10,6 +10,7 @@ import { DataSource } from "ng2-smart-table/lib/lib/data-source/data-source";
 import { Deferred } from "ng2-smart-table/lib/lib/helpers";
 import { DatePipe } from "@angular/common";
 import { SubmitProcessingComponent } from "./submit_processing/submit-for-processing.component";
+import { SingleNECComponent } from "./upload_file_single/single.component";
 
 @Component({
   selector: "ngx-bulk",
@@ -51,7 +52,7 @@ export class BulkUploadComponent implements OnInit {
           title: '<i class="nb-edit"></i>',
         },
         {
-          name: "unlock",
+          name: "authorize",
           title: '<i class="nb-checkmark"></i>',
         },
         {
@@ -134,12 +135,13 @@ export class BulkUploadComponent implements OnInit {
     // this.service.initializeWebSocketConnection()
   }
   customFunction(event) {
+    console.log(event)
     if (event.action == "edit") {
       this.onEditRowSelect(event);
     } else if (event.action == "authorize") {
       this.submitForAuthorization(event);
     } else if (event.action == "expand") {
-      this.submitForAuthorization(event);
+      this.openFileRecords(event);
     }
   }
   getUploads() {
@@ -188,5 +190,17 @@ export class BulkUploadComponent implements OnInit {
       title: `Upload File`,
       windowClass: `admin-form-window`,
     });
+  }
+  
+  openFileRecords(event) {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    console.log(event)
+    console.log(event.data)
+    console.log(event.data.batchId)
+    this.dialogService.open(SingleNECComponent, {
+      context:{
+      title: `File Test`,
+      batchId: event.data.batchId
+    }});
   }
 }

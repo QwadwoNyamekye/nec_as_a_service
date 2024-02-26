@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { LocalDataSource } from "ng2-smart-table";
 import { NbWindowService } from "@nebular/theme";
-import { NecService } from "../../../@core/mock/nec.service";
-import { SingleNECRequestComponent } from "./single-nec-request/single-nec-request.component";
+import { NecService } from "../../../../@core/mock/nec.service";
 import { DatePipe } from "@angular/common";
 
 @Component({
@@ -10,7 +9,9 @@ import { DatePipe } from "@angular/common";
   templateUrl: "./single.component.html",
   styleUrls: ["./single.component.scss"],
 })
-export class SingleNECComponent implements OnInit, OnDestroy {
+export class SingleNECComponent implements OnDestroy {
+  @Input() title: string;
+  @Input() batchId: any;
   settings = {
     pager: {
       perPage: 15,
@@ -37,24 +38,32 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       confirmDelete: true,
     },
     columns: {
-      destInstitution: {
-        title: "Institution Code",
-        type: "string",
-      },
-      destInstitutionName: {
-        title: "Institution",
-        type: "string",
-      },
-      destAccountNumber: {
-        title: "Destination Account",
-        type: "string",
-      },
-      destAccountName: {
+      accountName: {
         title: "Account Name",
+        type: "string",
+      },
+      accountNumber: {
+        title: "Account Number",
         type: "string",
       },
       actionCode: {
         title: "Action Code",
+        type: "string",
+      },
+      accountStatus: {
+        title: "Account Status",
+        type: "string",
+      },
+      sessionId: {
+        title: "Session Id",
+        type: "string",
+      },
+      destBank: {
+        title: "Destination Bank",
+        type: "string",
+      },
+      createdBy: {
+        title: "Created By",
         type: "string",
       },
       createdAt: {
@@ -79,40 +88,30 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     private service: NecService,
     private windowService: NbWindowService
   ) {
-    this.service.getSingleNECList().subscribe(
-      (data) => {
-        this.singleNECList = data;
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        console.log(this.singleNECList);
-        this.source.load(this.singleNECList);
-      }
-    );
   }
   ngOnInit() {
-    this.listener = (event: MessageEvent) => {
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
-      this.receivedData = event.data;
-      this.source.load(this.receivedData);
-      console.log(this.receivedData);
-    };
-    window.addEventListener("message", this.listener);
-    // this.service.initializeWebSocketConnection()
+
+  console.log("GGGGGGGGGGGGGGGGGGGGGGGG")
+  console.log(this.title)
+  console.log(this.batchId)
+  this.service.getFileRecords(this.batchId).subscribe(
+    (data) => {
+      this.singleNECList = data;
+      console.log("^^^^^^^^^^^^^^^^^^")
+      console.log(data)
+    },
+    (error) => {
+      console.log(error);
+    },
+    () => {
+      console.log(this.singleNECList);
+      this.source.load(this.singleNECList);
+    }
+  );
   }
 
   ngOnDestroy() {
     window.removeEventListener("message", this.listener);
-  }
-
-  makeNECRequest() {
-    this.response = this.windowService.open(SingleNECRequestComponent, {
-      title: `Make NEC Request`,
-      windowClass: `admin-form-window`,
-    });
-    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$");
   }
 
   onEditRowSelect(event): void {

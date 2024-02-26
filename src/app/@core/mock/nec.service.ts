@@ -40,10 +40,7 @@ export class NecService {
     const ws = new SockJS(serverUrl);
     this.stompClient = Stomp.over(ws);
     const that = this;
-    console.log("????????????????????????")
-    console.log(this.stompClient.status)
     this.stompClient.connect({}, function (frame) {
-      console.log("LLLLLLLLLLLLLLL");
       that.stompClient.subscribe("/realtime/alert", (message) => {
         console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         console.log(message);
@@ -66,6 +63,14 @@ export class NecService {
   }
 
   //-------------BULK--------------
+
+  getFileRecords(batch_id){
+    return this.http
+      .get(this.baseUrl + "/batch_details/api/v1/get_branch_details_by_batch_id/" + batch_id, {
+        headers: this.headers,
+      })
+      .pipe(map((response) => response));
+  }
 
   getUploads() {
     return this.http
@@ -239,12 +244,6 @@ export class NecService {
     return this.http
       .post(this.baseUrl + "/user/api/v1/update_user", user, {
         headers: this.headers,
-      })
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+      });
   }
 }

@@ -25,6 +25,7 @@ export class ResetUserPasswordComponent implements OnInit{
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
+  @Input() email: string;
   response: any;
   constructor(
     protected ref: NbDialogRef<ResetUserPasswordComponent>,
@@ -38,7 +39,7 @@ export class ResetUserPasswordComponent implements OnInit{
   }
   submit() {
     this.response = this.service.resetUserPassword({
-      email: "asalia@ghipss.com",
+      email: this.email,
       createdBy: this.service.user.email,
     });
     console.log(this.response);

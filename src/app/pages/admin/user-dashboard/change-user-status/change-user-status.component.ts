@@ -25,6 +25,7 @@ export class ChangeUserStatusComponent implements OnInit{
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
+  @Input() email: string;
   response: any;
   constructor(
     protected ref: NbDialogRef<ChangeUserStatusComponent>,
@@ -39,7 +40,7 @@ export class ChangeUserStatusComponent implements OnInit{
   submit() {
     this.response = this.service.changeUserStatus(
       {
-        "email":"asalia@ghipss.com",
+        "email":this.email,
         "createdBy":this.service.user.email
       }
     );

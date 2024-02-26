@@ -22,6 +22,9 @@
   nb-user {
     cursor: pointer;
   }
+  nb-user .user-name{
+    color: white;
+  }
 
   ::ng-deep nb-search button {
     padding: 0!important;
