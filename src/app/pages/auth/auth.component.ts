@@ -11,7 +11,7 @@ import { takeWhile } from "rxjs/operators";
 import { NecService } from "../../@core/mock/nec.service";
 
 @Component({
-  selector: "nb-auth",
+  selector: "ngx-nb-auth",
   styleUrls: ["./auth.component.scss"],
   templateUrl: "./auth.component.html",
 })

@@ -101,7 +101,7 @@ export class InstitutionDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.listener = (event: MessageEvent) => {
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
+      console.log(event);
       this.receivedData = event.data;
       if (this.receivedData.institution) {
         this.source.append(this.receivedData.institution);
@@ -151,7 +151,6 @@ export class InstitutionDashboardComponent implements OnInit {
 
   changeInstitutionStatus(event): void {
     console.log(event);
-    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     this.dialogService.open(ChangeInstitutionStatusComponent, {
       context: {
         title: "Change Institution Status",

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, OnDestroy, Input } from "@angular/core";
 import { LocalDataSource } from "ng2-smart-table";
 import { NbWindowService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
