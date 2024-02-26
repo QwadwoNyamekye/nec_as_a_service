@@ -21,29 +21,38 @@ import { NecService } from "../../../../@core/mock/nec.service";
   `,
   styleUrls: ["change-user-status.component.scss"],
 })
-export class ChangeUserStatusComponent implements OnInit{
+export class ChangeUserStatusComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
   @Input() email: string;
   response: any;
+
   constructor(
     protected ref: NbDialogRef<ChangeUserStatusComponent>,
     public service: NecService
   ) {}
+
   ngOnInit(): void {
     // this.service.initializeWebSocketConnection()
   }
+
   dismiss() {
     this.ref.close();
   }
+
   submit() {
-    this.response = this.service.changeUserStatus(
-      {
-        "email":this.email,
-        "createdBy":this.service.user.email
-      }
-    );
+    this.response = this.service
+      .changeUserStatus({
+        email: this.email,
+        createdBy: this.service.user.email,
+      })
+      .subscribe(
+        (response) => {
+          console.log(response);
+        },
+        (error) => console.error(error)
+      );
     console.log(this.response);
     this.ref.close();
   }

@@ -25,33 +25,32 @@ export class ChangeInstitutionStatusComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
-  @Input() status_: boolean;
+  @Input() status: boolean;
   @Input() code: string;
   action: any;
   response: any;
+
   constructor(
     protected ref: NbDialogRef<ChangeInstitutionStatusComponent>,
     public service: NecService
   ) {}
+
   ngOnInit(): void {
     // this.service.initializeWebSocketConnection()
-    if (this.status_) {
+    if (this.status) {
       this.action = "Disable";
     } else {
       this.action = "Enable";
     }
   }
-  dismiss() {
-    this.ref.close();
-  }
+
   submit(event) {
-    console.log("+++++++");
     console.log(event);
     this.response = this.service
       .changeInstitutionStatus({
         code: this.code,
-        status: !this.status_,
-        createdBy: this.service.user.email
+        status: !this.status,
+        createdBy: this.service.user.email,
       })
       .subscribe(
         (response) => {
@@ -62,6 +61,10 @@ export class ChangeInstitutionStatusComponent implements OnInit {
         (error) => console.error(error)
       );
     console.log(this.response);
+    this.ref.close();
+  }
+
+  dismiss() {
     this.ref.close();
   }
 }

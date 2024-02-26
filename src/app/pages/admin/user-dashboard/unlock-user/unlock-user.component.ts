@@ -21,7 +21,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
   `,
   styleUrls: ["unlock-user.component.scss"],
 })
-export class UnlockUserComponent implements OnInit{
+export class UnlockUserComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
@@ -38,12 +38,17 @@ export class UnlockUserComponent implements OnInit{
     this.ref.close();
   }
   submit() {
-    this.response = this.service.unlockUser(
-      {
-        "email":this.email,
-        "createdBy":this.service.user.email
-      }
-    );
+    this.response = this.service
+      .unlockUser({
+        email: this.email,
+        createdBy: this.service.user.email,
+      })
+      .subscribe(
+        (response) => {
+          console.log(response);
+        },
+        (error) => console.error(error)
+      );
     console.log(this.response);
     this.ref.close();
   }

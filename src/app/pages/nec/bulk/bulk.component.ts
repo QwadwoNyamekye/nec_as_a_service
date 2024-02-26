@@ -20,6 +20,13 @@ import { SingleNECComponent } from "./upload_file_single/single.component";
 export class BulkUploadComponent implements OnInit {
   colour: string;
   name: string;
+  source: LocalDataSource = new LocalDataSource();
+  files: any;
+  selectedRow: any;
+  renderValue: string;
+  listener: any;
+  receivedData: any;
+
   getHtmlForCell(value: string) {
     if (value === "0") {
       this.colour = "lightcoral";
@@ -116,13 +123,6 @@ export class BulkUploadComponent implements OnInit {
     },
   };
 
-  source: LocalDataSource = new LocalDataSource();
-  files: any;
-  selectedRow: any;
-  renderValue: string;
-  listener: any;
-  receivedData: any;
-
   constructor(
     private service: NecService,
     private windowService: NbWindowService,
@@ -134,8 +134,9 @@ export class BulkUploadComponent implements OnInit {
   ngOnInit(): void {
     // this.service.initializeWebSocketConnection()
   }
+
   customFunction(event) {
-    console.log(event)
+    console.log(event);
     if (event.action == "edit") {
       this.onEditRowSelect(event);
     } else if (event.action == "authorize") {
@@ -144,6 +145,7 @@ export class BulkUploadComponent implements OnInit {
       this.openFileRecords(event);
     }
   }
+
   getUploads() {
     this.service.getUploads().subscribe(
       (data) => {
@@ -191,16 +193,13 @@ export class BulkUploadComponent implements OnInit {
       windowClass: `admin-form-window`,
     });
   }
-  
+
   openFileRecords(event) {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    console.log(event)
-    console.log(event.data)
-    console.log(event.data.batchId)
     this.dialogService.open(SingleNECComponent, {
-      context:{
-      title: `File Test`,
-      batchId: event.data.batchId
-    }});
+      context: {
+        title: `File Test`,
+        batchId: event.data.batchId,
+      },
+    });
   }
 }

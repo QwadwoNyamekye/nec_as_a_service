@@ -103,9 +103,10 @@ export class EditUserPropFormComponent implements OnInit {
   roles: any = [];
   selectedItems: any;
   selectedRoles: any;
-
   source: LocalDataSource = new LocalDataSource();
+
   constructor(public windowRef: NbWindowRef, private service: NecService) {}
+
   ngOnInit(): void {
     this.service.getInstitutions().subscribe(
       (data) => {
@@ -141,6 +142,7 @@ export class EditUserPropFormComponent implements OnInit {
     // this.service.initializeWebSocketConnection();
   }
   // Define a method to handle the form submission
+
   onSubmit(): void {
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
@@ -149,7 +151,14 @@ export class EditUserPropFormComponent implements OnInit {
       email: this.form.value.emailAddress,
     };
     // Send a post request to the server endpoint with the FormData object
-    this.service.editUser(object);
+    this.service.editUser(object).subscribe(
+      (response) => {
+        console.log(response);
+        window.parent.postMessage({ data: response, key: "edit" });
+        this.close();
+      },
+      (error) => console.error(error)
+    );
   }
   close() {
     this.windowRef.close();

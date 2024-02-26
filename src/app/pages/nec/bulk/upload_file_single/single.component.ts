@@ -12,6 +12,14 @@ import { DatePipe } from "@angular/common";
 export class SingleNECComponent implements OnDestroy {
   @Input() title: string;
   @Input() batchId: any;
+
+  source: LocalDataSource = new LocalDataSource();
+  singleNECList: any;
+  stompClient: any;
+  response: any;
+  listener: any;
+  receivedData: any;
+
   settings = {
     pager: {
       perPage: 15,
@@ -76,38 +84,25 @@ export class SingleNECComponent implements OnDestroy {
     },
   };
 
-  source: LocalDataSource = new LocalDataSource();
-
-  singleNECList: any;
-  stompClient: any;
-  response: any;
-  listener: any;
-  receivedData: any;
-
   constructor(
     private service: NecService,
     private windowService: NbWindowService
-  ) {
-  }
-  ngOnInit() {
+  ) {}
 
-  console.log("GGGGGGGGGGGGGGGGGGGGGGGG")
-  console.log(this.title)
-  console.log(this.batchId)
-  this.service.getFileRecords(this.batchId).subscribe(
-    (data) => {
-      this.singleNECList = data;
-      console.log("^^^^^^^^^^^^^^^^^^")
-      console.log(data)
-    },
-    (error) => {
-      console.log(error);
-    },
-    () => {
-      console.log(this.singleNECList);
-      this.source.load(this.singleNECList);
-    }
-  );
+  ngOnInit() {
+    this.service.getFileRecords(this.batchId).subscribe(
+      (data) => {
+        this.singleNECList = data;
+        console.log(data);
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        console.log(this.singleNECList);
+        this.source.load(this.singleNECList);
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -121,6 +116,7 @@ export class SingleNECComponent implements OnDestroy {
       event.confirm.reject();
     }
   }
+
   onDeleteConfirm(event): void {
     if (window.confirm("Are you sure you want to delete?")) {
       event.confirm.resolve();

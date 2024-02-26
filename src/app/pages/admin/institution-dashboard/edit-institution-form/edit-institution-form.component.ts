@@ -57,7 +57,6 @@ import { NecService } from "../../../../@core/mock/nec.service";
 })
 export class EditInstitutionFormComponent implements OnInit {
   form: FormGroup;
-  constructor(public windowRef: NbWindowRef, private service: NecService) {}
   statuses: NbComponentStatus[] = [
     "primary",
     "success",
@@ -67,6 +66,9 @@ export class EditInstitutionFormComponent implements OnInit {
   ];
   shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   institutionStatuses: any[] = [true, false];
+
+  constructor(public windowRef: NbWindowRef, private service: NecService) {}
+
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
@@ -75,6 +77,7 @@ export class EditInstitutionFormComponent implements OnInit {
     });
     // this.service.initializeWebSocketConnection();
   }
+
   submitInstitutionEdit(): void {
     var object = {
       name: this.form.value.name,
@@ -82,8 +85,14 @@ export class EditInstitutionFormComponent implements OnInit {
       phone: this.form.value.phone,
     };
     // Send a post request to the server endpoint with the FormData object
-    this.service.editInstitution(object);
+    this.service.editInstitution(object).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => console.error(error)
+    );
   }
+
   close() {
     this.windowRef.close();
   }

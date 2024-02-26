@@ -25,21 +25,12 @@ export class AdminDashboardComponent implements OnInit {
   name: string;
   listener: any;
   receivedData: any;
-  getHtmlForCell(value: string) {
-    if (value) {
-      this.colour = "red";
-      this.name = "YES";
-    } else {
-      this.colour = "green";
-      this.name = "NO";
-    }
-    return this.domSanitizer.bypassSecurityTrustHtml(
-      `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
-    );
-  }
+  source: LocalDataSource = new LocalDataSource();
+  users: any;
+
   ngOnInit(): void {
+    this.getUsers();
     this.listener = (event: MessageEvent) => {
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
       console.log(event.data);
       this.receivedData = event.data;
       if (this.receivedData.key == "add") {
@@ -51,6 +42,7 @@ export class AdminDashboardComponent implements OnInit {
     window.addEventListener("message", this.listener);
     // this.service.initializeWebSocketConnection()
   }
+
   getHtmlForStatusCell(value: string) {
     if (value) {
       this.colour = "red";
@@ -58,6 +50,19 @@ export class AdminDashboardComponent implements OnInit {
     } else {
       this.colour = "green";
       this.name = "UNLOCKED";
+    }
+    return this.domSanitizer.bypassSecurityTrustHtml(
+      `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
+    );
+  }
+
+  getHtmlForCell(value: string) {
+    if (value) {
+      this.colour = "red";
+      this.name = "YES";
+    } else {
+      this.colour = "green";
+      this.name = "NO";
     }
     return this.domSanitizer.bypassSecurityTrustHtml(
       `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
@@ -145,17 +150,13 @@ export class AdminDashboardComponent implements OnInit {
     },
   };
 
-  source: LocalDataSource = new LocalDataSource();
-  users: any;
   constructor(
     private service: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer,
     private cd: ChangeDetectorRef
-  ) {
-    this.getUsers();
-  }
+  ) {}
 
   getUsers() {
     this.service.getUsers().subscribe(
@@ -171,6 +172,7 @@ export class AdminDashboardComponent implements OnInit {
       }
     );
   }
+
   customFunction(event) {
     if (event.action == "unlock") {
       this.unlockUser(event);
@@ -182,6 +184,7 @@ export class AdminDashboardComponent implements OnInit {
       this.resetUserPassword(event);
     }
   }
+
   addUser() {
     this.windowService.open(AddUserFormComponent, {
       title: `Add User`,
@@ -190,7 +193,6 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   editUser(event): void {
-    console.log("//////////////////////////////////");
     console.log(event);
     this.windowService.open(EditUserFormComponent, {
       context: {

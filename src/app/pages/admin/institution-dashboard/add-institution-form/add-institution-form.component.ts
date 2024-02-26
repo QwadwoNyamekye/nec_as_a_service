@@ -64,6 +64,7 @@ export class AddInstitutionFormComponent implements OnInit {
     private service: NecService,
     private toastrService: NbToastrService
   ) {}
+
   ngOnInit(): void {
     // Initialize the form model with three form controls
     this.form = new FormGroup({
@@ -87,7 +88,6 @@ export class AddInstitutionFormComponent implements OnInit {
       },
       (error) => console.error(error),
       () => {
-        console.log("################");
         console.log(this.response);
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
@@ -110,6 +110,7 @@ export class AddInstitutionFormComponent implements OnInit {
       }
     );
   }
+
   close() {
     this.windowRef.close();
   }

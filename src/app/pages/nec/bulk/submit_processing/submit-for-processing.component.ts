@@ -35,39 +35,40 @@ export class SubmitProcessingComponent implements OnInit {
   ngOnInit(): void {
     // this.service.initializeWebSocketConnection();
   }
+  submit() {
+    this.service
+      .submitForAuthorization(this.batchId, this.service.user.email)
+      .subscribe(
+        (data) => {
+          this.response = data;
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          console.log(this.response);
+          if (this.response.errorCode != "0") {
+            this.toastrService.warning(
+              "File Authorization Failed: " + this.response.errorMessage,
+              "Bulk File Authorization",
+              {
+                status: "danger",
+                destroyByClick: true,
+                duration: 100000,
+              }
+            );
+          } else {
+            this.toastrService.success(
+              "File Authorization Success",
+              "File Authorization",
+              { status: "success", destroyByClick: true, duration: 100000 }
+            );
+            this.ref.close();
+          }
+        }
+      );
+  }
   dismiss() {
     this.ref.close();
-  }
-  submit() {
-    this.service.submitForAuthorization(this.batchId, this.service.user.email).subscribe(
-      (data) => {
-        this.response = data;
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        console.log("################");
-        console.log(this.response);
-        if (this.response.errorCode != "0") {
-          this.toastrService.warning(
-            "File Authorization Failed: " + this.response.errorMessage,
-            "Bulk File Authorization",
-            {
-              status: "danger",
-              destroyByClick: true,
-              duration: 100000,
-            }
-          );
-        } else {
-          this.toastrService.success(
-            "File Authorization Success",
-            "File Authorization",
-            { status: "success", destroyByClick: true, duration: 100000 }
-          );
-          this.ref.close();
-        }
-      }
-    );
   }
 }

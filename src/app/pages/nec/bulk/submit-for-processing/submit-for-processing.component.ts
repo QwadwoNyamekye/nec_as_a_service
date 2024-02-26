@@ -35,39 +35,40 @@ export class SubmitForProcessingComponent implements OnInit {
   ngOnInit(): void {
     // this.service.initializeWebSocketConnection();
   }
+  submit() {
+    this.service
+      .submitForProcessing(this.batchId, this.service.user.email)
+      .subscribe(
+        (data) => {
+          this.response = data;
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          console.log(this.response);
+          if (this.response.errorCode != "0") {
+            this.toastrService.warning(
+              "File Processing Failed: " + this.response.errorMessage,
+              "Bulk File Processing",
+              {
+                status: "danger",
+                destroyByClick: true,
+                duration: 100000,
+              }
+            );
+          } else {
+            this.toastrService.success(
+              "File Processing Success: " + this.response.errorMessage,
+              "File Processing",
+              { status: "success", destroyByClick: true, duration: 100000 }
+            );
+            this.ref.close();
+          }
+        }
+      );
+  }
   dismiss() {
     this.ref.close();
-  }
-  submit() {
-    this.service.submitForProcessing(this.batchId, this.service.user.email).subscribe(
-      (data) => {
-        this.response = data;
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        console.log("################");
-        console.log(this.response);
-        if (this.response.errorCode != "0") {
-          this.toastrService.warning(
-            "File Processing Failed: " + this.response.errorMessage,
-            "Bulk File Processing",
-            {
-              status: "danger",
-              destroyByClick: true,
-              duration: 100000,
-            }
-          );
-        } else {
-          this.toastrService.success(
-            "File Processing Success: " + this.response.errorMessage,
-            "File Processing",
-            { status: "success", destroyByClick: true, duration: 100000 }
-          );
-          this.ref.close();
-        }
-      }
-    );
   }
 }

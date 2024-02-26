@@ -1,4 +1,4 @@
-import { Component, Output , OnInit} from "@angular/core";
+import { Component, Output, OnInit } from "@angular/core";
 import { NbWindowRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
@@ -53,7 +53,7 @@ export class SingleNECRequestComponent {
   object: any;
   bankList: any;
   constructor(public windowRef: NbWindowRef, private service: NecService) {}
-  
+
   ngOnInit(): void {
     // Initialize the form model with three form controls
     this.form = new FormGroup({
@@ -72,18 +72,17 @@ export class SingleNECRequestComponent {
         console.log(this.bankList);
       }
     );
-      // this.service.initializeWebSocketConnection();
-    
+    // this.service.initializeWebSocketConnection();
   }
+
   onSubmit(): void {
     this.object = {
       destAccount: this.form.value.destAccount,
       destBank: this.form.value.destBank,
       createdBy: this.service.user.email,
     };
-     this.service.makeSingleNECRequest(this.object).subscribe(
+    this.service.makeSingleNECRequest(this.object).subscribe(
       (response) => {
-        console.log("========================");
         console.log(response);
         window.parent.postMessage(response);
         return response;
@@ -93,7 +92,6 @@ export class SingleNECRequestComponent {
     this.close();
   }
   close() {
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@");
     this.windowRef.close();
   }
 }

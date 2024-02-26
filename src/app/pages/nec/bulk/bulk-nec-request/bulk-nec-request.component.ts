@@ -4,11 +4,8 @@ import { NecService } from "../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
 import { LocalDataSource } from "ng2-smart-table";
-import {
-  NbComponentShape,
-  NbComponentSize,
-  NbComponentStatus,
-} from "@nebular/theme";
+import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   template: `
@@ -72,7 +69,11 @@ export class BulkNEComponent implements OnInit {
   shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   source: LocalDataSource = new LocalDataSource();
   response: any;
-  constructor(public windowRef: NbWindowRef, private service: NecService) {}
+  constructor(
+    public windowRef: NbWindowRef,
+    private service: NecService,
+    private toastrService: NbToastrService
+  ) {}
 
   ngOnInit(): void {
     // Initialize the form model with three form controls
@@ -89,6 +90,7 @@ export class BulkNEComponent implements OnInit {
       this.filesToUpload.push(event.item(index));
     }
   }
+
   onSaveFile() {
     const formData: FormData = new FormData();
     console.log(this.filesToUpload);
@@ -104,22 +106,37 @@ export class BulkNEComponent implements OnInit {
       )
       .subscribe(
         (response) => {
-          console.log("AAAAAAAAAAAAAAAAAAAAA");
           console.log(response);
           this.close();
         },
-        (error) => console.error(error)
+        (error) => console.error(error),
+        () => {
+          console.log(this.response);
+          if (this.response.errorCode != "0") {
+            this.toastrService.warning(
+              "File Upload Failed: " + this.response.errorMessage,
+              "Bulk File Upload",
+              {
+                status: "danger",
+                destroyByClick: true,
+                duration: 100000,
+              }
+            );
+          } else {
+            this.toastrService.success("File Upload Success", "File Upload", {
+              status: "success",
+              destroyByClick: true,
+              duration: 100000,
+            });
+            this.windowRef.close();
+          }
+        }
       );
   }
+
   close() {
     this.filesToUpload = [];
     // window.location.reload()
     this.windowRef.close();
   }
-  //   reloadCurrentRoute() {
-  //     let currentUrl = this.router.url;
-  //     this.router.navigateByUrl('/dashboard', {skipLocationChange: true}).then(() => {
-  //         this.router.navigate([currentUrl]);
-  //     });
-  // }
 }

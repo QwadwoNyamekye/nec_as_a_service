@@ -107,11 +107,13 @@ export class AddUserFormComponent implements OnInit {
   response: any;
 
   source: LocalDataSource = new LocalDataSource();
+
   constructor(
     public windowRef: NbWindowRef,
     private service: NecService,
     private toastrService: NbToastrService
   ) {}
+
   ngOnInit(): void {
     this.service.getInstitutions().subscribe(
       (data) => {
@@ -149,6 +151,7 @@ export class AddUserFormComponent implements OnInit {
       emailAddress: new FormControl("", Validators.required),
     });
   }
+
   // Define a method to handle the form submission
   onSubmit(): void {
     var object = {
@@ -162,12 +165,11 @@ export class AddUserFormComponent implements OnInit {
     this.service.postUsers(object).subscribe(
       (data) => {
         console.log(data);
-        window.parent.postMessage({"data":data, "key":"add"});
+        window.parent.postMessage({ data: data, key: "add" });
         this.response = data;
       },
       (error) => console.error(error),
       () => {
-        console.log("################");
         console.log(this.response);
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
@@ -190,6 +192,7 @@ export class AddUserFormComponent implements OnInit {
       }
     );
   }
+
   close() {
     this.windowRef.close();
   }

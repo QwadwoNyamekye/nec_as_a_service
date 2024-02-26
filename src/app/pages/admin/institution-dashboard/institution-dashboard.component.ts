@@ -16,6 +16,11 @@ import { DatePipe } from "@angular/common";
 export class InstitutionDashboardComponent implements OnInit {
   colour: string;
   name: string;
+  source: LocalDataSource = new LocalDataSource();
+  listener: any;
+  receivedData: any;
+  institutions: any;
+
   getHtmlForCell(value: string) {
     if (value) {
       this.colour = "green";
@@ -28,6 +33,7 @@ export class InstitutionDashboardComponent implements OnInit {
       `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
     );
   }
+
   settings = {
     pager: {
       perPage: 15,
@@ -93,21 +99,14 @@ export class InstitutionDashboardComponent implements OnInit {
     },
   };
 
-  source: LocalDataSource = new LocalDataSource();
-  listener: any;
-  receivedData: any;
-
-  institutions: any;
-
   ngOnInit(): void {
     this.listener = (event: MessageEvent) => {
       console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
       this.receivedData = event.data;
       if (this.receivedData.institution) {
         this.source.append(this.receivedData.institution);
-      }
-      else{
-        window.location.reload()
+      } else {
+        window.location.reload();
       }
       console.log(this.receivedData);
     };
@@ -142,19 +141,21 @@ export class InstitutionDashboardComponent implements OnInit {
       this.changeInstitutionStatus(event);
     }
   }
+
   editInstitution(): void {
     this.windowService.open(EditInstitutionFormComponent, {
       title: `Edit Institution`,
       windowClass: `admin-form-window`,
     });
   }
+
   changeInstitutionStatus(event): void {
     console.log(event);
     console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     this.dialogService.open(ChangeInstitutionStatusComponent, {
       context: {
         title: "Change Institution Status",
-        status_: event.data.status,
+        status: event.data.status,
         code: event.data.code,
       },
     });
@@ -174,12 +175,15 @@ export class InstitutionDashboardComponent implements OnInit {
       event.confirm.reject();
     }
   }
+
   onCreateConfirm(event: any): void {
     console.log(event);
   }
+
   editData(event: any): void {
     console.log(Event);
   }
+
   onDeleteConfirm(event): void {
     if (window.confirm("Are you sure you want to delete?")) {
       event.confirm.resolve();

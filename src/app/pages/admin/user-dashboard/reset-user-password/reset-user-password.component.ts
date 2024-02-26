@@ -21,7 +21,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
   `,
   styleUrls: ["reset-user-password.component.scss"],
 })
-export class ResetUserPasswordComponent implements OnInit{
+export class ResetUserPasswordComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
@@ -38,10 +38,17 @@ export class ResetUserPasswordComponent implements OnInit{
     this.ref.close();
   }
   submit() {
-    this.response = this.service.resetUserPassword({
-      email: this.email,
-      createdBy: this.service.user.email,
-    });
+    this.response = this.service
+      .resetUserPassword({
+        email: this.email,
+        createdBy: this.service.user.email,
+      })
+      .subscribe(
+        (response) => {
+          console.log(response);
+        },
+        (error) => console.error(error)
+      );
     console.log(this.response);
     this.ref.close();
   }

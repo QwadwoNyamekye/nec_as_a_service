@@ -6,10 +6,18 @@ import { NbAuthService, NbAuthJWTToken } from "@nebular/auth";
 import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 import { NbToastrService } from "@nebular/theme";
+import { environment } from "../../../environments/environment.prod";
 
 @Injectable({ providedIn: "root" })
 export class NecService {
   user: any;
+  websocket = environment.websocket;
+  baseUrl = environment.baseUrl;
+  bankUrl = environment.bankUrl;
+  data: any;
+  headers: any;
+  stompClient: any;
+
   constructor(
     private http: HttpClient,
     private authService: NbAuthService,
@@ -22,18 +30,10 @@ export class NecService {
           "Bearer " + token.getValue()
         );
         this.user = JSON.parse(localStorage.getItem("user")); // here we receive a payload from the token and assigns it to our `user` variable
-        console.log(">>>>>>>>>>>>>>>>>");
-        console.log(JSON.parse(localStorage.getItem("user")));
+        console.log(this.user);
       }
     });
   }
-
-  websocket = "http://172.27.21.210:8088/nec";
-  baseUrl = "http://172.27.21.210:8089";
-  bankUrl = "http://172.27.10.230:8003";
-  data: any;
-  headers: any;
-  stompClient: any;
 
   initializeWebSocketConnection() {
     const serverUrl = this.websocket;
@@ -42,20 +42,16 @@ export class NecService {
     const that = this;
     this.stompClient.connect({}, function (frame) {
       that.stompClient.subscribe("/realtime/alert", (message) => {
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        console.log(message);
-        console.log(message.body.split(":"));
         var websocketdata = message.body.split(":");
         var websocketMessage = websocketdata[0];
         var websocketUser = websocketdata[1];
-        console.log("JJJJJJJJJJJJJJJJJJJJJ");
         console.log(that.user);
         if (websocketMessage != "" && websocketUser == that.user.id) {
           that.toastrService.success(websocketMessage, "Bulk File Processing", {
             duration: 100000,
             destroyByClick: true,
-            duplicatesBehaviour: 'previous',
-            preventDuplicates: true
+            duplicatesBehaviour: "previous",
+            preventDuplicates: true,
           });
         }
       });
@@ -64,11 +60,16 @@ export class NecService {
 
   //-------------BULK--------------
 
-  getFileRecords(batch_id){
+  getFileRecords(batch_id) {
     return this.http
-      .get(this.baseUrl + "/batch_details/api/v1/get_branch_details_by_batch_id/" + batch_id, {
-        headers: this.headers,
-      })
+      .get(
+        this.baseUrl +
+          "/batch_details/api/v1/get_branch_details_by_batch_id/" +
+          batch_id,
+        {
+          headers: this.headers,
+        }
+      )
       .pipe(map((response) => response));
   }
 
@@ -99,6 +100,7 @@ export class NecService {
       )
       .pipe(map((response) => response));
   }
+
   uploadFile(file, description, createdBy, count) {
     return this.http
       .post(
@@ -121,6 +123,7 @@ export class NecService {
       .get(this.bankUrl + "/blaster/api/v1/banks", { headers: this.headers })
       .pipe(map((response) => response));
   }
+
   getSingleNECList() {
     return this.http
       .get(this.baseUrl + "/single/api/v1/nec_list", { headers: this.headers })
@@ -163,12 +166,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/unlock_user", user, {
         headers: this.headers,
       })
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+      .pipe(map((response) => response));
   }
 
   changeUserStatus(user) {
@@ -176,12 +174,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/change_status", user, {
         headers: this.headers,
       })
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+      .pipe(map((response) => response));
   }
 
   resetUserPassword(user) {
@@ -189,12 +182,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/reset_password", user, {
         headers: this.headers,
       })
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+      .pipe(map((response) => response));
   }
 
   //---------------INSTITUTION APIS-----------------
@@ -213,7 +201,7 @@ export class NecService {
       .post(this.baseUrl + "/institution/api/v1/create_institution", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response))
+      .pipe(map((response) => response));
   }
 
   editInstitution(data) {
@@ -222,13 +210,7 @@ export class NecService {
       .post(this.baseUrl + "/institution/api/v1/update_institution", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response))
-      .subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+      .pipe(map((response) => response));
   }
 
   changeInstitutionStatus(data) {
@@ -244,6 +226,7 @@ export class NecService {
     return this.http
       .post(this.baseUrl + "/user/api/v1/update_user", user, {
         headers: this.headers,
-      });
+      })
+      .pipe(map((response) => response));
   }
 }

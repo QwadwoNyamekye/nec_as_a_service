@@ -11,6 +11,13 @@ import { DatePipe } from "@angular/common";
   styleUrls: ["./single.component.scss"],
 })
 export class SingleNECComponent implements OnInit, OnDestroy {
+  source: LocalDataSource = new LocalDataSource();
+  singleNECList: any;
+  stompClient: any;
+  response: any;
+  listener: any;
+  receivedData: any;
+
   settings = {
     pager: {
       perPage: 15,
@@ -67,14 +74,6 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     },
   };
 
-  source: LocalDataSource = new LocalDataSource();
-
-  singleNECList: any;
-  stompClient: any;
-  response: any;
-  listener: any;
-  receivedData: any;
-
   constructor(
     private service: NecService,
     private windowService: NbWindowService
@@ -92,9 +91,9 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   ngOnInit() {
     this.listener = (event: MessageEvent) => {
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
       this.receivedData = event.data;
       this.source.load(this.receivedData);
       console.log(this.receivedData);
@@ -112,7 +111,6 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       title: `Make NEC Request`,
       windowClass: `admin-form-window`,
     });
-    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$");
   }
 
   onEditRowSelect(event): void {
@@ -122,6 +120,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       event.confirm.reject();
     }
   }
+
   onDeleteConfirm(event): void {
     if (window.confirm("Are you sure you want to delete?")) {
       event.confirm.resolve();

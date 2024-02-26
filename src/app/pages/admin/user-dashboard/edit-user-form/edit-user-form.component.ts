@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { NbWindowRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
@@ -95,9 +95,10 @@ export class EditUserFormComponent implements OnInit {
   roles: any = [];
   selectedItems: any;
   selectedRoles: any;
-
   source: LocalDataSource = new LocalDataSource();
+
   constructor(public windowRef: NbWindowRef, private service: NecService) {}
+
   ngOnInit(): void {
     this.service.getInstitutions().subscribe(
       (data) => {
@@ -132,6 +133,7 @@ export class EditUserFormComponent implements OnInit {
     });
     // this.service.initializeWebSocketConnection();
   }
+
   // Define a method to handle the form submission
   onSubmit(): void {
     var object = {
@@ -141,16 +143,16 @@ export class EditUserFormComponent implements OnInit {
       email: this.email,
     };
     // Send a post request to the server endpoint with the FormData object
-    this.service.editUser(object)
-    .subscribe(
+    this.service.editUser(object).subscribe(
       (response) => {
         console.log(response);
-        window.parent.postMessage({"data":response, "key":"edit"});
+        window.parent.postMessage({ data: response, key: "edit" });
         this.close();
       },
       (error) => console.error(error)
     );
   }
+
   close() {
     this.windowRef.close();
   }
