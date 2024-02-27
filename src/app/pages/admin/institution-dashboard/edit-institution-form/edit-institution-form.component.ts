@@ -9,6 +9,7 @@ import {
 import { Validators } from "@angular/forms";
 import { FormGroup, FormControl } from "@angular/forms";
 import { NecService } from "../../../../@core/mock/nec.service";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-user-edit-modal`,
@@ -66,8 +67,10 @@ export class EditInstitutionFormComponent implements OnInit {
   ];
   shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   institutionStatuses: any[] = [true, false];
+  response: any;
 
-  constructor(public windowRef: NbWindowRef, private service: NecService) {}
+  constructor(public windowRef: NbWindowRef, private service: NecService,
+    private toastrService: NbToastrService) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -88,8 +91,30 @@ export class EditInstitutionFormComponent implements OnInit {
     this.service.editInstitution(object).subscribe(
       (response) => {
         console.log(response);
+        this.response = response
       },
-      (error) => console.error(error)
+      (error) => console.error(error),
+      () => {
+        console.log(this.response);
+        if (this.response.errorCode != "0") {
+          this.toastrService.warning(
+            "Institution Edit Failed: " + this.response.errorMessage,
+            "Institution Edit",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        } else {
+          this.toastrService.success(
+            "Institution Edit Success",
+            "Institution Edit",
+            { status: "success", destroyByClick: true, duration: 100000 }
+          );
+          this.windowRef.close();
+        }
+      }
     );
   }
 

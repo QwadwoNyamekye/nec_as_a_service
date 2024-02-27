@@ -122,9 +122,6 @@ export class AddUserFormComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-      },
-      () => {
-        console.log(this.institutions);
       }
     );
 
@@ -137,9 +134,6 @@ export class AddUserFormComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-      },
-      () => {
-        console.log(this.roles);
       }
     );
     // Initialize the form model with three form controls

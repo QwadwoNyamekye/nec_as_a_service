@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-user-edit-modal`,
@@ -29,7 +30,8 @@ export class ResetUserPasswordComponent implements OnInit {
   response: any;
   constructor(
     protected ref: NbDialogRef<ResetUserPasswordComponent>,
-    public service: NecService
+    public service: NecService,
+    private toastrService: NbToastrService
   ) {}
   ngOnInit(): void {
     // this.service.initializeWebSocketConnection();
@@ -47,7 +49,28 @@ export class ResetUserPasswordComponent implements OnInit {
         (response) => {
           console.log(response);
         },
-        (error) => console.error(error)
+        (error) => console.error(error),
+        () => {
+          console.log(this.response);
+          if (this.response.errorCode != "0") {
+            this.toastrService.warning(
+              "User Password Reset Failed: " + this.response.errorMessage,
+              "User Password Reset",
+              {
+                status: "danger",
+                destroyByClick: true,
+                duration: 100000,
+              }
+            );
+          } else {
+            this.toastrService.success(
+              "User Password Reset Success",
+              "User Password Reset",
+              { status: "success", destroyByClick: true, duration: 100000 }
+            );
+            this.ref.close();
+          }
+        }
       );
     console.log(this.response);
     this.ref.close();

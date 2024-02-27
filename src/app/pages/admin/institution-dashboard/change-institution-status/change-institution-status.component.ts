@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
+import { NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
@@ -32,7 +33,8 @@ export class ChangeInstitutionStatusComponent implements OnInit {
 
   constructor(
     protected ref: NbDialogRef<ChangeInstitutionStatusComponent>,
-    public service: NecService
+    public service: NecService,
+    private toastrService: NbToastrService
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +63,28 @@ export class ChangeInstitutionStatusComponent implements OnInit {
           });
           return response;
         },
-        (error) => console.error(error)
+        (error) => console.error(error),
+        () => {
+          console.log(this.response);
+          if (this.response.errorCode != "0") {
+            this.toastrService.warning(
+              "Institution Status Change Failed: " + this.response.errorMessage,
+              "Institution Status Change",
+              {
+                status: "danger",
+                destroyByClick: true,
+                duration: 100000,
+              }
+            );
+          } else {
+            this.toastrService.success(
+              "Institution Status Change Success",
+              "Institution Status Change",
+              { status: "success", destroyByClick: true, duration: 100000 }
+            );
+            this.ref.close();
+          }
+        }
       );
     console.log(this.response);
     this.ref.close();

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-user-edit-modal`,
@@ -29,7 +30,8 @@ export class UnlockUserComponent implements OnInit {
   response: any;
   constructor(
     protected ref: NbDialogRef<UnlockUserComponent>,
-    public service: NecService
+    public service: NecService,
+    private toastrService: NbToastrService
   ) {}
   ngOnInit(): void {
     // this.service.initializeWebSocketConnection();
@@ -47,7 +49,28 @@ export class UnlockUserComponent implements OnInit {
         (response) => {
           console.log(response);
         },
-        (error) => console.error(error)
+        (error) => console.error(error),
+        () => {
+          console.log(this.response);
+          if (this.response.errorCode != "0") {
+            this.toastrService.warning(
+              "Institution Creation Failed: " + this.response.errorMessage,
+              "Institution Creation",
+              {
+                status: "danger",
+                destroyByClick: true,
+                duration: 100000,
+              }
+            );
+          } else {
+            this.toastrService.success(
+              "Institution Creation Success",
+              "Institution Creation",
+              { status: "success", destroyByClick: true, duration: 100000 }
+            );
+            this.ref.close();
+          }
+        }
       );
     console.log(this.response);
     this.ref.close();

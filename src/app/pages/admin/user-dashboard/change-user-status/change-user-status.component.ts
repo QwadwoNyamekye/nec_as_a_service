@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-user-edit-modal`,
@@ -30,7 +31,8 @@ export class ChangeUserStatusComponent implements OnInit {
 
   constructor(
     protected ref: NbDialogRef<ChangeUserStatusComponent>,
-    public service: NecService
+    public service: NecService,
+    private toastrService: NbToastrService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +53,28 @@ export class ChangeUserStatusComponent implements OnInit {
         (response) => {
           console.log(response);
         },
-        (error) => console.error(error)
+        (error) => console.error(error),
+        () => {
+          console.log(this.response);
+          if (this.response.errorCode != "0") {
+            this.toastrService.warning(
+              "User Status Change Failed: " + this.response.errorMessage,
+              "User Status Change",
+              {
+                status: "danger",
+                destroyByClick: true,
+                duration: 100000,
+              }
+            );
+          } else {
+            this.toastrService.success(
+              "User Status Change Success",
+              "User Status Change",
+              { status: "success", destroyByClick: true, duration: 100000 }
+            );
+            this.ref.close();
+          }
+        }
       );
     console.log(this.response);
     this.ref.close();

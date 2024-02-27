@@ -197,9 +197,9 @@ export class AdminDashboardComponent implements OnInit {
     console.log(event);
     this.row = event;
     this.windowService.open(EditUserFormComponent, {
+      title: `Edit User`,
+      windowClass: `admin-form-window`,
       context: {
-        title: `Edit User`,
-        windowClass: `admin-form-window`,
         email: event.data.email,
       },
     });

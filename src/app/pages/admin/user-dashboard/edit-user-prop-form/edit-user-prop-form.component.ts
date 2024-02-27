@@ -9,6 +9,7 @@ import {
   NbComponentSize,
   NbComponentStatus,
 } from "@nebular/theme";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   template: `
@@ -104,8 +105,10 @@ export class EditUserPropFormComponent implements OnInit {
   selectedItems: any;
   selectedRoles: any;
   source: LocalDataSource = new LocalDataSource();
+  response: any;
 
-  constructor(public windowRef: NbWindowRef, private service: NecService) {}
+  constructor(public windowRef: NbWindowRef, private service: NecService,
+    private toastrService: NbToastrService) {}
 
   ngOnInit(): void {
     this.service.getInstitutions().subscribe(
@@ -115,9 +118,6 @@ export class EditUserPropFormComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-      },
-      () => {
-        console.log(this.institutions);
       }
     );
     this.service.getRoles().subscribe(
@@ -127,9 +127,6 @@ export class EditUserPropFormComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-      },
-      () => {
-        console.log(this.roles);
       }
     );
     this.form = new FormGroup({
@@ -157,7 +154,28 @@ export class EditUserPropFormComponent implements OnInit {
         window.parent.postMessage({ data: response, key: "edit" });
         this.close();
       },
-      (error) => console.error(error)
+      (error) => console.error(error),
+      () => {
+        console.log(this.response);
+        if (this.response.errorCode != "0") {
+          this.toastrService.warning(
+            "Institution Creation Failed: " + this.response.errorMessage,
+            "Institution Creation",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        } else {
+          this.toastrService.success(
+            "Institution Creation Success",
+            "Institution Creation",
+            { status: "success", destroyByClick: true, duration: 100000 }
+          );
+          this.windowRef.close();
+        }
+      }
     );
   }
   close() {
