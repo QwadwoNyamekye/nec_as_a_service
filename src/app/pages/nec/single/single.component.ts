@@ -78,10 +78,10 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     private service: NecService,
     private windowService: NbWindowService
   ) {
-this.getUsers()
+    this.getUsers();
   }
 
-  getUsers(){
+  getUsers() {
     this.service.getSingleNECList().subscribe(
       (data) => {
         this.users = data;
@@ -111,11 +111,14 @@ this.getUsers()
   }
 
   makeNECRequest() {
-    this.response = this.windowService.open(SingleNECRequestComponent, {
-      title: `Make NEC Request`,
-      windowClass: `admin-form-window`,
-    });
-    this.getUsers()
+    this.response = this.windowService
+      .open(SingleNECRequestComponent, {
+        title: `Make NEC Request`,
+        windowClass: `admin-form-window`,
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
   }
 
   onEditRowSelect(event): void {

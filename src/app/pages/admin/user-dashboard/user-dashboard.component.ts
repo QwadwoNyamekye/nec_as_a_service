@@ -195,8 +195,10 @@ export class AdminDashboardComponent implements OnInit {
     this.windowService.open(AddUserFormComponent, {
       title: `Add User`,
       windowClass: `admin-form-window`,
+    })
+    .onClose.subscribe(() => {
+      this.getUsers();
     });
-    this.getUsers()
   }
 
   editUser(event): void {
@@ -208,8 +210,10 @@ export class AdminDashboardComponent implements OnInit {
       context: {
         email: event.data.email,
       },
+    })
+    .onClose.subscribe(() => {
+      this.getUsers();
     });
-    this.getUsers()
     // event.confirm.resolve()
   }
 
@@ -219,8 +223,10 @@ export class AdminDashboardComponent implements OnInit {
         title: "Change User Status",
         email: event.data.email,
       },
+    })
+    .onClose.subscribe(() => {
+      this.getUsers();
     });
-    this.getUsers()
   }
 
   unlockUser(event): void {
@@ -229,8 +235,10 @@ export class AdminDashboardComponent implements OnInit {
         title: "Unlock User",
         email: event.data.email,
       },
+    })
+    .onClose.subscribe(() => {
+      this.getUsers();
     });
-    this.getUsers()
   }
 
   resetUserPassword(event): void {
@@ -239,7 +247,9 @@ export class AdminDashboardComponent implements OnInit {
         title: "Reset User Password",
         email: event.data.email,
       },
+    })
+    .onClose.subscribe(() => {
+      this.getUsers();
     });
-    this.getUsers();
   }
 }

@@ -168,30 +168,42 @@ export class BulkUploadComponent implements OnInit {
 
   submitForAuthorization(event): void {
     console.log(event);
-    this.dialogService.open(SubmitProcessingComponent, {
-      context: {
-        title: `Do you want to submit ${event.data.fileName} for authorization?`,
-        batchId: event.data.batchId,
-        submittedBy: this.service.user.email,
-      },
-    });
+    this.dialogService
+      .open(SubmitProcessingComponent, {
+        context: {
+          title: `Do you want to submit ${event.data.fileName} for authorization?`,
+          batchId: event.data.batchId,
+          submittedBy: this.service.user.email,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUploads();
+      });
   }
 
   onEditRowSelect(event): void {
     console.log(event);
-    this.dialogService.open(SubmitForProcessingComponent, {
-      context: {
-        title: `Do you want to submit ${event.data.fileName} for processing?`,
-        batchId: event.data.batchId,
-        submittedBy: this.service.user.email,
-      },
-    });
+    this.dialogService
+      .open(SubmitForProcessingComponent, {
+        context: {
+          title: `Do you want to submit ${event.data.fileName} for processing?`,
+          batchId: event.data.batchId,
+          submittedBy: this.service.user.email,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUploads();
+      });
   }
   openWindowForm() {
-    this.windowService.open(BulkNEComponent, {
-      title: `Upload File`,
-      windowClass: `admin-form-window`,
-    });
+    this.windowService
+      .open(BulkNEComponent, {
+        title: `Upload File`,
+        windowClass: `admin-form-window`,
+      })
+      .onClose.subscribe(() => {
+        this.getUploads();
+      });
   }
 
   openFileRecords(event) {

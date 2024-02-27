@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
 import { EventEmitter } from "@angular/core";
 import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   template: `
@@ -52,7 +53,12 @@ export class SingleNECRequestComponent {
   form: FormGroup;
   object: any;
   bankList: any;
-  constructor(public windowRef: NbWindowRef, private service: NecService) {}
+  response: any;
+  constructor(
+    public windowRef: NbWindowRef,
+    private toastrService: NbToastrService,
+    private service: NecService
+  ) {}
 
   ngOnInit(): void {
     // Initialize the form model with three form controls
@@ -84,10 +90,24 @@ export class SingleNECRequestComponent {
     this.service.makeSingleNECRequest(this.object).subscribe(
       (response) => {
         console.log(response);
+        this.response = response;
         // window.parent.postMessage(response);
         return response;
       },
-      (error) => console.error(error)
+      (error) => console.error(error),
+      () => {
+        console.log(this.response);
+        this.toastrService.success(
+          "Single NEC Request Success",
+          "Unlock User",
+          {
+            status: "success",
+            destroyByClick: true,
+            duration: 100000,
+          }
+        );
+        this.windowRef.close();
+      }
     );
     this.close();
   }

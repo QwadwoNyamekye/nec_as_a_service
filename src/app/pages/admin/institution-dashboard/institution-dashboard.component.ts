@@ -168,8 +168,10 @@ export class InstitutionDashboardComponent implements OnInit {
       context: {
         currentValues: event.data
       },
+    })
+    .onClose.subscribe(() => {
+      this.getInstitutions();
     });
-    this.getInstitutions()
   }
 
   changeInstitutionStatus(event): void {
@@ -180,8 +182,10 @@ export class InstitutionDashboardComponent implements OnInit {
         status: event.data.status,
         code: event.data.code,
       },
+    })
+    .onClose.subscribe(() => {
+      this.getInstitutions();
     });
-    this.getInstitutions()
   }
 
   addInstitution(event) {
@@ -189,8 +193,10 @@ export class InstitutionDashboardComponent implements OnInit {
     this.windowService.open(AddInstitutionFormComponent, {
       title: `Add Institution`,
       windowClass: `admin-form-window`,
+    })
+    .onClose.subscribe(() => {
+      this.getInstitutions();
     });
-    this.getInstitutions()
   }
 
   onEditRowSelect(event): void {

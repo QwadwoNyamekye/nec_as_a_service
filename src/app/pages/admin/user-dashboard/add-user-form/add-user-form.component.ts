@@ -63,6 +63,15 @@ import { NbToastrService } from "@nebular/theme";
         </div>
       </div>
 
+      <label class="text-label" for="text">Phone Number:</label>
+      <input
+        nbInput
+        fullWidth
+        formControlName="phoneNumber"
+        id="text"
+        type="text"
+        placeholder="Phone Number"
+      />
       <label class="text-label" for="text">Email Address:</label>
       <input
         nbInput
@@ -143,6 +152,7 @@ export class AddUserFormComponent implements OnInit {
       institution: new FormControl("", Validators.required),
       role: new FormControl("", Validators.required),
       emailAddress: new FormControl("", Validators.required),
+      phoneNumber: new FormControl("", Validators.required),
     });
   }
 
@@ -153,6 +163,7 @@ export class AddUserFormComponent implements OnInit {
       institutionCode: this.form.value.institution,
       role_id: this.form.value.role,
       email: this.form.value.emailAddress,
+      phone: this.form.value.phoneNumber,
       createdBy: this.service.user.email,
     };
     // Send a post request to the server endpoint with the FormData object

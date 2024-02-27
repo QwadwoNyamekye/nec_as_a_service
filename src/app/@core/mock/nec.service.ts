@@ -23,16 +23,14 @@ export class NecService {
     private authService: NbAuthService,
     private toastrService: NbToastrService
   ) {
-    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
-      if (token.isValid()) {
-        this.headers = new HttpHeaders().set(
-          "Authorization",
-          "Bearer " + token.getValue()
-        );
-        this.user = JSON.parse(localStorage.getItem("user")); // here we receive a payload from the token and assigns it to our `user` variable
-        console.log(this.user);
-      }
-    });
+    console.log(">>>>>>>>>>>>>>>>>>>>>>")
+    console.log(localStorage.getItem("token"))
+    this.headers = new HttpHeaders().set(
+      "Authorization",
+      "Bearer " + localStorage.getItem("token")
+    );
+    this.user = JSON.parse(localStorage.getItem("user")); // here we receive a payload from the token and assigns it to our `user` variable
+    console.log(this.user);
   }
 
   initializeWebSocketConnection() {
@@ -125,6 +123,8 @@ export class NecService {
   }
 
   getSingleNECList() {
+    console.log(">>>>>>>>>>>>");
+    console.log(this.headers);
     return this.http
       .get(this.baseUrl + "/single/api/v1/nec_list", { headers: this.headers })
       .pipe(map((response) => response));

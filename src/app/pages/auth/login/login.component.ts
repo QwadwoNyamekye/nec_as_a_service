@@ -12,7 +12,6 @@ export class LoginComponent extends NbLoginComponent {
   necService = AppInjector.get(NecService);
   login(): void {
     this.errors = [];
-    this.messages = [];
     this.submitted = true;
 
     console.log(this.user);
@@ -21,22 +20,23 @@ export class LoginComponent extends NbLoginComponent {
       .subscribe((result: NbAuthResult) => {
         this.submitted = false;
         console.log(result);
-        console.log("***************");
         console.log(JSON.stringify(result.getResponse().body?.user));
 
         if (result.isSuccess()) {
-          this.messages = result.getMessages();
           localStorage.setItem(
             "user",
             JSON.stringify(result.getResponse().body.user)
           );
+          console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^")
+          console.log(result.getResponse().body.token)
+          localStorage.setItem("token", result.getResponse().body.token);
           this.necService.initializeWebSocketConnection();
         } else {
           this.errors = result.getErrors();
-          if (this.errors[0] == "Token is empty or invalid."){
-            this.errors[0] = "Please check your username or password"
+          if (this.errors[0] == "Token is empty or invalid.") {
+            this.errors[0] = "Please check your username or password";
           }
-          console.log(this.errors)
+          console.log(this.errors);
         }
 
         const redirect = result.getRedirect();
