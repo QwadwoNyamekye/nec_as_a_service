@@ -144,7 +144,7 @@ export class EditUserFormComponent implements OnInit {
       (response) => {
         console.log(response);
         this.response = response
-        window.parent.postMessage({ data: response, key: "edit" });
+        window.parent.postMessage(this.service.getUsers());
         this.close();
       },
       (error) => console.error(error),

@@ -1,9 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { NbWindowRef } from "@nebular/theme";
 import { FormBuilder } from "@angular/forms";
 import {
   NbComponentShape,
-  NbComponentSize,
   NbComponentStatus,
 } from "@nebular/theme";
 import { Validators } from "@angular/forms";
@@ -57,6 +56,7 @@ import { NbToastrService } from "@nebular/theme";
   styleUrls: ["edit-institution-form.component.scss"],
 })
 export class EditInstitutionFormComponent implements OnInit {
+  @Input() currentValues: any;
   form: FormGroup;
   statuses: NbComponentStatus[] = [
     "primary",
@@ -74,9 +74,9 @@ export class EditInstitutionFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      name: new FormControl("", Validators.required),
-      status: new FormControl("", [Validators.required]),
-      phone: new FormControl("", Validators.required),
+      name: new FormControl(this.currentValues.name, Validators.required),
+      status: new FormControl(this.currentValues.status, [Validators.required]),
+      phone: new FormControl(this.currentValues.phone, Validators.required),
     });
     // this.service.initializeWebSocketConnection();
   }

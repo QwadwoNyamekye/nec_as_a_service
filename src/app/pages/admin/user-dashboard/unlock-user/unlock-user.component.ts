@@ -48,7 +48,9 @@ export class UnlockUserComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log(response);
-          this.response = response
+          this.response = response;
+
+          window.parent.postMessage(this.service.getUsers());
         },
         (error) => console.error(error),
         () => {
@@ -64,11 +66,11 @@ export class UnlockUserComponent implements OnInit {
               }
             );
           } else {
-            this.toastrService.success(
-              "Unlock User Success",
-              "Unlock User",
-              { status: "success", destroyByClick: true, duration: 100000 }
-            );
+            this.toastrService.success("Unlock User Success", "Unlock User", {
+              status: "success",
+              destroyByClick: true,
+              duration: 100000,
+            });
             this.ref.close();
           }
         }

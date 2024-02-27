@@ -52,7 +52,8 @@ export class ChangeUserStatusComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log(response);
-          this.response = response
+          this.response = response;
+          window.parent.postMessage(this.service.getUsers());
         },
         (error) => console.error(error),
         () => {

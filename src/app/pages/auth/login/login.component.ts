@@ -1,9 +1,7 @@
 import { Component } from "@angular/core";
 import { NbLoginComponent } from "@nebular/auth";
 import { NbAuthResult } from "@nebular/auth";
-import { stringify } from "querystring";
-import { throwIfEmpty } from "rxjs/operators";
-import { NecService, NecService as NecService_ } from "../../../@core/mock/nec.service";
+import { NecService } from "../../../@core/mock/nec.service";
 import { AppInjector } from "../auth.module";
 
 @Component({

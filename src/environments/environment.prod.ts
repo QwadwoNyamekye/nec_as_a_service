@@ -9,3 +9,30 @@ export const environment = {
   baseUrl: "http://172.27.21.210:8089",
   bankUrl: "http://172.27.10.230:8003",
 };
+
+export const userAccess = {
+  1:{
+
+  },
+  2:{
+
+  }
+}
+
+export const institutionAccess = {
+  1:{
+
+  },
+  2:{
+
+  }
+}
+
+export const necAccess = {
+  1:{
+
+  },
+  2:{
+
+  }
+}

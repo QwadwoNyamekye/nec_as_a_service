@@ -7,6 +7,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { EditInstitutionFormComponent } from "./edit-institution-form/edit-institution-form.component";
 import { ChangeInstitutionStatusComponent } from "./change-institution-status/change-institution-status.component";
 import { DatePipe } from "@angular/common";
+import { environment } from "../../../../environments/environment.prod";
 
 @Component({
   selector: "ngx-admin-institution-dashboard",
@@ -21,6 +22,7 @@ export class InstitutionDashboardComponent implements OnInit {
   receivedData: any;
   institutions: any;
   row: any;
+  customActions = this.setAccessibles();
 
   getHtmlForCell(value: string) {
     if (value) {
@@ -35,14 +37,9 @@ export class InstitutionDashboardComponent implements OnInit {
     );
   }
 
-  settings = {
-    pager: {
-      perPage: 15,
-    },
-    hideSubHeader: true,
-    actions: {
-      position: "right",
-      custom: [
+  setAccessibles() {
+    if (this.service.user.role_id == "1") {
+      return [
         {
           name: "edit",
           title: '<i class="nb-edit"></i>',
@@ -51,7 +48,18 @@ export class InstitutionDashboardComponent implements OnInit {
           name: "unlock",
           title: '<i class="nb-locked"></i>',
         },
-      ],
+      ];
+    }
+  }
+
+  settings = {
+    pager: {
+      perPage: 15,
+    },
+    hideSubHeader: true,
+    actions: {
+      position: "right",
+      custom: this.customActions,
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -104,16 +112,17 @@ export class InstitutionDashboardComponent implements OnInit {
     this.listener = (event: MessageEvent) => {
       console.log(event);
       this.receivedData = event.data.data;
-      if (
-        event.data.key == "add_institution" &&
-        this.receivedData.institution
-      ) {
-        this.source.append(this.receivedData.institution);
-      } else if (event.data.key == "change_institution") {
-        this.source.update(this.row, this.receivedData.data.institution);
-      } else {
-        window.location.reload();
-      }
+      this.source.load(this.receivedData.data)
+      // if (
+      //   event.data.key == "add_institution" &&
+      //   this.receivedData.institution
+      // ) {
+      //   this.source.append(this.receivedData.institution);
+      // } else if (event.data.key == "change_institution") {
+      //   this.source.update(this.row.data, this.receivedData.data.institution);
+      // } else {
+      //   window.location.reload();
+      // }
       console.log(this.receivedData);
     };
     window.addEventListener("message", this.listener);
@@ -152,6 +161,9 @@ export class InstitutionDashboardComponent implements OnInit {
     this.windowService.open(EditInstitutionFormComponent, {
       title: `Edit Institution`,
       windowClass: `admin-form-window`,
+      context: {
+        currentValues: event.data
+      },
     });
   }
 

@@ -34,11 +34,14 @@ export class AdminDashboardComponent implements OnInit {
     this.listener = (event: MessageEvent) => {
       console.log(event.data);
       this.receivedData = event.data;
-      if (this.receivedData.key == "add") {
-        this.source.load(this.receivedData.data.user);
-      } else if (this.receivedData.key == "edit") {
-        this.source.update(this.row, this.receivedData.data.user);
-      }
+      this.source.load(this.receivedData.data)
+      // if (this.receivedData.key == "add") {
+      //   this.source.load(this.receivedData.data.user);
+      // } else if (
+      //   ["edit", "unlock", "reset", "status"].includes(this.receivedData.key)
+      // ) {
+      //   this.source.update(this.row.data, this.receivedData.data.user);
+      // }
     };
     window.addEventListener("message", this.listener);
     // this.service.initializeWebSocketConnection()

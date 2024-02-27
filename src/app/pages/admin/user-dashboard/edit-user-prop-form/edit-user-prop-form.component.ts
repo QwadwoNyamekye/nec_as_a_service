@@ -151,7 +151,7 @@ export class EditUserPropFormComponent implements OnInit {
     this.service.editUser(object).subscribe(
       (response) => {
         console.log(response);
-        window.parent.postMessage({ data: response, key: "edit" });
+        window.parent.postMessage(this.service.getUsers());
         this.response = response
         this.close();
       },

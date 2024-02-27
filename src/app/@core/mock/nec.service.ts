@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { map, catchError, timeout } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { HttpHeaders } from "@angular/common/http";
 import { NbAuthService, NbAuthJWTToken } from "@nebular/auth";
 import { Stomp } from "@stomp/stompjs";
