@@ -166,7 +166,7 @@ export class InstitutionDashboardComponent implements OnInit {
     });
   }
 
-  openWindowForm(event) {
+  addInstitution(event) {
     this.row = event.data;
     this.windowService.open(AddInstitutionFormComponent, {
       title: `Add Institution`,
