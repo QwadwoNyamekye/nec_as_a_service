@@ -48,14 +48,15 @@ export class UnlockUserComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log(response);
+          this.response = response
         },
         (error) => console.error(error),
         () => {
           console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
-              "Institution Creation Failed: " + this.response.errorMessage,
-              "Institution Creation",
+              "Unlock User Failed: " + this.response.errorMessage,
+              "Unlock User",
               {
                 status: "danger",
                 destroyByClick: true,
@@ -64,15 +65,13 @@ export class UnlockUserComponent implements OnInit {
             );
           } else {
             this.toastrService.success(
-              "Institution Creation Success",
-              "Institution Creation",
+              "Unlock User Success",
+              "Unlock User",
               { status: "success", destroyByClick: true, duration: 100000 }
             );
             this.ref.close();
           }
         }
       );
-    console.log(this.response);
-    this.ref.close();
   }
 }

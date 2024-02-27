@@ -48,6 +48,7 @@ export class ResetUserPasswordComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log(response);
+          this.response = response
         },
         (error) => console.error(error),
         () => {
@@ -72,7 +73,5 @@ export class ResetUserPasswordComponent implements OnInit {
           }
         }
       );
-    console.log(this.response);
-    this.ref.close();
   }
 }

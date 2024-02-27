@@ -57,6 +57,7 @@ export class ChangeInstitutionStatusComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log(response);
+          this.response = response
           window.parent.postMessage({
             key: "change_institution",
             data: response,
@@ -86,8 +87,6 @@ export class ChangeInstitutionStatusComponent implements OnInit {
           }
         }
       );
-    console.log(this.response);
-    this.ref.close();
   }
 
   dismiss() {

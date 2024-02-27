@@ -52,6 +52,7 @@ export class ChangeUserStatusComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log(response);
+          this.response = response
         },
         (error) => console.error(error),
         () => {
@@ -76,7 +77,5 @@ export class ChangeUserStatusComponent implements OnInit {
           }
         }
       );
-    console.log(this.response);
-    this.ref.close();
   }
 }

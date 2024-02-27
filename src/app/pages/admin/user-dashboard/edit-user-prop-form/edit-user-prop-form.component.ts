@@ -152,6 +152,7 @@ export class EditUserPropFormComponent implements OnInit {
       (response) => {
         console.log(response);
         window.parent.postMessage({ data: response, key: "edit" });
+        this.response = response
         this.close();
       },
       (error) => console.error(error),
