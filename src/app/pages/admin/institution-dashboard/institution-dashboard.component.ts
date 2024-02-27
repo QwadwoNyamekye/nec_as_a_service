@@ -112,7 +112,7 @@ export class InstitutionDashboardComponent implements OnInit {
     this.listener = (event: MessageEvent) => {
       console.log(event);
       this.receivedData = event.data.data;
-      this.source.load(this.receivedData.data)
+      this.source.load(this.receivedData.data);
       // if (
       //   event.data.key == "add_institution" &&
       //   this.receivedData.institution
@@ -135,10 +135,10 @@ export class InstitutionDashboardComponent implements OnInit {
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
   ) {
-    this.getInstitutions()
+    this.getInstitutions();
   }
 
-  getInstitutions(){
+  getInstitutions() {
     this.service.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
@@ -162,41 +162,44 @@ export class InstitutionDashboardComponent implements OnInit {
   }
 
   editInstitution(event): void {
-    this.windowService.open(EditInstitutionFormComponent, {
-      title: `Edit Institution`,
-      windowClass: `admin-form-window`,
-      context: {
-        currentValues: event.data
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getInstitutions();
-    });
+    this.windowService
+      .open(EditInstitutionFormComponent, {
+        title: `Edit Institution`,
+        windowClass: `admin-form-window`,
+        context: {
+          currentValues: event.data,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getInstitutions();
+      });
   }
 
   changeInstitutionStatus(event): void {
     console.log(event);
-    this.dialogService.open(ChangeInstitutionStatusComponent, {
-      context: {
-        title: "Change Institution Status",
-        status: event.data.status,
-        code: event.data.code,
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getInstitutions();
-    });
+    this.dialogService
+      .open(ChangeInstitutionStatusComponent, {
+        context: {
+          title: "Change Institution Status",
+          status: event.data.status,
+          code: event.data.code,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getInstitutions();
+      });
   }
 
   addInstitution(event) {
     this.row = event.data;
-    this.windowService.open(AddInstitutionFormComponent, {
-      title: `Add Institution`,
-      windowClass: `admin-form-window`,
-    })
-    .onClose.subscribe(() => {
-      this.getInstitutions();
-    });
+    this.windowService
+      .open(AddInstitutionFormComponent, {
+        title: `Add Institution`,
+        windowClass: `admin-form-window`,
+      })
+      .onClose.subscribe(() => {
+        this.getInstitutions();
+      });
   }
 
   onEditRowSelect(event): void {

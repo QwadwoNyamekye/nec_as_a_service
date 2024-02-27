@@ -34,7 +34,7 @@ export class AdminDashboardComponent implements OnInit {
     this.listener = (event: MessageEvent) => {
       console.log(event.data);
       this.receivedData = event.data;
-      this.source.load(this.receivedData.data)
+      this.source.load(this.receivedData.data);
       // if (this.receivedData.key == "add") {
       //   this.source.load(this.receivedData.data.user);
       // } else if (
@@ -161,7 +161,7 @@ export class AdminDashboardComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private cd: ChangeDetectorRef
   ) {
-    this.getUsers()
+    this.getUsers();
   }
 
   getUsers() {
@@ -192,64 +192,70 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   addUser() {
-    this.windowService.open(AddUserFormComponent, {
-      title: `Add User`,
-      windowClass: `admin-form-window`,
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.windowService
+      .open(AddUserFormComponent, {
+        title: `Add User`,
+        windowClass: `admin-form-window`,
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
   }
 
   editUser(event): void {
     console.log(event);
     this.row = event;
-    this.windowService.open(EditUserFormComponent, {
-      title: `Edit User`,
-      windowClass: `admin-form-window`,
-      context: {
-        email: event.data.email,
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.windowService
+      .open(EditUserFormComponent, {
+        title: `Edit User`,
+        windowClass: `admin-form-window`,
+        context: {
+          email: event.data.email,
+          currentValues: event.data,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
     // event.confirm.resolve()
   }
 
   changeUserStatus(event): void {
-    this.dialogService.open(ChangeUserStatusComponent, {
-      context: {
-        title: "Change User Status",
-        email: event.data.email,
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.dialogService
+      .open(ChangeUserStatusComponent, {
+        context: {
+          title: "Change User Status",
+          email: event.data.email,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
   }
 
   unlockUser(event): void {
-    this.dialogService.open(UnlockUserComponent, {
-      context: {
-        title: "Unlock User",
-        email: event.data.email,
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.dialogService
+      .open(UnlockUserComponent, {
+        context: {
+          title: "Unlock User",
+          email: event.data.email,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
   }
 
   resetUserPassword(event): void {
-    this.dialogService.open(ResetUserPasswordComponent, {
-      context: {
-        title: "Reset User Password",
-        email: event.data.email,
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.dialogService
+      .open(ResetUserPasswordComponent, {
+        context: {
+          title: "Reset User Password",
+          email: event.data.email,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
   }
 }

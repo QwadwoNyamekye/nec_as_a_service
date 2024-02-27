@@ -109,7 +109,6 @@ export class SingleNECRequestComponent {
         this.windowRef.close();
       }
     );
-    this.close();
   }
   close() {
     this.windowRef.close();

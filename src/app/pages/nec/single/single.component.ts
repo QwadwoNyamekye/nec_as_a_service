@@ -91,6 +91,9 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       },
       () => {
         console.log(this.users);
+        // console.log(
+        //   this.users.sort((a, b) => (a.createdBy > b.createdBy ? 1 : -1))
+        // );
         this.source.load(this.users);
       }
     );

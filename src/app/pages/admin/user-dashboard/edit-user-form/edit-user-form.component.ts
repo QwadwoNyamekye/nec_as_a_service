@@ -81,6 +81,7 @@ import { NbToastrService } from "@nebular/theme";
 })
 export class EditUserFormComponent implements OnInit {
   @Input() email: string;
+  @Input() currentValues: any;
   statuses: NbComponentStatus[] = [
     "primary",
     "success",
@@ -99,8 +100,11 @@ export class EditUserFormComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   response: any;
 
-  constructor(public windowRef: NbWindowRef, private service: NecService,
-    private toastrService: NbToastrService) {}
+  constructor(
+    public windowRef: NbWindowRef,
+    private service: NecService,
+    private toastrService: NbToastrService
+  ) {}
 
   ngOnInit(): void {
     this.service.getInstitutions().subscribe(
@@ -122,10 +126,10 @@ export class EditUserFormComponent implements OnInit {
       }
     );
     this.form = new FormGroup({
-      firstName: new FormControl("", Validators.required),
-      lastName: new FormControl("", [Validators.required]),
-      institution: new FormControl("", Validators.required),
-      role: new FormControl("", Validators.required),
+      firstName: new FormControl(this.currentValues.firstName, Validators.required),
+      lastName: new FormControl(this.currentValues.lastName, [Validators.required]),
+      institution: new FormControl(this.currentValues.institution, Validators.required),
+      role: new FormControl(this.currentValues.role, Validators.required),
       // emailAddress: new FormControl("", Validators.required),
     });
     // this.service.initializeWebSocketConnection();
@@ -143,7 +147,7 @@ export class EditUserFormComponent implements OnInit {
     this.service.editUser(object).subscribe(
       (response) => {
         console.log(response);
-        this.response = response
+        this.response = response;
         // window.parent.postMessage(this.service.getUsers());
       },
       (error) => console.error(error),
@@ -160,11 +164,11 @@ export class EditUserFormComponent implements OnInit {
             }
           );
         } else {
-          this.toastrService.success(
-            "User Edit Success",
-            "User Edit",
-            { status: "success", destroyByClick: true, duration: 100000 }
-          );
+          this.toastrService.success("User Edit Success", "User Edit", {
+            status: "success",
+            destroyByClick: true,
+            duration: 100000,
+          });
           this.windowRef.close();
         }
       }
