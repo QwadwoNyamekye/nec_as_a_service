@@ -84,7 +84,7 @@ export class AddInstitutionFormComponent implements OnInit {
       (response) => {
         console.log(response);
         this.response = response;
-        window.parent.postMessage(this.service.getInstitutions());
+        // window.parent.postMessage(this.service.getInstitutions());
         return response;
       },
       (error) => console.error(error),

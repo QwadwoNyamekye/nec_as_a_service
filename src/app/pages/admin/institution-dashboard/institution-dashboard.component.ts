@@ -135,6 +135,10 @@ export class InstitutionDashboardComponent implements OnInit {
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
   ) {
+    this.getInstitutions()
+  }
+
+  getInstitutions(){
     this.service.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
@@ -165,6 +169,7 @@ export class InstitutionDashboardComponent implements OnInit {
         currentValues: event.data
       },
     });
+    this.getInstitutions()
   }
 
   changeInstitutionStatus(event): void {
@@ -176,6 +181,7 @@ export class InstitutionDashboardComponent implements OnInit {
         code: event.data.code,
       },
     });
+    this.getInstitutions()
   }
 
   addInstitution(event) {
@@ -184,6 +190,7 @@ export class InstitutionDashboardComponent implements OnInit {
       title: `Add Institution`,
       windowClass: `admin-form-window`,
     });
+    this.getInstitutions()
   }
 
   onEditRowSelect(event): void {

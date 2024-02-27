@@ -159,7 +159,7 @@ export class AddUserFormComponent implements OnInit {
     this.service.postUsers(object).subscribe(
       (data) => {
         console.log(data);
-        window.parent.postMessage(this.service.getUsers());
+        // window.parent.postMessage(this.service.getUsers());
         this.response = data;
       },
       (error) => console.error(error),

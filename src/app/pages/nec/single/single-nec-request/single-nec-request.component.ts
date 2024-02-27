@@ -84,7 +84,7 @@ export class SingleNECRequestComponent {
     this.service.makeSingleNECRequest(this.object).subscribe(
       (response) => {
         console.log(response);
-        window.parent.postMessage(response);
+        // window.parent.postMessage(response);
         return response;
       },
       (error) => console.error(error)

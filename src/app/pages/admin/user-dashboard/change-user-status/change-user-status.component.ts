@@ -53,7 +53,7 @@ export class ChangeUserStatusComponent implements OnInit {
         (response) => {
           console.log(response);
           this.response = response;
-          window.parent.postMessage(this.service.getUsers());
+          // window.parent.postMessage(this.service.getUsers());
         },
         (error) => console.error(error),
         () => {

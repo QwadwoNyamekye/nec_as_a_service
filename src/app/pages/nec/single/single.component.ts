@@ -12,7 +12,7 @@ import { DatePipe } from "@angular/common";
 })
 export class SingleNECComponent implements OnInit, OnDestroy {
   source: LocalDataSource = new LocalDataSource();
-  singleNECList: any;
+  users: any;
   stompClient: any;
   response: any;
   listener: any;
@@ -78,16 +78,20 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     private service: NecService,
     private windowService: NbWindowService
   ) {
+this.getUsers()
+  }
+
+  getUsers(){
     this.service.getSingleNECList().subscribe(
       (data) => {
-        this.singleNECList = data;
+        this.users = data;
       },
       (error) => {
         console.log(error);
       },
       () => {
-        console.log(this.singleNECList);
-        this.source.load(this.singleNECList);
+        console.log(this.users);
+        this.source.load(this.users);
       }
     );
   }
@@ -111,6 +115,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       title: `Make NEC Request`,
       windowClass: `admin-form-window`,
     });
+    this.getUsers()
   }
 
   onEditRowSelect(event): void {

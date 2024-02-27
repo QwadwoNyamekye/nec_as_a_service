@@ -160,7 +160,9 @@ export class AdminDashboardComponent implements OnInit {
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer,
     private cd: ChangeDetectorRef
-  ) {}
+  ) {
+    this.getUsers()
+  }
 
   getUsers() {
     this.service.getUsers().subscribe(
@@ -194,6 +196,7 @@ export class AdminDashboardComponent implements OnInit {
       title: `Add User`,
       windowClass: `admin-form-window`,
     });
+    this.getUsers()
   }
 
   editUser(event): void {
@@ -206,6 +209,7 @@ export class AdminDashboardComponent implements OnInit {
         email: event.data.email,
       },
     });
+    this.getUsers()
     // event.confirm.resolve()
   }
 
@@ -216,6 +220,7 @@ export class AdminDashboardComponent implements OnInit {
         email: event.data.email,
       },
     });
+    this.getUsers()
   }
 
   unlockUser(event): void {
@@ -225,6 +230,7 @@ export class AdminDashboardComponent implements OnInit {
         email: event.data.email,
       },
     });
+    this.getUsers()
   }
 
   resetUserPassword(event): void {
