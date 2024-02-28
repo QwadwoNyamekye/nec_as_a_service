@@ -55,7 +55,18 @@ export class ChangeUserStatusComponent implements OnInit {
           this.response = response;
           // window.parent.postMessage(this.service.getUsers());
         },
-        (error) => console.error(error),
+        (error) => {
+          console.error(error);
+          this.toastrService.warning(
+            "User Status Change Failed: " + error.error.errorMessage,
+            "User Status Change",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        },
         () => {
           console.log(this.response);
           if (this.response.errorCode != "0") {

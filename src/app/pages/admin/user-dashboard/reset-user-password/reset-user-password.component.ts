@@ -51,7 +51,18 @@ export class ResetUserPasswordComponent implements OnInit {
           this.response = response;
           // window.parent.postMessage(this.service.getUsers());
         },
-        (error) => console.error(error),
+        (error) => {
+          console.error(error);
+          this.toastrService.warning(
+            "User Password Reset Failed: " + error.error.errorMessage,
+            "User Password Reset",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        },
         () => {
           console.log(this.response);
           if (this.response.errorCode != "0") {

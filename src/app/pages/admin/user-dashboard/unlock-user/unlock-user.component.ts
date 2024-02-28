@@ -51,7 +51,18 @@ export class UnlockUserComponent implements OnInit {
           this.response = response;
           // window.parent.postMessage(this.service.getUsers());
         },
-        (error) => console.error(error),
+        (error) => {
+          console.error(error);
+          this.toastrService.warning(
+            "Unlock User Failed: " + error.error.errorMessage,
+            "Unlock User",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        },
         () => {
           console.log(this.response);
           if (this.response.errorCode != "0") {

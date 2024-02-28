@@ -80,7 +80,9 @@ export class SingleNECComponent implements OnInit, OnDestroy {
   ) {
     this.getUsers();
   }
-
+  compare( a, b ) {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+  }
   getUsers() {
     this.service.getSingleNECList().subscribe(
       (data) => {
@@ -90,8 +92,8 @@ export class SingleNECComponent implements OnInit, OnDestroy {
         console.log(error);
       },
       () => {
-        console.log(this.users);
-        this.source.load(this.users);
+        console.log(this.users.sort(this.compare));
+        this.source.load(this.users.sort(this.compare));
       }
     );
   }

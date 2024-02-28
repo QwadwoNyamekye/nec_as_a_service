@@ -163,7 +163,9 @@ export class AdminDashboardComponent implements OnInit {
   ) {
     this.getUsers()
   }
-
+  compare( a, b ) {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+  }
   getUsers() {
     this.service.getUsers().subscribe(
       (data) => {
@@ -173,8 +175,8 @@ export class AdminDashboardComponent implements OnInit {
         console.log(error);
       },
       () => {
-        console.log(this.users);
-        this.source.load(this.users);
+        console.log(this.users.sort(this.compare));
+        this.source.load(this.users.sort(this.compare));
       }
     );
   }
@@ -202,13 +204,15 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   editUser(event): void {
-    console.log(event);
+    console.log(event.data);
+    console.log("))))))))))))))))))))))))")
     this.row = event;
     this.windowService.open(EditUserFormComponent, {
       title: `Edit User`,
       windowClass: `admin-form-window`,
       context: {
         email: event.data.email,
+        currentValues: event.data
       },
     })
     .onClose.subscribe(() => {

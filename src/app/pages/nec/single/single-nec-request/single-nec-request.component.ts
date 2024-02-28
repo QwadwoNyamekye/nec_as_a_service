@@ -94,12 +94,23 @@ export class SingleNECRequestComponent {
         // window.parent.postMessage(response);
         return response;
       },
-      (error) => console.error(error),
+      (error) => {
+        console.error(error);
+        this.toastrService.warning(
+          "Single NEC Request Failed: " + error.error.errorMessage,
+          "Single NEC Request",
+          {
+            status: "danger",
+            destroyByClick: true,
+            duration: 100000,
+          }
+        );
+      },
       () => {
         console.log(this.response);
         this.toastrService.success(
           "Single NEC Request Success",
-          "Unlock User",
+          "Single NEC Request",
           {
             status: "success",
             destroyByClick: true,

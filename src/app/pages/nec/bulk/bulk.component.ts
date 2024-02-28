@@ -145,7 +145,9 @@ export class BulkUploadComponent implements OnInit {
       this.openFileRecords(event);
     }
   }
-
+  compare( a, b ) {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+  }
   getUploads() {
     this.service.getUploads().subscribe(
       (data) => {
@@ -155,8 +157,8 @@ export class BulkUploadComponent implements OnInit {
         console.log(error);
       },
       () => {
-        console.log(this.files);
-        this.source.load(this.files);
+        console.log(this.files.sort(this.compare));
+        this.source.load(this.files.sort(this.compare));
       }
     );
   }
@@ -207,7 +209,7 @@ export class BulkUploadComponent implements OnInit {
   }
 
   openFileRecords(event) {
-    this.dialogService.open(SingleNECComponent, {
+    this.windowService.open(SingleNECComponent, {
       context: {
         title: `File Test`,
         batchId: event.data.batchId,

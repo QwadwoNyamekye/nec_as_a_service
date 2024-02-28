@@ -33,6 +33,15 @@ import { NbToastrService } from "@nebular/theme";
         type="text"
         placeholder="Last Name"
       />
+      <label class="text-label" for="text">Phone Number:</label>
+      <input
+        nbInput
+        fullWidth
+        formControlName="phone"
+        id="text"
+        type="text"
+        placeholder="Phone Number"
+      />
 
       <div class="row">
         <div class="col-sm-6">
@@ -81,6 +90,7 @@ import { NbToastrService } from "@nebular/theme";
 })
 export class EditUserFormComponent implements OnInit {
   @Input() email: string;
+  @Input() currentValues: any;
   statuses: NbComponentStatus[] = [
     "primary",
     "success",
@@ -98,11 +108,18 @@ export class EditUserFormComponent implements OnInit {
   selectedRoles: any;
   source: LocalDataSource = new LocalDataSource();
   response: any;
+  name: any;
 
-  constructor(public windowRef: NbWindowRef, private service: NecService,
-    private toastrService: NbToastrService) {}
+  constructor(
+    public windowRef: NbWindowRef,
+    private service: NecService,
+    private toastrService: NbToastrService
+  ) {}
 
   ngOnInit(): void {
+    console.log("KKKKKKKKKKKKKKKKKKKKKKKKK");
+    console.log(this.currentValues);
+    this.name = this.currentValues.name.split(" ");
     this.service.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
@@ -122,12 +139,17 @@ export class EditUserFormComponent implements OnInit {
       }
     );
     this.form = new FormGroup({
-      firstName: new FormControl("", Validators.required),
-      lastName: new FormControl("", [Validators.required]),
-      institution: new FormControl("", Validators.required),
-      role: new FormControl("", Validators.required),
+      firstName: new FormControl(this.name[0], Validators.required),
+      lastName: new FormControl(this.name[1], [Validators.required]),
+      institution: new FormControl(
+        this.currentValues.institutionName,
+        Validators.required
+      ),
+      role: new FormControl(this.currentValues.role_name, Validators.required),
+      phone: new FormControl(this.currentValues.phone, Validators.required),
       // emailAddress: new FormControl("", Validators.required),
     });
+    // this.selectedRoles = this.currentValues.role_name
     // this.service.initializeWebSocketConnection();
   }
 
@@ -138,15 +160,27 @@ export class EditUserFormComponent implements OnInit {
       institutionCode: this.form.value.institution,
       role_id: this.form.value.role,
       email: this.email,
+      phone: this.form.value.phone
     };
     // Send a post request to the server endpoint with the FormData object
     this.service.editUser(object).subscribe(
       (response) => {
         console.log(response);
-        this.response = response
+        this.response = response;
         // window.parent.postMessage(this.service.getUsers());
       },
-      (error) => console.error(error),
+      (error) => {
+        console.error(error);
+        this.toastrService.warning(
+          "User Edit Failed: " + error.error.errorMessage,
+          "User Edit",
+          {
+            status: "danger",
+            destroyByClick: true,
+            duration: 100000,
+          }
+        );
+      },
       () => {
         console.log(this.response);
         if (this.response.errorCode != "0") {
@@ -160,11 +194,11 @@ export class EditUserFormComponent implements OnInit {
             }
           );
         } else {
-          this.toastrService.success(
-            "User Edit Success",
-            "User Edit",
-            { status: "success", destroyByClick: true, duration: 100000 }
-          );
+          this.toastrService.success("User Edit Success", "User Edit", {
+            status: "success",
+            destroyByClick: true,
+            duration: 100000,
+          });
           this.windowRef.close();
         }
       }

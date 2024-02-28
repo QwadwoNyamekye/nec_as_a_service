@@ -59,7 +59,16 @@ export class InstitutionDashboardComponent implements OnInit {
     hideSubHeader: true,
     actions: {
       position: "right",
-      custom: this.customActions,
+      custom: [
+        {
+          name: "edit",
+          title: '<i class="nb-edit"></i>',
+        },
+        {
+          name: "unlock",
+          title: '<i class="nb-locked"></i>',
+        },
+      ],
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -112,7 +121,7 @@ export class InstitutionDashboardComponent implements OnInit {
     this.listener = (event: MessageEvent) => {
       console.log(event);
       this.receivedData = event.data.data;
-      this.source.load(this.receivedData.data)
+      this.source.load(this.receivedData.data);
       // if (
       //   event.data.key == "add_institution" &&
       //   this.receivedData.institution
@@ -135,10 +144,14 @@ export class InstitutionDashboardComponent implements OnInit {
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
   ) {
-    this.getInstitutions()
+    this.getInstitutions();
   }
 
-  getInstitutions(){
+  compare( a, b ) {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+  }
+
+  getInstitutions() {
     this.service.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
@@ -147,8 +160,8 @@ export class InstitutionDashboardComponent implements OnInit {
         console.log(error);
       },
       () => {
-        console.log(this.institutions);
-        this.source.load(this.institutions);
+        console.log(this.institutions.sort(this.compare));
+        this.source.load(this.institutions.sort(this.compare));
       }
     );
   }
@@ -162,41 +175,46 @@ export class InstitutionDashboardComponent implements OnInit {
   }
 
   editInstitution(event): void {
-    this.windowService.open(EditInstitutionFormComponent, {
-      title: `Edit Institution`,
-      windowClass: `admin-form-window`,
-      context: {
-        currentValues: event.data
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getInstitutions();
-    });
+    this.windowService
+      .open(EditInstitutionFormComponent, {
+        title: `Edit Institution`,
+        windowClass: `admin-form-window`,
+        context: {
+          currentValues: event.data,
+        },
+      })
+      .onClose.subscribe(
+        () => {
+          this.getInstitutions();
+        }
+      );
   }
 
   changeInstitutionStatus(event): void {
     console.log(event);
-    this.dialogService.open(ChangeInstitutionStatusComponent, {
-      context: {
-        title: "Change Institution Status",
-        status: event.data.status,
-        code: event.data.code,
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getInstitutions();
-    });
+    this.dialogService
+      .open(ChangeInstitutionStatusComponent, {
+        context: {
+          title: "Change Institution Status",
+          status: event.data.status,
+          code: event.data.code,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getInstitutions();
+      });
   }
 
   addInstitution(event) {
     this.row = event.data;
-    this.windowService.open(AddInstitutionFormComponent, {
-      title: `Add Institution`,
-      windowClass: `admin-form-window`,
-    })
-    .onClose.subscribe(() => {
-      this.getInstitutions();
-    });
+    this.windowService
+      .open(AddInstitutionFormComponent, {
+        title: `Add Institution`,
+        windowClass: `admin-form-window`,
+      })
+      .onClose.subscribe(() => {
+        this.getInstitutions();
+      });
   }
 
   onEditRowSelect(event): void {

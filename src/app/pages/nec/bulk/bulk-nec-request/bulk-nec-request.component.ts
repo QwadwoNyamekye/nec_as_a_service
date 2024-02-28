@@ -109,7 +109,18 @@ export class BulkNEComponent implements OnInit {
           console.log(response);
           this.close();
         },
-        (error) => console.error(error),
+        (error) => {
+          console.error(error);
+          this.toastrService.warning(
+            "File Upload Failed: " + error.error.errorMessage,
+            "Bulk File Upload",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        },
         () => {
           console.log(this.response);
           if (this.response.errorCode != "0") {

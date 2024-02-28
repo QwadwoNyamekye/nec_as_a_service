@@ -37,7 +37,6 @@ import { NbToastrService } from "@nebular/theme";
         type="submit"
         [status]="statuses[0]"
         [shape]="shapes[1]"
-        (click)="onSubmit()"
       >
         Submit
       </button>
@@ -87,9 +86,19 @@ export class AddInstitutionFormComponent implements OnInit {
         // window.parent.postMessage(this.service.getInstitutions());
         return response;
       },
-      (error) => console.error(error),
+      (error) => {
+        console.error(error);
+        this.toastrService.warning(
+          "Institution Creation Failed: " + error.error.errorMessage,
+          "Institution Creation",
+          {
+            status: "danger",
+            destroyByClick: true,
+            duration: 100000,
+          }
+        );
+      },
       () => {
-        console.log(this.response);
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
             "Institution Creation Failed: " + this.response.errorMessage,

@@ -107,8 +107,11 @@ export class EditUserPropFormComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   response: any;
 
-  constructor(public windowRef: NbWindowRef, private service: NecService,
-    private toastrService: NbToastrService) {}
+  constructor(
+    public windowRef: NbWindowRef,
+    private service: NecService,
+    private toastrService: NbToastrService
+  ) {}
 
   ngOnInit(): void {
     this.service.getInstitutions().subscribe(
@@ -152,9 +155,20 @@ export class EditUserPropFormComponent implements OnInit {
       (response) => {
         console.log(response);
         // window.parent.postMessage(this.service.getUsers());
-        this.response = response
+        this.response = response;
       },
-      (error) => console.error(error),
+      (error) => {
+        console.error(error);
+        this.toastrService.warning(
+          "Institution Creation Failed: " + error.error.errorMessage,
+          "Institution Creation",
+          {
+            status: "danger",
+            destroyByClick: true,
+            duration: 100000,
+          }
+        );
+      },
       () => {
         console.log(this.response);
         if (this.response.errorCode != "0") {

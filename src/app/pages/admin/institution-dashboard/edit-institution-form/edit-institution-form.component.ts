@@ -1,10 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { NbWindowRef } from "@nebular/theme";
 import { FormBuilder } from "@angular/forms";
-import {
-  NbComponentShape,
-  NbComponentStatus,
-} from "@nebular/theme";
+import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
 import { Validators } from "@angular/forms";
 import { FormGroup, FormControl } from "@angular/forms";
 import { NecService } from "../../../../@core/mock/nec.service";
@@ -69,8 +66,11 @@ export class EditInstitutionFormComponent implements OnInit {
   institutionStatuses: any[] = [true, false];
   response: any;
 
-  constructor(public windowRef: NbWindowRef, private service: NecService,
-    private toastrService: NbToastrService) {}
+  constructor(
+    public windowRef: NbWindowRef,
+    private service: NecService,
+    private toastrService: NbToastrService
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -91,9 +91,20 @@ export class EditInstitutionFormComponent implements OnInit {
     this.service.editInstitution(object).subscribe(
       (response) => {
         console.log(response);
-        this.response = response
+        this.response = response;
       },
-      (error) => console.error(error),
+      (error) => {
+        console.error(error);
+        this.toastrService.warning(
+          "Institution Edit Failed: " + error.error.errorMessage,
+          "Institution Edit",
+          {
+            status: "danger",
+            destroyByClick: true,
+            duration: 100000,
+          }
+        );
+      },
       () => {
         console.log(this.response);
         if (this.response.errorCode != "0") {

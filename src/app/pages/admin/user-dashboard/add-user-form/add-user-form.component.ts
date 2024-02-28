@@ -173,7 +173,18 @@ export class AddUserFormComponent implements OnInit {
         // window.parent.postMessage(this.service.getUsers());
         this.response = data;
       },
-      (error) => console.error(error),
+      (error) => {
+        console.error(error);
+        this.toastrService.warning(
+          "User Creation Failed: " + error.error.errorMessage,
+          "User Creation",
+          {
+            status: "danger",
+            destroyByClick: true,
+            duration: 100000,
+          }
+        );
+      },
       () => {
         console.log(this.response);
         if (this.response.errorCode != "0") {

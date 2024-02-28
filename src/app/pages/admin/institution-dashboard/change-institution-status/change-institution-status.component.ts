@@ -61,7 +61,18 @@ export class ChangeInstitutionStatusComponent implements OnInit {
           // window.parent.postMessage(this.service.getInstitutions());
           return response;
         },
-        (error) => console.error(error),
+        (error) => {
+          console.error(error);
+          this.toastrService.warning(
+            "Institution Status Change Failed: " + error.error.errorMessage,
+            "Institution Status Change",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        },
         () => {
           console.log(this.response);
           if (this.response.errorCode != "0") {
