@@ -15,3 +15,15 @@
     background-color: #264770;
   }
 }
+
+@include nb-install-component() {
+  .menu-sidebar ::ng-deep .main-container.main-container-fixed {
+    width: 10rem;
+  }
+}
+
+@include nb-install-component() {
+  .expanded {
+    width: 10rem;
+  }
+}
