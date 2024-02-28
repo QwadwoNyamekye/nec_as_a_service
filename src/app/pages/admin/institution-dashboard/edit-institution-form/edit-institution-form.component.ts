@@ -22,8 +22,11 @@ import { NbToastrService } from "@nebular/theme";
       />
       <label class="text-label" for="text">Status:</label>
       <nb-select fullWidth formControlName="status" placeholder="Status">
-        <nb-option *ngFor="let i of this.institutionStatuses" [value]="i">
-          {{ i }}
+        <nb-option
+          *ngFor="let i of this.institutionStatuses"
+          [value]="i.value"
+        >
+          {{ i.key }}
         </nb-option>
       </nb-select>
 
@@ -63,7 +66,10 @@ export class EditInstitutionFormComponent implements OnInit {
     "danger",
   ];
   shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
-  institutionStatuses: any[] = [true, false];
+  institutionStatuses: any = [
+    { key: "Enable", value: true },
+    { key: "Disable", value: false },
+  ];
   response: any;
 
   constructor(
@@ -86,6 +92,7 @@ export class EditInstitutionFormComponent implements OnInit {
       name: this.form.value.name,
       status: this.form.value.status,
       phone: this.form.value.phone,
+      code: this.currentValues.code,
     };
     // Send a post request to the server endpoint with the FormData object
     this.service.editInstitution(object).subscribe(

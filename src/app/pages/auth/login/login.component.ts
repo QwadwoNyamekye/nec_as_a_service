@@ -15,9 +15,8 @@ export class LoginComponent extends NbLoginComponent {
     this.submitted = true;
 
     console.log(this.user);
-    this.service
-      .authenticate("email", this.user)
-      .subscribe((result: NbAuthResult) => {
+    this.service.authenticate("email", this.user).subscribe(
+      (result: NbAuthResult) => {
         this.submitted = false;
         console.log(result);
         console.log(JSON.stringify(result.getResponse().body?.user));
@@ -27,8 +26,8 @@ export class LoginComponent extends NbLoginComponent {
             "user",
             JSON.stringify(result.getResponse().body.user)
           );
-          console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^")
-          console.log(result.getResponse().body.token)
+          console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^");
+          console.log(result.getResponse().body.token);
           localStorage.setItem("token", result.getResponse().body.token);
           this.necService.initializeWebSocketConnection();
         } else {
@@ -46,6 +45,9 @@ export class LoginComponent extends NbLoginComponent {
           }, this.redirectDelay);
         }
         this.cd.detectChanges();
-      });
+      },
+      (error) => console.log(error),
+      () => {}
+    );
   }
 }
