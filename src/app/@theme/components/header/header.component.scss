@@ -21,8 +21,6 @@
 
   nb-user {
     cursor: pointer;
-  }
-  nb-user .user-name{
     color: white;
   }
 
@@ -60,6 +58,7 @@
       display: none;
     }
     .user-action {
+      color: white;
       border: none;
       padding: 0;
     }

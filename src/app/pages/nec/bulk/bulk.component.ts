@@ -30,7 +30,7 @@ export class BulkUploadComponent implements OnInit {
   getHtmlForCell(value: string) {
     if (value === "0") {
       this.colour = "lightcoral";
-      this.name = "NEW";
+      this.name = "UPLOADING";
     } else if (value === "1") {
       this.colour = "lightskyblue";
       this.name = "SUBMITTED";

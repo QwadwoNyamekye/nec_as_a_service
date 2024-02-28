@@ -45,11 +45,11 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     },
     columns: {
       destInstitution: {
-        title: "Institution Code",
+        title: "Dest. Institution Code",
         type: "string",
       },
       destInstitutionName: {
-        title: "Institution",
+        title: "Dest. Institution",
         type: "string",
       },
       destAccountNumber: {
@@ -60,8 +60,20 @@ export class SingleNECComponent implements OnInit, OnDestroy {
         title: "Account Name",
         type: "string",
       },
+      srcInstitution: {
+        title: "Src. Institution Code",
+        type: "string",
+      },
+      srcInstitutionName: {
+        title: "Src. Institution",
+        type: "string",
+      },
       actionCode: {
         title: "Action Code",
+        type: "string",
+      },
+      createdBy: {
+        title: "Created By",
         type: "string",
       },
       createdAt: {
