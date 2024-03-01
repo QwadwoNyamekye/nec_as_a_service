@@ -194,16 +194,16 @@ export class NecReportComponent implements OnInit, OnDestroy {
     window.removeEventListener("message", this.listener);
   }
 
-  makeNECRequest() {
-    // this.response = this.windowService
-    //   .open(SingleNECRequestComponent, {
-    //     title: `Make NEC Request`,
-    //     windowClass: `admin-form-window`,
-    //   })
-    //   .onClose.subscribe(() => {
-    //     this.getUsers();
-    //   });
-  }
+  // makeNECRequest() {
+  //   this.response = this.
+  //     .open(SingleNECRequestComponent, {
+  //       title: `Make NEC Request`,
+  //       windowClass: `admin-form-window`,
+  //     })
+  //     .onClose.subscribe(() => {
+  //       this.getUsers();
+  //     });
+  // }
 
   onEditRowSelect(event): void {
     if (window.open()) {
@@ -226,8 +226,8 @@ export class NecReportComponent implements OnInit, OnDestroy {
   onSubmit(): void {
    
 
-    this.form.value.createdBy=this.service.user.email,
-    this.service.makeSingleNECRequest(this.form.value).subscribe(
+    //this.form.value.createdBy=this.service.user.email
+    this.service.getNecReport(this.form.value).subscribe(
       (response) => {
         console.log(response);
         this.response = response;
@@ -237,8 +237,8 @@ export class NecReportComponent implements OnInit, OnDestroy {
       (error) => {
         console.error(error);
         this.toastrService.warning(
-          "Single NEC Request Failed: " + error.error.errorMessage,
-          "Single NEC Request",
+          "NEC Report Request Failed: " + error.error.errorMessage,
+          "NEC Report Request",
           {
             status: "danger",
             destroyByClick: true,
@@ -249,8 +249,8 @@ export class NecReportComponent implements OnInit, OnDestroy {
       () => {
         console.log(this.response);
         this.toastrService.success(
-          "Single NEC Request Success",
-          "Single NEC Request",
+          "NEC Report Request Success",
+          "NEC Report Request",
           {
             status: "success",
             destroyByClick: true,
