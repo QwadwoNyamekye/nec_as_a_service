@@ -1,10 +1,10 @@
 import { NbMenuItem } from "@nebular/theme";
 
 export const MENU_ITEMS: NbMenuItem[] = (function () {
-  var user = JSON.parse(localStorage.getItem("user"));
-  var role = user.role_id;
+  var user = JSON.parse(sessionStorage.getItem("user"));
+  var role = user?.role_id;
   console.log("###############################");
-  console.log(user.role_id);
+  console.log(user?.role_id);
   var menu_items = [];
   if (role == "1") {
     menu_items = [

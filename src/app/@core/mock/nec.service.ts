@@ -22,14 +22,16 @@ export class NecService {
     private http: HttpClient,
     private authService: NbAuthService,
     private toastrService: NbToastrService
-  ) {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>")
-    console.log(localStorage.getItem("token"))
+  ) {}
+
+  initializeVars() {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>");
+    console.log(sessionStorage.getItem("token"));
     this.headers = new HttpHeaders().set(
       "Authorization",
-      "Bearer " + localStorage.getItem("token")
+      "Bearer " + sessionStorage.getItem("token")
     );
-    this.user = JSON.parse(localStorage.getItem("user")); // here we receive a payload from the token and assigns it to our `user` variable
+    this.user = JSON.parse(sessionStorage.getItem("user")); // here we receive a payload from the token and assigns it to our `user` variable
     console.log(this.user);
   }
 

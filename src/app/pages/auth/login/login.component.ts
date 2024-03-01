@@ -22,13 +22,14 @@ export class LoginComponent extends NbLoginComponent {
         console.log(JSON.stringify(result.getResponse().body?.user));
 
         if (result.isSuccess()) {
-          localStorage.setItem(
+          sessionStorage.setItem(
             "user",
             JSON.stringify(result.getResponse().body.user)
           );
           console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^");
           console.log(result.getResponse().body.token);
-          localStorage.setItem("token", result.getResponse().body.token);
+          sessionStorage.setItem("token", result.getResponse().body.token);
+          this.necService.initializeVars()
           this.necService.initializeWebSocketConnection();
         } else {
           this.errors = result.getErrors();
