@@ -1,0 +1,69 @@
+<nb-card size="giant">
+  <nb-card-header>
+    NEC Report
+  </nb-card-header>
+  <nb-card-body id="reportForm">
+    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-3">
+          <label for="subject">Start Date :</label><br>
+          <input fullWidth nbInput placeholder="Start Date" [nbDatepicker]="picker1">
+          <nb-datepicker #picker1 [max]="max"></nb-datepicker>
+        </div>
+        <div class="col-md-3">
+          <label for="subject">End Date :</label><br>
+          <input fullWidth nbInput placeholder="End Date" [nbDatepicker]="picker2">
+          <nb-datepicker #picker2 [max]="max"></nb-datepicker>
+        </div>
+        <div class="col-md-3">
+          <label class="text-label" for="text">Type :</label><br>
+          <nb-select fullWidth formControlName="type" placeholder="Type">
+            <nb-option  value="Bulk"> BULK </nb-option>
+            <nb-option  value="Single"> SINGLE </nb-option>
+          </nb-select>
+        </div>
+        <div class="col-md-3">
+          <label class="text-label" for="text">Destination Banks/FI :</label><br>
+          <nb-select fullWidth formControlName="destBank" placeholder="Banks/FI">
+            <nb-option *ngFor="let i of this.bankList" [value]="i.bankCode">
+              {{ i.bankName }}
+            </nb-option>
+          </nb-select>
+        </div>
+        <br>
+
+      </div> <!--ROW END-->
+      <br>
+      <div class="row">
+        <div class="col-md-3">
+          <label class="text-label" for="text">Institutions :</label><br>
+          <nb-select fullWidth formControlName="code" placeholder="Institutions">
+            <nb-option *ngFor="let i of this.institutions" [value]="i.institutionCode">
+              {{ i.institutionName }}
+            </nb-option>
+          </nb-select>
+        </div>
+        <div class="offset-md-7 col-md-2">
+          <label class="text-label" for="text">&nbsp;</label><br>
+          <button  fullWidth nbButton type="submit" [status]="statuses[0]" (click)="onSubmit()" [shape]="shapes[1]">
+            Submit
+          </button>
+        </div>
+        
+        
+      </div> <!--ROW END-->
+
+      <!-- <br>
+        <div class="col-md-2">
+          <button  fullWidth nbButton type="submit" [status]="statuses[0]" (click)="onSubmit()" [shape]="shapes[1]">
+            Submit
+          </button>
+        </div> -->
+    </form>
+  </nb-card-body>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"
+      (edit)="onEditRowSelect($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

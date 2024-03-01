@@ -26,6 +26,11 @@ const routes: Routes = [
           .then(m => m.NECModule),
       },
       {
+        path: '',
+        loadChildren: () => import('./report/report.module')
+          .then(m => m.ReportModule),
+      },
+      {
         path: "dashboard",
         component: ECommerceComponent,
       },
