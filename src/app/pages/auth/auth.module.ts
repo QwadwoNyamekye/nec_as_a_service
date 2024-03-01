@@ -72,7 +72,7 @@ const formSetting: any = {
             method: "post",
           },
           requestPass: {
-            endpoint: "/user/api/v1/forgot_password",
+            endpoint: "/auth/api/v1/forgot_password",
             method: "post",
           },
           resetPass: {

@@ -211,7 +211,6 @@ export class AdminDashboardComponent implements OnInit {
       title: `Edit User`,
       windowClass: `admin-form-window`,
       context: {
-        email: event.data.email,
         currentValues: event.data
       },
     })

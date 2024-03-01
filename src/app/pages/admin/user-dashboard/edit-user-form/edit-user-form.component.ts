@@ -89,7 +89,6 @@ import { NbToastrService } from "@nebular/theme";
   styleUrls: ["edit-user-form.component.scss"],
 })
 export class EditUserFormComponent implements OnInit {
-  @Input() email: string;
   @Input() currentValues: any;
   statuses: NbComponentStatus[] = [
     "primary",
@@ -155,15 +154,19 @@ export class EditUserFormComponent implements OnInit {
 
   // Define a method to handle the form submission
   onSubmit(): void {
-    var object = {
-      name: this.form.value.firstName + " " + this.form.value.lastName,
-      institutionCode: this.form.value.institution,
-      role_id: this.form.value.role,
-      email: this.email,
-      phone: this.form.value.phone
-    };
+    // var object = {
+    //   name: this.form.value.firstName + " " + this.form.value.lastName,
+    //   institutionCode: this.form.value.institution,
+    //   role_id: this.form.value.role,
+    //   phone: this.form.value.phone,
+    //   status: this.currentValues.status
+    // };
+    this.currentValues.name = this.form.value.firstName + " " + this.form.value.lastName
+    this.currentValues.institutionCode = this.form.value.institution
+    this.currentValues.role_id = this.form.value.role
+    this.currentValues.phone = this.form.value.phone
     // Send a post request to the server endpoint with the FormData object
-    this.service.editUser(object).subscribe(
+    this.service.editUser(this.currentValues).subscribe(
       (response) => {
         console.log(response);
         this.response = response;

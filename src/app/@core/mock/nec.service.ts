@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { HttpHeaders } from "@angular/common/http";
 import { NbAuthService, NbAuthJWTToken } from "@nebular/auth";
-import { Stomp } from "@stomp/stompjs";
+import { CompatClient, Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 import { NbToastrService } from "@nebular/theme";
 import { environment } from "../../../environments/environment.prod";
@@ -16,13 +16,16 @@ export class NecService {
   bankUrl = environment.bankUrl;
   data: any;
   headers: any;
-  stompClient: any;
+  stompClient: CompatClient;
 
   constructor(
     private http: HttpClient,
     private authService: NbAuthService,
     private toastrService: NbToastrService
-  ) {}
+  ) {
+    this.initializeVars();
+    this.initializeWebSocketConnection()
+  }
 
   initializeVars() {
     console.log(">>>>>>>>>>>>>>>>>>>>>>");
@@ -35,27 +38,44 @@ export class NecService {
     console.log(this.user);
   }
 
+  websocketSuccessCallback() {
+    this.stompClient.subscribe("/realtime/alert", (message) => {
+      var websocketdata = message.body.split(":");
+      var websocketMessage = websocketdata[0];
+      var websocketUser = websocketdata[1];
+      console.log(this.user);
+      if (websocketMessage != "" && websocketUser == this.user.id) {
+        this.toastrService.success(websocketMessage, "Bulk File Processing", {
+          duration: 100000,
+          destroyByClick: true,
+          duplicatesBehaviour: "previous",
+          preventDuplicates: true,
+        });
+      }
+    });
+  }
+
+  websocketFailureCallback(error) {
+    console.log("STOMP: " + error);
+    setTimeout(this.initializeWebSocketConnection, 10000);
+    console.log("STOMP: Reconecting in 10 seconds");
+  }
+
   initializeWebSocketConnection() {
     const serverUrl = this.websocket;
     const ws = new SockJS(serverUrl);
     this.stompClient = Stomp.over(ws);
-    const that = this;
-    this.stompClient.connect({}, function (frame) {
-      that.stompClient.subscribe("/realtime/alert", (message) => {
-        var websocketdata = message.body.split(":");
-        var websocketMessage = websocketdata[0];
-        var websocketUser = websocketdata[1];
-        console.log(that.user);
-        if (websocketMessage != "" && websocketUser == that.user.id) {
-          that.toastrService.success(websocketMessage, "Bulk File Processing", {
-            duration: 100000,
-            destroyByClick: true,
-            duplicatesBehaviour: "previous",
-            preventDuplicates: true,
-          });
-        }
-      });
-    });
+    if (!this.stompClient.connected) {
+      console.log("NEW WEBSOCKET CONNECTION");
+      this.stompClient.connect(
+        {},
+        this.websocketSuccessCallback,
+        this.websocketFailureCallback
+      );
+    } else {
+      console.log("USING EXISTING CONNECTION");
+      this.websocketSuccessCallback();
+    }
   }
 
   //-------------BULK--------------

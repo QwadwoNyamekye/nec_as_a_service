@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-
 import { MENU_ITEMS } from './pages-menu';
+import { NecService } from '../@core/mock/nec.service';
 
 @Component({
   selector: 'ngx-pages',
