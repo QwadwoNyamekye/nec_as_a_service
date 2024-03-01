@@ -12,6 +12,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { NbTableModule } from "@nebular/theme";
 import { AdminModule } from "./admin/admin.module";
 import { NECModule } from "./nec/nec.module";
+import { ReportModule } from "./report/report.module";
+
 
 @NgModule({
   imports: [
@@ -28,6 +30,7 @@ import { NECModule } from "./nec/nec.module";
     NbTableModule,
     AdminModule,
     NECModule,
+    ReportModule
   ],
   declarations: [PagesComponent],
   bootstrap: [PagesComponent],

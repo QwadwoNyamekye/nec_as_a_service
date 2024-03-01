@@ -21,6 +21,11 @@ var bulk_nec_path = {
   icon: "bookmark",
   link: "/pages/nec/bulk",
 };
+var nec_report_path = {
+  title: "NEC Report",
+  icon: "bookmark",
+  link: "/pages/nec-report",
+};
 var menu_items = [];
 
 export const MENU_ITEMS: NbMenuItem[] = (function () {
@@ -41,7 +46,7 @@ export const MENU_ITEMS: NbMenuItem[] = (function () {
   } else if (role == "3") {
     menu_items.push(user_path, institution_path);
   } else if (role == "4") {
-    menu_items.push(single_nec_path, bulk_nec_path);
+    menu_items.push(single_nec_path, bulk_nec_path,nec_report_path);
   }
   return menu_items;
 })();

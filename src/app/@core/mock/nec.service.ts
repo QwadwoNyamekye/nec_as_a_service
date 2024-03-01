@@ -14,6 +14,7 @@ export class NecService {
   websocket = environment.websocket;
   baseUrl = environment.baseUrl;
   bankUrl = environment.bankUrl;
+  reportingUrl= environment.reportingUrl;
   data: any;
   headers: any;
   stompClient: CompatClient;
@@ -247,6 +248,16 @@ export class NecService {
   editUser(user) {
     return this.http
       .post(this.baseUrl + "/user/api/v1/update_user", user, {
+        headers: this.headers,
+      })
+      .pipe(map((response) => response));
+  }
+
+
+  ///////////////////REPORTS API//////////////
+  getNecReport(data) {
+    return this.http
+      .post(this.reportingUrl + "/single/api/v1/get_nec_report", data, {
         headers: this.headers,
       })
       .pipe(map((response) => response));
