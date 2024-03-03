@@ -16,20 +16,27 @@ const routes: Routes = [
       {
         path: "user-dashboard",
         component: AdminDashboardComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: { allowedRoles: ["1", "2"] },
       },
       {
         path: "institution-dashboard",
         component: InstitutionDashboardComponent,
+        canActivate: [AuthGuard],
+        data: { allowedRoles: ["1", "2"] },
       },
       {
         path: "nec",
         loadChildren: () => import("./nec/nec.module").then((m) => m.NECModule),
+        canActivate: [AuthGuard],
+        data: { allowedRoles: ["3", "4"] },
       },
       {
         path: "",
         loadChildren: () =>
           import("./report/report.module").then((m) => m.ReportModule),
+        canActivate: [AuthGuard],
+        data: { allowedRoles: ["1", "2", "5", "6"] },
       },
       {
         path: "dashboard",

@@ -45,6 +45,28 @@ export class BulkUploadComponent implements OnInit {
       `<nb-card-body style="background-color: ${this.colour}; border-radius: 12px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
     );
   }
+
+  process = {
+    name: "edit",
+    title: '<i class="nb-edit"></i>',
+  };
+  authorize = {
+    name: "authorize",
+    title: '<i class="nb-checkmark"></i>',
+  };
+  expand = {
+    name: "expand",
+    title: '<i class="nb-plus"></i>',
+  };
+  customActions(role_id: string) {
+    var custom = [];
+    if (role_id == "4") {
+      custom.push(this.process, this.expand);
+    } else if (role_id == "3") {
+      custom.push(this.authorize, this.expand);
+    }
+    return custom;
+  }
   settings = {
     mode: "external",
     pager: {
@@ -53,20 +75,7 @@ export class BulkUploadComponent implements OnInit {
     hideSubHeader: true,
     actions: {
       position: "right",
-      custom: [
-        {
-          name: "edit",
-          title: '<i class="nb-edit"></i>',
-        },
-        {
-          name: "authorize",
-          title: '<i class="nb-checkmark"></i>',
-        },
-        {
-          name: "expand",
-          title: '<i class="nb-plus"></i>',
-        },
-      ],
+      custom: this.customActions(this.service.user.role_id),
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -138,15 +147,15 @@ export class BulkUploadComponent implements OnInit {
   customFunction(event) {
     console.log(event);
     if (event.action == "edit") {
-      this.onEditRowSelect(event);
+      this.submitForProcessing(event);
     } else if (event.action == "authorize") {
       this.submitForAuthorization(event);
     } else if (event.action == "expand") {
       this.openFileRecords(event);
     }
   }
-  compare( a, b ) {
-    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+  compare(a, b) {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
   getUploads() {
     this.service.getUploads(this.service.user.email).subscribe(
@@ -183,7 +192,7 @@ export class BulkUploadComponent implements OnInit {
       });
   }
 
-  onEditRowSelect(event): void {
+  submitForProcessing(event): void {
     console.log(event);
     this.dialogService
       .open(SubmitForProcessingComponent, {

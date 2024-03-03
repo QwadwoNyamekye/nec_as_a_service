@@ -22,9 +22,7 @@ export class AuthGuard {
       tap((authenticated) => {
         if (!authenticated) {
           this.router.navigate(["auth/login"]);
-        } else if (
-          ["1", "2", "3", "4", "5"].includes(this.service.user.role_id)
-        ) {
+        } else if (allowedRoles.includes(this.service.user.role_id)) {
           this.router.navigate(["pages/miscellaneous/404"]);
         }
       })
