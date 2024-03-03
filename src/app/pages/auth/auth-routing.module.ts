@@ -1,28 +1,28 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { NbAuthComponent } from './auth.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { NbAuthComponent } from "./auth.component";
 
-import { LoginComponent } from './login/login.component';
-import { NbRequestPasswordComponent, NbResetPasswordComponent } from '@nebular/auth';
-import { LogoutComponent } from './logout/logout.component';
+import { LoginComponent } from "./login/login.component";
+import { NbResetPasswordComponent } from "@nebular/auth";
+import { NbRequestPasswordComponent } from "./request-password/request-password.component";
 
 export const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: NbAuthComponent,
     children: [
       {
-        path: 'login',
+        path: "login",
         component: LoginComponent,
       },
       {
-        path: 'request-password',
-        component: NbRequestPasswordComponent
+        path: "request-password",
+        component: NbRequestPasswordComponent,
       },
       {
-        path: 'reset-password',
-        component: NbResetPasswordComponent
-      }
+        path: "reset-password",
+        component: NbResetPasswordComponent,
+      },
     ],
   },
 ];
@@ -31,5 +31,4 @@ export const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AuthRoutingModule {
-}
+export class AuthRoutingModule {}

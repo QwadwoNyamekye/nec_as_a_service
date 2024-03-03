@@ -15,6 +15,7 @@ import {
 import { LoginComponent } from "./login/login.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { ReactiveFormsModule } from "@angular/forms";
+import { NbRequestPasswordComponent } from "./request-password/request-password.component";
 import {
   NbPasswordAuthStrategy,
   NbAuthModule,
@@ -93,7 +94,12 @@ const formSetting: any = {
       },
     }),
   ],
-  declarations: [LoginComponent, NbAuthComponent, LogoutComponent],
+  declarations: [
+    LoginComponent,
+    NbAuthComponent,
+    LogoutComponent,
+    NbRequestPasswordComponent,
+  ],
   // providers: [{ provide: NbTokenService, useClass: NbAuthJWTToken }],
 })
 export class NgxAuthModule {
