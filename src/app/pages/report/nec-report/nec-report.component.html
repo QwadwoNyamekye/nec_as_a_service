@@ -7,12 +7,12 @@
       <div class="row">
         <div class="col-md-3">
           <label for="subject">Start Date :</label><br>
-          <input fullWidth nbInput placeholder="Start Date" [nbDatepicker]="picker1">
+          <input fullWidth nbInput formControlName="startDate" placeholder="Start Date" [nbDatepicker]="picker1">
           <nb-datepicker #picker1 [max]="max"></nb-datepicker>
         </div>
         <div class="col-md-3">
           <label for="subject">End Date :</label><br>
-          <input fullWidth nbInput placeholder="End Date" [nbDatepicker]="picker2">
+          <input fullWidth nbInput formControlName="endDate" placeholder="End Date" [nbDatepicker]="picker2">
           <nb-datepicker #picker2 [max]="max"></nb-datepicker>
         </div>
         <div class="col-md-3">
@@ -32,20 +32,18 @@
         </div>
         <br>
 
-      </div> <!--ROW END-->
-      <br>
-      <div class="row">
+    
         <div class="col-md-3">
           <label class="text-label" for="text">Institutions :</label><br>
           <nb-select fullWidth formControlName="code" placeholder="Institutions">
-            <nb-option *ngFor="let i of this.institutions" [value]="i.institutionCode">
-              {{ i.institutionName }}
+            <nb-option *ngFor="let i of this.institutions" [value]="i.code">
+              {{ i.name }}
             </nb-option>
           </nb-select>
         </div>
         <div class="offset-md-7 col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button  fullWidth nbButton type="submit" [status]="statuses[0]" (click)="onSubmit()" [shape]="shapes[1]">
+          <button  fullWidth nbButton type="submit" [status]="statuses[0]" [shape]="shapes[1]">
             Submit
           </button>
         </div>

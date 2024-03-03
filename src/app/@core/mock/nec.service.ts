@@ -94,9 +94,9 @@ export class NecService {
       .pipe(map((response) => response));
   }
 
-  getUploads() {
+  getUploads(email) {
     return this.http
-      .get(this.baseUrl + "/upload/api/v1/get_uploads", {
+      .get(this.baseUrl + "/upload/api/v1/get_uploads/"+email, {
         headers: this.headers,
       })
       .pipe(map((response) => response));
@@ -257,7 +257,7 @@ export class NecService {
   ///////////////////REPORTS API//////////////
   getNecReport(data) {
     return this.http
-      .post(this.reportingUrl + "/single/api/v1/get_nec_report", data, {
+      .post(this.reportingUrl + "/nec-report/api/v1/get_nec_report", data, {
         headers: this.headers,
       })
       .pipe(map((response) => response));

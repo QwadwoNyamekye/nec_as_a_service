@@ -124,7 +124,7 @@ export class BulkUploadComponent implements OnInit {
   };
 
   constructor(
-    private service: NecService,
+    public service: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
@@ -149,7 +149,7 @@ export class BulkUploadComponent implements OnInit {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
   }
   getUploads() {
-    this.service.getUploads().subscribe(
+    this.service.getUploads(this.service.user.email).subscribe(
       (data) => {
         this.files = data;
       },

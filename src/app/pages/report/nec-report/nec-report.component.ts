@@ -53,6 +53,14 @@ export class NecReportComponent implements OnInit, OnDestroy {
       confirmDelete: true,
     },
     columns: {
+      sessionId: {
+        title: "Session ID",
+        type: "string",
+      },
+      narration: {
+        title: "Narration",
+        type: "string",
+      },
       destInstitution: {
         title: "Dest. Institution Code",
         type: "string",
@@ -100,11 +108,11 @@ export class NecReportComponent implements OnInit, OnDestroy {
   institutions: Object;
 
   constructor(
-    private service: NecService,
+    public service: NecService,
     private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>
   ) {
-    this.getUsers();
+    //this.getUsers();
   }
 
   ngOnInit() {
@@ -141,18 +149,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.service.getBanks().subscribe(
-      (data) => {
-        this.bankList = data;
-        console.log(this.bankList);
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        console.log(this.bankList);
-      }
-    );
 
     this.service.getInstitutions().subscribe(
       (data) => {
@@ -173,20 +169,20 @@ export class NecReportComponent implements OnInit, OnDestroy {
   compare( a, b ) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
   }
-  getUsers() {
-    this.service.getSingleNECList().subscribe(
-      (data) => {
-        this.users = data;
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        console.log(this.users.sort(this.compare));
-        this.source.load(this.users.sort(this.compare));
-      }
-    );
-  }
+  // getUsers() {
+  //   this.service.getSingleNECList().subscribe(
+  //     (data) => {
+  //       this.users = data;
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     },
+  //     () => {
+  //       console.log(this.users.sort(this.compare));
+  //       this.source.load(this.users.sort(this.compare));
+  //     }
+  //   );
+  // }
 
   
 
@@ -226,12 +222,17 @@ export class NecReportComponent implements OnInit, OnDestroy {
   onSubmit(): void {
    
 
-    //this.form.value.createdBy=this.service.user.email
+ 
+    this.form.value.endDate.setHours('23')
+    this.form.value.endDate.setMinutes('59')
+    this.form.value.endDate.setSeconds('59')
+    this.form.value.endDate.setMilliseconds('999')
+
     this.service.getNecReport(this.form.value).subscribe(
       (response) => {
         console.log(response);
         this.response = response;
-        // window.parent.postMessage(response);
+        this.source.load(this.response)
         return response;
       },
       (error) => {
@@ -247,20 +248,20 @@ export class NecReportComponent implements OnInit, OnDestroy {
         );
       },
       () => {
-        console.log(this.response);
-        this.toastrService.success(
-          "NEC Report Request Success",
-          "NEC Report Request",
-          {
-            status: "success",
-            destroyByClick: true,
-            duration: 100000,
-          }
-        );
+        //console.log(this.response);
+        // this.toastrService.success(
+        //   "NEC Report Request Success",
+        //   "NEC Report Request",
+        //   {
+        //     status: "success",
+        //     destroyByClick: true,
+        //     duration: 100000,
+        //   }
+        // );
         //this.windowRef.close();
       }
     );
-    this.close();
+    //this.close();
   }
   close() {
     //this.windowRef.close();

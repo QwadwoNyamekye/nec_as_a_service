@@ -22,6 +22,7 @@ import {
   NbTokenService,
 } from "@nebular/auth";
 import { Injector } from '@angular/core';
+import { environment } from "../../../environments/environment.prod";
 
 export let AppInjector: Injector;
 
@@ -54,7 +55,7 @@ const formSetting: any = {
             class: NbAuthJWTToken,
             key: "token", // this parameter tells where to look for the token
           },
-          baseEndpoint: "http://172.27.21.210:8089",
+          baseEndpoint: environment.baseUrl,
           login: {
             endpoint: "/auth/api/v1/authenticate",
             method: "post",
