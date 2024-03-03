@@ -1,40 +1,20 @@
 <nb-card size="giant">
   <nb-card-header>
-    NEC Report
+    Upload Report
   </nb-card-header>
   <nb-card-body id="reportForm">
     <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
           <label for="subject">Start Date :</label><br>
           <input fullWidth nbInput formControlName="startDate" placeholder="Start Date" [nbDatepicker]="picker1">
           <nb-datepicker #picker1 [max]="max"></nb-datepicker>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <label for="subject">End Date :</label><br>
           <input fullWidth nbInput formControlName="endDate" placeholder="End Date" [nbDatepicker]="picker2">
           <nb-datepicker #picker2 [max]="max"></nb-datepicker>
         </div>
-        <div class="col-md-2">
-          <label class="text-label" for="text">Type :</label><br>
-          <nb-select fullWidth formControlName="type" placeholder="Type">
-            <nb-option value="">Select Type</nb-option>
-            <nb-option value="Bulk"> BULK </nb-option>
-            <nb-option value="Single"> SINGLE </nb-option>
-          </nb-select>
-        </div>
-        <div class="col-md-3">
-          <label class="text-label" for="text">Destination Banks/FI :</label><br>
-          <nb-select fullWidth formControlName="destBank" placeholder="Banks/FI">
-            <nb-option value="">Select Bank</nb-option>
-            <nb-option *ngFor="let i of this.bankList" [value]="i.bankCode">
-              {{ i.bankName }}
-            </nb-option>
-          </nb-select>
-        </div>
-        <br>
-
-
         <div *ngIf="this.showInstitution" class="col-md-3">
           <label class="text-label" for="text">Institutions :</label><br>
           <nb-select fullWidth formControlName="code" placeholder="Institutions">
@@ -44,7 +24,16 @@
             </nb-option>
           </nb-select>
         </div>
-      </div><!--ROW END offset-md-7 -->
+        <div class="col-md-3">
+          <label class="text-label" for="text">Status :</label><br>
+          <nb-select fullWidth formControlName="status" placeholder="Status">
+            <nb-option value="">Select Status</nb-option>
+            <nb-option *ngFor="let i of this.uploadStatus" [value]="i.id">
+              {{ i.name }}
+            </nb-option>
+          </nb-select>
+        </div>
+      </div><!--ROW END-->
       <div class="row">
         <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
