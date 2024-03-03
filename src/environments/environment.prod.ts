@@ -4,8 +4,8 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-//let host = 'localhost'
-let host='172.27.21.210'
+let host = 'localhost'
+//let host='172.27.21.210'
 export const environment = {
   production: true,
 

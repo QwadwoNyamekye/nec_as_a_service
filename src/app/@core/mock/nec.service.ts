@@ -268,4 +268,12 @@ export class NecService {
       })
       .pipe(map((response) => response));
   }
+
+  getUploadReport(data) {
+    return this.http
+      .post(this.reportingUrl + "/upload/api/v1/get_uploads_report", data, {
+        headers: this.headers,
+      })
+      .pipe(map((response) => response));
+  }
 }

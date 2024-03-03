@@ -225,7 +225,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     this.form.value.endDate.setMilliseconds('999')
     this.form.value.code= this.institutionCode ? this.institutionCode : this.form.value.code
 
-    this.service.getNecReport(this.form.value).subscribe(
+    this.service.getUploadReport(this.form.value).subscribe(
       (response) => {
         console.log(response);
         this.response = response;
@@ -235,8 +235,8 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       (error) => {
         console.error(error);
         this.toastrService.warning(
-          "NEC Report Request Failed: " + error.error.errorMessage,
-          "NEC Report Request",
+          "Upload Report Request Failed: " + error.error.errorMessage,
+          "Upload Report Request",
           {
             status: "danger",
             destroyByClick: true,
