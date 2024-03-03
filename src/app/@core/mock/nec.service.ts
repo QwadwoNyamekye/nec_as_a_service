@@ -145,6 +145,12 @@ export class NecService {
       .pipe(map((response) => response));
   }
 
+  getUploadStatus() {
+    return this.http
+      .get(this.baseUrl + "/upload/api/v1/get_uploads_status", { headers: this.headers })
+      .pipe(map((response) => response));
+  }
+
   getSingleNECList() {
     console.log(">>>>>>>>>>>>");
     console.log(this.headers);

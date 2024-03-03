@@ -7,11 +7,11 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { NbToastrService, NbComponentShape, NbComponentStatus, NbDateService } from "@nebular/theme"; //NbWindowRef
 
 @Component({
-  selector: "ngx-nec-report",
-  templateUrl: "./nec-report.component.html",
-  styleUrls: ["./nec-report.component.scss"],
+  selector: "ngx-upload-report",
+  templateUrl: "./upload-report.component.html",
+  styleUrls: ["./upload-report.component.scss"],
 })
-export class NecReportComponent implements OnInit, OnDestroy {
+export class UploadReportComponent implements OnInit, OnDestroy {
   source: LocalDataSource = new LocalDataSource();
   users: any;
   stompClient: any;
@@ -53,44 +53,31 @@ export class NecReportComponent implements OnInit, OnDestroy {
       confirmDelete: true,
     },
     columns: {
-      sessionId: {
-        title: "Session ID",
+      batchId: {
+        title: "Batch ID",
         type: "string",
       },
-      narration: {
-        title: "Narration",
+      totalCount: {
+        title: "Record Count",
         type: "string",
       },
-      destInstitution: {
-        title: "Dest. Institution Code",
+      description: {
+        title: "Description",
         type: "string",
       },
-      destInstitutionName: {
-        title: "Dest. Institution",
+      fileName: {
+        title: "File Name",
         type: "string",
       },
-      destAccountNumber: {
-        title: "Destination Account",
-        type: "string",
+      status: {
+        title: "Status",
+        type: "html",
+        valuePrepareFunction: (status) => {
+          return this.getHtmlForCell(status);
+        },
       },
-      destAccountName: {
-        title: "Account Name",
-        type: "string",
-      },
-      srcInstitution: {
-        title: "Src. Institution Code",
-        type: "string",
-      },
-      srcInstitutionName: {
-        title: "Src. Institution",
-        type: "string",
-      },
-      actionCode: {
-        title: "Action Code",
-        type: "string",
-      },
-      createdBy: {
-        title: "Created By",
+      institutionCode: {
+        title: "Institution Code",
         type: "string",
       },
       createdAt: {
@@ -106,8 +93,13 @@ export class NecReportComponent implements OnInit, OnDestroy {
   max: Date;
   min: Date;
   institutions: Object;
-  showInstitution: Boolean = true
-  institutionCode
+  colour: string;
+  name: string;
+  domSanitizer: any;
+  institutionCode: any;
+  showInstitution: boolean = true;
+  uploadStatus: Object;
+
   constructor(
     public service: NecService,
     private toastrService: NbToastrService,
@@ -123,7 +115,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
       console.log(this.receivedData);
     };
 
-    
     if(this.service.user.role_id == '2' || this.service.user.role_id == '3' || this.service.user.role_id == '4'){
       this.institutionCode = this.service.user.institutionCode
       this.showInstitution = false
@@ -135,31 +126,29 @@ export class NecReportComponent implements OnInit, OnDestroy {
     // this.service.initializeWebSocketConnection()
 
     this.form = new FormGroup({
-      type: new FormControl("", Validators.required),
-      destBank: new FormControl("", Validators.required),
+      status: new FormControl("", Validators.required),
       endDate: new FormControl("", Validators.required),
       startDate: new FormControl("", Validators.required),
       code: new FormControl("", Validators.required)
     });
 
-    /////GET BANKS///////////////
-    this.service.getBanks().subscribe(
+
+    this.service.getInstitutions().subscribe(
       (data) => {
-        this.bankList = data;
-        console.log(this.bankList);
+        this.institutions = data;
       },
       (error) => {
         console.log(error);
       },
       () => {
-        console.log(this.bankList);
+        //console.log(this.institutions.sort(this.compare));
+        //this.source.load(this.institutions.sort(this.compare));
       }
     );
 
-
-    this.service.getInstitutions().subscribe(
+    this.service.getUploadStatus().subscribe(
       (data) => {
-        this.institutions = data;
+        this.uploadStatus = data;
       },
       (error) => {
         console.log(error);
@@ -236,7 +225,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
     this.form.value.endDate.setMilliseconds('999')
     this.form.value.code= this.institutionCode ? this.institutionCode : this.form.value.code
 
-    
     this.service.getNecReport(this.form.value).subscribe(
       (response) => {
         console.log(response);
@@ -274,5 +262,24 @@ export class NecReportComponent implements OnInit, OnDestroy {
   }
   close() {
     //this.windowRef.close();
+  }
+
+  getHtmlForCell(value: string) {
+    if (value === "0") {
+      this.colour = "lightcoral";
+      this.name = "UPLOADING";
+    } else if (value === "1") {
+      this.colour = "lightskyblue";
+      this.name = "SUBMITTED";
+    } else if (value === "2") {
+      this.colour = "yellow";
+      this.name = "PROCESSING";
+    } else {
+      this.colour = "green";
+      this.name = "COMPLETED";
+    }
+    return this.domSanitizer.bypassSecurityTrustHtml(
+      `<nb-card-body style="background-color: ${this.colour}; border-radius: 12px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
+    );
   }
 }

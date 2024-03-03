@@ -26,6 +26,12 @@ var nec_report_path = {
   icon: "bookmark",
   link: "/pages/nec-report",
 };
+
+var upload_report_path = {
+  title: "Upload Report",
+  icon: "bookmark",
+  link: "/pages/upload-report",
+};
 var menu_items = [];
 
 export const MENU_ITEMS: NbMenuItem[] = (function () {
@@ -38,15 +44,20 @@ export const MENU_ITEMS: NbMenuItem[] = (function () {
     menu_items.push(
       user_path,
       institution_path,
-      single_nec_path,
-      bulk_nec_path
+      // single_nec_path,
+      // bulk_nec_path,
+      nec_report_path, upload_report_path
     );
   } else if (role == "2") {
-    menu_items.push(user_path, institution_path, bulk_nec_path);
+    menu_items.push(user_path, nec_report_path, upload_report_path);
   } else if (role == "3") {
-    menu_items.push(user_path, institution_path);
+    menu_items.push(bulk_nec_path, nec_report_path, upload_report_path);
   } else if (role == "4") {
-    menu_items.push(single_nec_path, bulk_nec_path,nec_report_path);
+    menu_items.push(single_nec_path, bulk_nec_path, nec_report_path, upload_report_path);
+  } else if (role == "5") {
+    menu_items.push(nec_report_path, upload_report_path);
+  }else if (role == "6") {
+    menu_items.push(nec_report_path, upload_report_path);
   }
   return menu_items;
 })();

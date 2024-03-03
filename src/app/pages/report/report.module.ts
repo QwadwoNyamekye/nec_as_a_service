@@ -22,6 +22,7 @@ import { ThemeModule } from "../../@theme/theme.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ReportRoutingModule } from "./report-routing.module";
 import { NecReportComponent } from "./nec-report/nec-report.component";
+import { UploadReportComponent } from "./upload-report/upload-report.component";
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { NecReportComponent } from "./nec-report/nec-report.component";
   ],
   declarations: [
     NecReportComponent,
+    UploadReportComponent,
     //BulkUploadComponent,
     //SingleNECRequestComponent,
     // BulkNEComponent,

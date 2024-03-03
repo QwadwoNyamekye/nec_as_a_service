@@ -35,7 +35,7 @@ import { NbToastrService } from "@nebular/theme";
       />
 
       <div class="row">
-        <div class="col-sm-6">
+        <div *ngIf="this.showInstitution" class="col-sm-6">
           <label class="text-label" for="text">Institution:</label>
           <nb-select
             fullWidth
@@ -116,6 +116,8 @@ export class AddUserFormComponent implements OnInit {
   response: any;
 
   source: LocalDataSource = new LocalDataSource();
+  institutionCode: any;
+  showInstitution: boolean = true;
 
   constructor(
     public windowRef: NbWindowRef,
@@ -124,6 +126,12 @@ export class AddUserFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    if(this.service.user.role_id == '2' || this.service.user.role_id == '3' || this.service.user.role_id == '4'){
+      this.institutionCode = this.service.user.institutionCode
+      this.showInstitution = false
+    }
+    
     this.service.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
@@ -139,12 +147,19 @@ export class AddUserFormComponent implements OnInit {
     this.service.getRoles().subscribe(
       (data) => {
         this.roles = data;
+        if(this.service.user.role_id!=1){
+          this.roles = this.roles.filter(el =>
+            el.name.includes('Bank')
+          )
+        }
         console.log(this.roles);
       },
       (error) => {
         console.log(error);
       }
     );
+
+
     // Initialize the form model with three form controls
     this.form = new FormGroup({
       firstName: new FormControl("", Validators.required),
@@ -160,12 +175,13 @@ export class AddUserFormComponent implements OnInit {
   onSubmit(): void {
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
-      institutionCode: this.form.value.institution,
+      institutionCode: this.institutionCode ? this.institutionCode : this.form.value.institution,
       role_id: this.form.value.role,
       email: this.form.value.emailAddress,
       phone: this.form.value.phoneNumber,
       createdBy: this.service.user.email,
     };
+
     // Send a post request to the server endpoint with the FormData object
     this.service.postUsers(object).subscribe(
       (data) => {
