@@ -4,7 +4,6 @@ var user_path = {
   title: "User",
   icon: "briefcase",
   link: "/pages/user-dashboard",
-  home: true,
 };
 var institution_path = {
   title: "Institution",
@@ -26,27 +25,30 @@ var nec_report_path = {
   icon: "bookmark",
   link: "/pages/nec-report",
 };
-var menu_items = [];
 
 export const MENU_ITEMS: NbMenuItem[] = (function () {
   var user = JSON.parse(sessionStorage.getItem("user"));
-  var role = user?.role_id;
+  var user_role = user?.role_id;
   console.log("###############################");
-  console.log(user?.role_id);
+  console.log(user_role);
   var menu_items = [];
-  if (role == "1") {
+  if (user_role == "1") {
+    user_path["home"] = true;
     menu_items.push(
       user_path,
       institution_path,
       single_nec_path,
       bulk_nec_path
     );
-  } else if (role == "2") {
+  } else if (user_role == "2") {
+    user_path["home"] = true;
     menu_items.push(user_path, institution_path, bulk_nec_path);
-  } else if (role == "3") {
+  } else if (user_role == "3") {
+    user_path["home"] = true;
     menu_items.push(user_path, institution_path);
-  } else if (role == "4") {
-    menu_items.push(single_nec_path, bulk_nec_path,nec_report_path);
+  } else if (user_role == "4") {
+    single_nec_path["home"] = true;
+    menu_items.push(single_nec_path, bulk_nec_path, nec_report_path);
   }
   return menu_items;
 })();

@@ -3,9 +3,10 @@ import { NgModule } from "@angular/core";
 import { PagesComponent } from "./pages.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { ECommerceComponent } from "./e-commerce/e-commerce.component";
-import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
-import { AdminDashboardComponent } from './admin/user-dashboard/user-dashboard.component';
-import { InstitutionDashboardComponent } from './admin/institution-dashboard/institution-dashboard.component';
+import { NotFoundComponent } from "./miscellaneous/not-found/not-found.component";
+import { AdminDashboardComponent } from "./admin/user-dashboard/user-dashboard.component";
+import { InstitutionDashboardComponent } from "./admin/institution-dashboard/institution-dashboard.component";
+import { AuthGuard } from "../auth-guard.service";
 
 const routes: Routes = [
   {
@@ -13,22 +14,22 @@ const routes: Routes = [
     component: PagesComponent,
     children: [
       {
-        path: 'user-dashboard',
+        path: "user-dashboard",
         component: AdminDashboardComponent,
+        canActivate: [AuthGuard]
       },
       {
-        path: 'institution-dashboard',
+        path: "institution-dashboard",
         component: InstitutionDashboardComponent,
       },
       {
-        path: 'nec',
-        loadChildren: () => import('./nec/nec.module')
-          .then(m => m.NECModule),
+        path: "nec",
+        loadChildren: () => import("./nec/nec.module").then((m) => m.NECModule),
       },
       {
-        path: '',
-        loadChildren: () => import('./report/report.module')
-          .then(m => m.ReportModule),
+        path: "",
+        loadChildren: () =>
+          import("./report/report.module").then((m) => m.ReportModule),
       },
       {
         path: "dashboard",
@@ -106,7 +107,7 @@ const routes: Routes = [
         component: NotFoundComponent,
       },
     ],
-  }
+  },
 ];
 
 @NgModule({
