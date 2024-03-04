@@ -11,8 +11,6 @@ import {
   NbDateService,
 } from "@nebular/theme"; //NbWindowRef
 import { map } from "rxjs/operators";
-import * as XLSX from "xlsx";
-import * as FileSaver from "file-saver";
 import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 
 @Component({
