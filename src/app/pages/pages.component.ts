@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { MENU_ITEMS } from './pages-menu';
-import { NecService } from '../@core/mock/nec.service';
+import { MENU_ITEMS } from './pages-menu'
 
 @Component({
   selector: 'ngx-pages',
@@ -13,5 +12,5 @@ import { NecService } from '../@core/mock/nec.service';
   `,
 })
 export class PagesComponent {
-  menu = MENU_ITEMS;
+  menu = MENU_ITEMS();
 }

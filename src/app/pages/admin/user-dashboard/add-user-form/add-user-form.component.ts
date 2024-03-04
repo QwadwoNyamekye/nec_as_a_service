@@ -197,7 +197,7 @@ export class AddUserFormComponent implements OnInit {
           {
             status: "danger",
             destroyByClick: true,
-            duration: 100000,
+            duration: 8000,
           }
         );
       },
@@ -210,14 +210,14 @@ export class AddUserFormComponent implements OnInit {
             {
               status: "danger",
               destroyByClick: true,
-              duration: 100000,
+              duration: 8000,
             }
           );
         } else {
           this.toastrService.success("User Creation Success", "User Creation", {
             status: "success",
             destroyByClick: true,
-            duration: 100000,
+            duration: 8000,
           });
           this.windowRef.close();
         }

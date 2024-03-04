@@ -99,7 +99,7 @@ export class SingleNECRequestComponent {
             {
               status: "success",
               destroyByClick: true,
-              duration: 100000,
+              duration: 8000,
             }
           );
         } else {
@@ -109,7 +109,7 @@ export class SingleNECRequestComponent {
             {
               status: "danger",
               destroyByClick: true,
-              duration: 100000,
+              duration: 8000,
             }
           );
         }
@@ -124,7 +124,7 @@ export class SingleNECRequestComponent {
           {
             status: "danger",
             destroyByClick: true,
-            duration: 100000,
+            duration: 8000,
           }
         );
       },

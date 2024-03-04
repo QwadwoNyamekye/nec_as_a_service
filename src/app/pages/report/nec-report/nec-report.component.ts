@@ -256,7 +256,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
           {
             status: "danger",
             destroyByClick: true,
-            duration: 100000,
+            duration: 8000,
           }
         );
       },
@@ -268,7 +268,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
         //   {
         //     status: "success",
         //     destroyByClick: true,
-        //     duration: 100000,
+        //     duration: 8000,
         //   }
         // );
         //this.windowRef.close();

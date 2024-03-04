@@ -11,6 +11,7 @@ import { Deferred } from "ng2-smart-table/lib/lib/helpers";
 import { DatePipe } from "@angular/common";
 import { SubmitForAuthorizationComponent } from "./submit-for-authorization/submit-for-authorization.component";
 import { SingleNECComponent } from "./upload_file_single/single.component";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: "ngx-bulk",
@@ -33,8 +34,11 @@ export class BulkUploadComponent implements OnInit {
       this.name = "UPLOADING";
     } else if (value === "1") {
       this.colour = "lightskyblue";
-      this.name = "SUBMITTED";
+      this.name = "NEW";
     } else if (value === "2") {
+      this.colour = "yellow";
+      this.name = "SUBMITTED";
+    } else if (value === "3") {
       this.colour = "yellow";
       this.name = "PROCESSING";
     } else {
@@ -204,7 +208,10 @@ export class BulkUploadComponent implements OnInit {
       })
       .onClose.pipe((response) => response)
       .subscribe(() => {
-        this.getUploads();
+        console.log(".........................");
+        this.service.comp$
+          .pipe((response) => response)
+          .subscribe(() => this.getUploads());
       });
   }
   openWindowForm() {

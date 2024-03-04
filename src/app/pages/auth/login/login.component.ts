@@ -3,6 +3,7 @@ import { NbLoginComponent } from "@nebular/auth";
 import { NbAuthResult } from "@nebular/auth";
 import { NecService } from "../../../@core/mock/nec.service";
 import { AppInjector } from "../auth.module";
+import { MENU_ITEMS } from "../../pages-menu";
 
 @Component({
   selector: "ngx-login",
@@ -26,7 +27,9 @@ export class LoginComponent extends NbLoginComponent {
             "user",
             JSON.stringify(result.getResponse().body.user)
           );
+          console.log(MENU_ITEMS())
           console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^");
+          console.log(sessionStorage.getItem("homePath"))
           console.log(result.getResponse().body.token);
           sessionStorage.setItem("token", result.getResponse().body.token);
           this.necService.initializeVars()
@@ -42,7 +45,7 @@ export class LoginComponent extends NbLoginComponent {
         const redirect = result.getRedirect();
         if (redirect) {
           setTimeout(() => {
-            return this.router.navigateByUrl(redirect);
+            return this.router.navigateByUrl(sessionStorage.getItem("homePath"));
           }, this.redirectDelay);
         }
         this.cd.detectChanges();

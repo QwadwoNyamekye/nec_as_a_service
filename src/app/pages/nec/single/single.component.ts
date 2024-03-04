@@ -11,6 +11,9 @@ import {
   NbDateService,
 } from "@nebular/theme"; //NbWindowRef
 import { map } from "rxjs/operators";
+import * as XLSX from "xlsx";
+import * as FileSaver from "file-saver";
+import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 
 @Component({
   selector: "ngx-single",
@@ -160,9 +163,31 @@ export class SingleNECComponent implements OnInit, OnDestroy {
         }
       );
   }
-  
-  downloadAsCSV(){
 
+  downloadAsCSV() {
+    const options = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalseparator: ".",
+      showLabels: true,
+      showTitle: true,
+      useBom: true,
+      headers: [
+        "Destination Institution Code",
+        "Destination Institution",
+        "Destination Account",
+        "Account Name",
+        "Src. Institution Code",
+        "Src. Institution",
+        "Action Code",
+        "Created By",
+      ],
+    };
+    console.log("::::::::::::::::::::::")
+    console.log(this.source.getAll())
+    this.source.getFilteredAndSorted().then((data) => {
+      new Angular5Csv(data, "report", options);
+    });
   }
 
   onEditRowSelect(event): void {

@@ -1,7 +1,7 @@
 <nb-card size="giant">
   <nb-card-header>
     Bulk NEC Requests
-    <button style="float: right;" (click)="openWindowForm()" nbButton>Upload File</button>
+    <button *ngIf="this.service.user.role_id=='4'" style="float: right;" (click)="openWindowForm()" nbButton>Upload File</button>
   </nb-card-header>
   <nb-card-body>
     <ng2-smart-table [settings]="settings" [source]="source" (custom)="customFunction($event)">

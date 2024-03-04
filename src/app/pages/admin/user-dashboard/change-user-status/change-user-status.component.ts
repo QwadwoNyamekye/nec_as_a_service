@@ -63,7 +63,7 @@ export class ChangeUserStatusComponent implements OnInit {
             {
               status: "danger",
               destroyByClick: true,
-              duration: 100000,
+              duration: 8000,
             }
           );
         },
@@ -76,14 +76,14 @@ export class ChangeUserStatusComponent implements OnInit {
               {
                 status: "danger",
                 destroyByClick: true,
-                duration: 100000,
+                duration: 8000,
               }
             );
           } else {
             this.toastrService.success(
               "User Status Change Success",
               "User Status Change",
-              { status: "success", destroyByClick: true, duration: 100000 }
+              { status: "success", destroyByClick: true, duration: 8000 }
             );
             this.ref.close();
           }

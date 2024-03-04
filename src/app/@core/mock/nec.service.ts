@@ -52,7 +52,7 @@ export class NecService {
       console.log(this.user);
       if (websocketMessage != "" && websocketUser == this.user.id) {
         this.toastrService.success(websocketMessage, "Bulk File Processing", {
-          duration: 100000,
+          duration: 8000,
           destroyByClick: true,
           duplicatesBehaviour: "previous",
           preventDuplicates: true,
@@ -83,12 +83,17 @@ export class NecService {
         console.log("NEW WEBSOCKET CONNECTION");
         console.log(message);
         var websocketdata = message.body.split(":");
+        console.log(websocketdata);
+        console.log(websocketdata[1]);
+        console.log(websocketdata[2]);
+        console.log(that.user.id);
+        console.log(typeof that.user.id);
+        console.log([websocketdata[1], websocketdata[2]].includes(that.user.id))
         var websocketMessage = websocketdata[0];
-        var websocketUser = websocketdata[1];
         console.log(that.user);
-        if (websocketMessage != "" && websocketUser == that.user.id) {
+        if (websocketMessage != "" && [websocketdata[1], websocketdata[2]].includes(String(that.user.id))) {
           that.toastrService.success(websocketMessage, "Bulk File Processing", {
-            duration: 100000,
+            duration: 8000,
             destroyByClick: true,
             duplicatesBehaviour: "previous",
             preventDuplicates: true,

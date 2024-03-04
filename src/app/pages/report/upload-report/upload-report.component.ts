@@ -4,7 +4,12 @@ import { NbWindowService } from "@nebular/theme";
 import { NecService } from "../../../@core/mock/nec.service";
 import { DatePipe } from "@angular/common";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { NbToastrService, NbComponentShape, NbComponentStatus, NbDateService } from "@nebular/theme"; //NbWindowRef
+import {
+  NbToastrService,
+  NbComponentShape,
+  NbComponentStatus,
+  NbDateService,
+} from "@nebular/theme"; //NbWindowRef
 
 @Component({
   selector: "ngx-upload-report",
@@ -115,13 +120,17 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       console.log(this.receivedData);
     };
 
-    if(this.service.user.role_id == '2' || this.service.user.role_id == '3' || this.service.user.role_id == '4'){
-      this.institutionCode = this.service.user.institutionCode
-      this.showInstitution = false
+    if (
+      this.service.user.role_id == "2" ||
+      this.service.user.role_id == "3" ||
+      this.service.user.role_id == "4"
+    ) {
+      this.institutionCode = this.service.user.institutionCode;
+      this.showInstitution = false;
     }
 
     this.max = this.dateService.addDay(this.dateService.today(), 0);
-    
+
     window.addEventListener("message", this.listener);
     // this.service.initializeWebSocketConnection()
 
@@ -129,9 +138,8 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       status: new FormControl("", Validators.required),
       endDate: new FormControl("", Validators.required),
       startDate: new FormControl("", Validators.required),
-      code: new FormControl("", Validators.required)
+      code: new FormControl("", Validators.required),
     });
-
 
     this.service.getInstitutions().subscribe(
       (data) => {
@@ -160,10 +168,8 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     );
   }
 
-
-
-  compare( a, b ) {
-    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+  compare(a, b) {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
   // getUsers() {
   //   this.service.getSingleNECList().subscribe(
@@ -179,8 +185,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   //     }
   //   );
   // }
-
-  
 
   ngOnDestroy() {
     window.removeEventListener("message", this.listener);
@@ -216,20 +220,19 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   /////////////////FORM STUFF
 
   onSubmit(): void {
-   
-
- 
-    this.form.value.endDate.setHours('23')
-    this.form.value.endDate.setMinutes('59')
-    this.form.value.endDate.setSeconds('59')
-    this.form.value.endDate.setMilliseconds('999')
-    this.form.value.code= this.institutionCode ? this.institutionCode : this.form.value.code
+    this.form.value.endDate.setHours("23");
+    this.form.value.endDate.setMinutes("59");
+    this.form.value.endDate.setSeconds("59");
+    this.form.value.endDate.setMilliseconds("999");
+    this.form.value.code = this.institutionCode
+      ? this.institutionCode
+      : this.form.value.code;
 
     this.service.getUploadReport(this.form.value).subscribe(
       (response) => {
         console.log(response);
         this.response = response;
-        this.source.load(this.response)
+        this.source.load(this.response);
         return response;
       },
       (error) => {
@@ -240,7 +243,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
           {
             status: "danger",
             destroyByClick: true,
-            duration: 100000,
+            duration: 8000,
           }
         );
       },
@@ -252,7 +255,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
         //   {
         //     status: "success",
         //     destroyByClick: true,
-        //     duration: 100000,
+        //     duration: 8000,
         //   }
         // );
         //this.windowRef.close();
@@ -270,8 +273,11 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       this.name = "UPLOADING";
     } else if (value === "1") {
       this.colour = "lightskyblue";
-      this.name = "SUBMITTED";
+      this.name = "NEW";
     } else if (value === "2") {
+      this.colour = "yellow";
+      this.name = "SUBMITTED";
+    } else if (value === "3") {
       this.colour = "yellow";
       this.name = "PROCESSING";
     } else {

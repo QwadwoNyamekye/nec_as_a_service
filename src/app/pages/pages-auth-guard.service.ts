@@ -24,6 +24,8 @@ export class PagesAuthGuard {
         if (!authenticated) {
           this.router.navigate(["auth/login"]);
         } else if (!allowedRoles.includes(this.service.user.role_id)) {
+          console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}")
+          console.log(allowedRoles)
           this.router.navigate(["pages/miscellaneous/404"]);
         }
       })

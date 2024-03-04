@@ -41,11 +41,6 @@ export class SubmitForProcessingComponent implements OnInit {
       .subscribe(
         (data) => {
           this.response = data;
-        },
-        (error) => {
-          console.log(error);
-        },
-        () => {
           console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
@@ -54,17 +49,23 @@ export class SubmitForProcessingComponent implements OnInit {
               {
                 status: "danger",
                 destroyByClick: true,
-                duration: 100000,
+                duration: 8000,
               }
             );
           } else {
             this.toastrService.success(
               "File Processing Success: " + this.response.errorMessage,
               "File Processing",
-              { status: "success", destroyByClick: true, duration: 100000 }
+              { status: "success", destroyByClick: true, duration: 8000 }
             );
-            this.ref.close();
           }
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          console.log("AAAAAAAAAAAAAAAAAAAAAAA");
+          this.ref.close();
         }
       );
   }

@@ -54,14 +54,14 @@ export class SubmitForAuthorizationComponent implements OnInit {
               {
                 status: "danger",
                 destroyByClick: true,
-                duration: 100000,
+                duration: 8000,
               }
             );
           } else {
             this.toastrService.success(
               "File Authorization Success",
               "File Authorization",
-              { status: "success", destroyByClick: true, duration: 100000 }
+              { status: "success", destroyByClick: true, duration: 8000 }
             );
             this.ref.close();
           }
