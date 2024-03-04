@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { NbAuthComponent } from "./auth.component";
-
 import { LoginComponent } from "./login/login.component";
-import { NbResetPasswordComponent } from "@nebular/auth";
+import { ChangePassword } from "./change-password/change-password.component";
 import { NbRequestPasswordComponent } from "./request-password/request-password.component";
+import { AuthAuthGuard } from "./auth-auth-guard.service";
 
 export const routes: Routes = [
   {
@@ -21,7 +21,8 @@ export const routes: Routes = [
       },
       {
         path: "reset-password",
-        component: NbResetPasswordComponent,
+        component: ChangePassword,
+        canActivate: [AuthAuthGuard]
       },
     ],
   },

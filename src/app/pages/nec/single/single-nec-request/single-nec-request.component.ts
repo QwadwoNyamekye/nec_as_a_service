@@ -9,7 +9,7 @@ import { NbToastrService } from "@nebular/theme";
 
 @Component({
   template: `
-    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form class="form" [formGroup]="form">
       <label for="subject">Destination Account:</label>
       <input
         nbInput
@@ -82,17 +82,39 @@ export class SingleNECRequestComponent {
   }
 
   onSubmit(): void {
+    console.log("ON SUBMIT");
     this.object = {
       destAccount: this.form.value.destAccount,
       destBank: this.form.value.destBank,
       createdBy: this.service.user.email,
     };
     this.service.makeSingleNECRequest(this.object).subscribe(
-      (response) => {
+      (response: any) => {
         console.log(response);
-        this.response = response;
-        // window.parent.postMessage(response);
+        if (response.errorCode == "0") {
+          this.response = response;
+          this.toastrService.success(
+            "Single NEC Request Success",
+            "Single NEC Request",
+            {
+              status: "success",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        } else {
+          this.toastrService.warning(
+            "Single NEC Request Failed: " + response.errorMessage,
+            "Single NEC Request",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 100000,
+            }
+          );
+        }
         return response;
+        // window.parent.postMessage(response);
       },
       (error) => {
         console.error(error);
@@ -107,20 +129,10 @@ export class SingleNECRequestComponent {
         );
       },
       () => {
-        console.log(this.response);
-        this.toastrService.success(
-          "Single NEC Request Success",
-          "Single NEC Request",
-          {
-            status: "success",
-            destroyByClick: true,
-            duration: 100000,
-          }
-        );
+        console.log("AAAAAAAAAAAAAAAAAAAAAAA");
         this.windowRef.close();
       }
     );
-    this.close();
   }
   close() {
     this.windowRef.close();

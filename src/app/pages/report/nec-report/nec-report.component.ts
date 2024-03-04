@@ -89,6 +89,10 @@ export class NecReportComponent implements OnInit, OnDestroy {
         title: "Action Code",
         type: "string",
       },
+      accountStatus: {
+        title: "Account Status",
+        type: "string",
+      },
       createdBy: {
         title: "Created By",
         type: "string",

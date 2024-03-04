@@ -6,7 +6,7 @@ import { ECommerceComponent } from "./e-commerce/e-commerce.component";
 import { NotFoundComponent } from "./miscellaneous/not-found/not-found.component";
 import { AdminDashboardComponent } from "./admin/user-dashboard/user-dashboard.component";
 import { InstitutionDashboardComponent } from "./admin/institution-dashboard/institution-dashboard.component";
-import { AuthGuard } from "./pages-auth-guard.service";
+import { PagesAuthGuard } from "./pages-auth-guard.service";
 
 const routes: Routes = [
   {
@@ -16,26 +16,26 @@ const routes: Routes = [
       {
         path: "user-dashboard",
         component: AdminDashboardComponent,
-        canActivate: [AuthGuard],
+        canActivate: [PagesAuthGuard],
         data: { allowedRoles: ["1", "2"] },
       },
       {
         path: "institution-dashboard",
         component: InstitutionDashboardComponent,
-        canActivate: [AuthGuard],
+        canActivate: [PagesAuthGuard],
         data: { allowedRoles: ["1", "2"] },
       },
       {
         path: "nec",
         loadChildren: () => import("./nec/nec.module").then((m) => m.NECModule),
-        canActivate: [AuthGuard],
+        canActivate: [PagesAuthGuard],
         data: { allowedRoles: ["3", "4"] },
       },
       {
         path: "",
         loadChildren: () =>
           import("./report/report.module").then((m) => m.ReportModule),
-        canActivate: [AuthGuard],
+        canActivate: [PagesAuthGuard],
         data: { allowedRoles: ["1", "2", "5", "6"] },
       },
       {

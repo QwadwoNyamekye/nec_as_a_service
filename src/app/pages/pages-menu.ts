@@ -40,6 +40,7 @@ export const MENU_ITEMS: NbMenuItem[] = (function () {
   var menu_items = [];
   if (user_role == "1") {
     user_path["home"] = true;
+    // sessionStorage.setItem("homePath", user_path.link)
     menu_items.push(
       user_path,
       institution_path,

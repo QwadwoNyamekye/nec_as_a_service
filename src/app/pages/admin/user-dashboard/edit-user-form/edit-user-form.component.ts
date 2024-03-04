@@ -165,6 +165,7 @@ export class EditUserFormComponent implements OnInit {
     this.currentValues.institutionCode = this.form.value.institution
     this.currentValues.role_id = this.form.value.role
     this.currentValues.phone = this.form.value.phone
+    this.currentValues.createdBy = this.service.user.email
     // Send a post request to the server endpoint with the FormData object
     this.service.editUser(this.currentValues).subscribe(
       (response) => {

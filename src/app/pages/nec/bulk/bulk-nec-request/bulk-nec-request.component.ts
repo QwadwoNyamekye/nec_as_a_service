@@ -108,7 +108,6 @@ export class BulkNEComponent implements OnInit {
         (response) => {
           console.log(response);
           this.response = response
-          this.close();
         },
         (error) => {
           console.error(error);
@@ -148,7 +147,6 @@ export class BulkNEComponent implements OnInit {
 
   close() {
     this.filesToUpload = [];
-    // window.location.reload()
     this.windowRef.close();
   }
 }

@@ -7,6 +7,7 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 import { NbToastrService } from "@nebular/theme";
 import { environment } from "../../../environments/environment.prod";
+import { Subject } from 'rxjs/Subject';
 
 @Injectable({ providedIn: "root" })
 export class NecService {
@@ -14,10 +15,12 @@ export class NecService {
   websocket = environment.websocket;
   baseUrl = environment.baseUrl;
   bankUrl = environment.bankUrl;
-  reportingUrl= environment.reportingUrl;
+  reportingUrl = environment.reportingUrl;
   data: any;
   headers: any;
-  stompClient: CompatClient;
+  public stompClient;
+  private compInstance= new Subject<any>();
+  comp$ = this.compInstance.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -25,7 +28,7 @@ export class NecService {
     private toastrService: NbToastrService
   ) {
     this.initializeVars();
-    this.initializeWebSocketConnection()
+    this.initializeWebSocketConnection();
   }
 
   initializeVars() {
@@ -41,6 +44,8 @@ export class NecService {
 
   websocketSuccessCallback() {
     this.stompClient.subscribe("/realtime/alert", (message) => {
+      console.log("WEBSOCKET MESSAGE");
+      console.log(message);
       var websocketdata = message.body.split(":");
       var websocketMessage = websocketdata[0];
       var websocketUser = websocketdata[1];
@@ -66,17 +71,52 @@ export class NecService {
     const serverUrl = this.websocket;
     const ws = new SockJS(serverUrl);
     this.stompClient = Stomp.over(ws);
-    if (!this.stompClient.connected) {
-      console.log("NEW WEBSOCKET CONNECTION");
-      this.stompClient.connect(
-        {},
-        this.websocketSuccessCallback,
-        this.websocketFailureCallback
-      );
-    } else {
-      console.log("USING EXISTING CONNECTION");
-      this.websocketSuccessCallback();
-    }
+
+    const that = this;
+    console.log("STOMP CLIENT");
+    console.log(this.stompClient);
+
+    this.stompClient.connect({}, function (frame) {
+      console.log("STOMP CLIENT");
+      console.log(that.stompClient);
+      that.stompClient.subscribe("/realtime/alert", (message) => {
+        console.log("NEW WEBSOCKET CONNECTION");
+        console.log(message);
+        var websocketdata = message.body.split(":");
+        var websocketMessage = websocketdata[0];
+        var websocketUser = websocketdata[1];
+        console.log(that.user);
+        if (websocketMessage != "" && websocketUser == that.user.id) {
+          that.toastrService.success(websocketMessage, "Bulk File Processing", {
+            duration: 100000,
+            destroyByClick: true,
+            duplicatesBehaviour: "previous",
+            preventDuplicates: true,
+          });
+          that.compInstance.next(); 
+        }
+      });
+    });
+  }
+
+  resetPassword(user) {
+    console.log("EEEEEEEEEEEEEEEEEEEEEE");
+    console.log(user);
+    return this.http
+      .post(this.baseUrl + "/user/api/v1/reset_password", user, {
+        headers: this.headers,
+      })
+      .pipe(map((response) => response));
+  }
+
+  changePassword(user) {
+    console.log("EEEEEEEEEEEEEEEEEEEEEE");
+    console.log(user);
+    return this.http
+      .post(this.baseUrl + "/user/api/v1/change_password", user, {
+        headers: this.headers,
+      })
+      .pipe(map((response) => response));
   }
 
   //-------------BULK--------------
@@ -96,7 +136,7 @@ export class NecService {
 
   getUploads(email) {
     return this.http
-      .get(this.baseUrl + "/upload/api/v1/get_uploads/"+email, {
+      .get(this.baseUrl + "/upload/api/v1/get_uploads/" + email, {
         headers: this.headers,
       })
       .pipe(map((response) => response));
@@ -147,15 +187,19 @@ export class NecService {
 
   getUploadStatus() {
     return this.http
-      .get(this.baseUrl + "/upload/api/v1/get_uploads_status", { headers: this.headers })
+      .get(this.baseUrl + "/upload/api/v1/get_uploads_status", {
+        headers: this.headers,
+      })
       .pipe(map((response) => response));
   }
 
-  getSingleNECList() {
+  getSingleNECList(email) {
     console.log(">>>>>>>>>>>>");
     console.log(this.headers);
     return this.http
-      .get(this.baseUrl + "/single/api/v1/nec_list", { headers: this.headers })
+      .get(this.baseUrl + "/single/api/v1/nec_list/" + email, {
+        headers: this.headers,
+      })
       .pipe(map((response) => response));
   }
 
@@ -170,9 +214,11 @@ export class NecService {
 
   //-------------- USERS APIS------------------
 
-  getUsers() {
+  getUsers(email) {
     return this.http
-      .get(this.baseUrl + "/user/api/v1/get_users", { headers: this.headers })
+      .get(this.baseUrl + "/user/api/v1/get_users/" + email, {
+        headers: this.headers,
+      })
       .pipe(map((response) => response));
   }
 
@@ -258,7 +304,6 @@ export class NecService {
       })
       .pipe(map((response) => response));
   }
-
 
   ///////////////////REPORTS API//////////////
   getNecReport(data) {

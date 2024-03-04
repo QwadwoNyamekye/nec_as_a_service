@@ -202,7 +202,8 @@ export class BulkUploadComponent implements OnInit {
           submittedBy: this.service.user.email,
         },
       })
-      .onClose.subscribe(() => {
+      .onClose.pipe((response) => response)
+      .subscribe(() => {
         this.getUploads();
       });
   }
@@ -213,7 +214,9 @@ export class BulkUploadComponent implements OnInit {
         windowClass: `admin-form-window`,
       })
       .onClose.subscribe(() => {
-        this.getUploads();
+        this.service.comp$
+          .pipe((response) => response)
+          .subscribe(() => this.getUploads());
       });
   }
 

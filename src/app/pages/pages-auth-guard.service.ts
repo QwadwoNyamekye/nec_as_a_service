@@ -9,7 +9,7 @@ import { tap } from "rxjs/operators";
 import { NecService } from "../@core/mock/nec.service";
 
 @Injectable()
-export class AuthGuard {
+export class PagesAuthGuard {
   constructor(
     private authService: NbAuthService,
     private router: Router,
@@ -18,7 +18,6 @@ export class AuthGuard {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const allowedRoles = route.data.allowedRoles as string[];
-    console.log("********************************")
     console.log(allowedRoles)
     return this.authService.isAuthenticated().pipe(
       tap((authenticated) => {

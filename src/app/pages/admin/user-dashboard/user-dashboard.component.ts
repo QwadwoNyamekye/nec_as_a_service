@@ -167,7 +167,7 @@ export class AdminDashboardComponent implements OnInit {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
   }
   getUsers() {
-    this.service.getUsers().subscribe(
+    this.service.getUsers(this.service.user.email).subscribe(
       (data) => {
         this.users = data;
       },

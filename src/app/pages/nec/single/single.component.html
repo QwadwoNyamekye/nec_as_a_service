@@ -2,6 +2,7 @@
     <nb-card-header>
       Single NEC Request
       <button style="float: right;" (click)="makeNECRequest()" nbButton>Make NEC Request</button>
+      <button style="float: right;" (click)="downloadAsCSV()" nbButton>Download Records</button>
     </nb-card-header>
     <nb-card-body>
       <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (edit)="onEditRowSelect($event)">

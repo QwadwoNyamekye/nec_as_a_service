@@ -4,6 +4,13 @@ import { NbWindowService } from "@nebular/theme";
 import { NecService } from "../../../@core/mock/nec.service";
 import { SingleNECRequestComponent } from "./single-nec-request/single-nec-request.component";
 import { DatePipe } from "@angular/common";
+import {
+  NbToastrService,
+  NbComponentShape,
+  NbComponentStatus,
+  NbDateService,
+} from "@nebular/theme"; //NbWindowRef
+import { map } from "rxjs/operators";
 
 @Component({
   selector: "ngx-single",
@@ -18,6 +25,14 @@ export class SingleNECComponent implements OnInit, OnDestroy {
   listener: any;
   receivedData: any;
 
+  statuses: NbComponentStatus[] = [
+    "primary",
+    "success",
+    "info",
+    "warning",
+    "danger",
+  ];
+  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   settings = {
     pager: {
       perPage: 15,
@@ -90,15 +105,17 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     private service: NecService,
     private windowService: NbWindowService
   ) {
-    this.getUsers();
+    this.getSingleNECRequests();
   }
-  compare( a, b ) {
-    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+  compare(a, b) {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
-  getUsers() {
-    this.service.getSingleNECList().subscribe(
-      (data) => {
-        this.users = data;
+  getSingleNECRequests() {
+    this.service.getSingleNECList(this.service.user.email).subscribe(
+      (response: any) => {
+        console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+        console.log(response);
+        this.users = response.data;
       },
       (error) => {
         console.log(error);
@@ -130,9 +147,22 @@ export class SingleNECComponent implements OnInit, OnDestroy {
         title: `Make NEC Request`,
         windowClass: `admin-form-window`,
       })
-      .onClose.subscribe(() => {
-        this.getUsers();
-      });
+      .onClose.pipe(map((response) => response))
+      .subscribe(
+        (event) => {
+          console.log("WWWWWWWWWWWWWWWWWWW");
+          console.log(event);
+        },
+        (error) => {},
+        () => {
+          console.log("ON CLOSE");
+          this.getSingleNECRequests();
+        }
+      );
+  }
+  
+  downloadAsCSV(){
+
   }
 
   onEditRowSelect(event): void {

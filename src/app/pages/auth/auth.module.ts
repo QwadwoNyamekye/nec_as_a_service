@@ -16,14 +16,16 @@ import { LoginComponent } from "./login/login.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NbRequestPasswordComponent } from "./request-password/request-password.component";
+import { ChangePassword } from "./change-password/change-password.component";
 import {
   NbPasswordAuthStrategy,
   NbAuthModule,
   NbAuthJWTToken,
   NbTokenService,
 } from "@nebular/auth";
-import { Injector } from '@angular/core';
+import { Injector } from "@angular/core";
 import { environment } from "../../../environments/environment.prod";
+import { AuthAuthGuard } from "./auth-auth-guard.service";
 
 export let AppInjector: Injector;
 
@@ -99,8 +101,9 @@ const formSetting: any = {
     NbAuthComponent,
     LogoutComponent,
     NbRequestPasswordComponent,
+    ChangePassword,
   ],
-  // providers: [{ provide: NbTokenService, useClass: NbAuthJWTToken }],
+  providers: [AuthAuthGuard],
 })
 export class NgxAuthModule {
   constructor(private injector: Injector) {
