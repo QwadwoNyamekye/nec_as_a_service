@@ -43,23 +43,37 @@ export const MENU_ITEMS: NbMenuItem[] = (function () {
     menu_items.push(
       user_path,
       institution_path,
-      // single_nec_path,
-      // bulk_nec_path,
-      nec_report_path, upload_report_path
+      nec_report_path,
+      upload_report_path
     );
+    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHH");
+    console.log(menu_items);
   } else if (user_role == "2") {
     user_path["home"] = true;
     menu_items.push(user_path, institution_path, bulk_nec_path);
-  } else if (user_role == "3") {
-    user_path["home"] = true;
-    menu_items.push(user_path, institution_path);
-  } else if (user_role == "4") {
+    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHH");
+    console.log(menu_items);
+  } else if (["3", "4"].includes(user_role)) {
+    console.log(typeof menu_items);
     single_nec_path["home"] = true;
-    menu_items.push(single_nec_path, bulk_nec_path, nec_report_path);
+    menu_items.push(single_nec_path, bulk_nec_path);
+    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHH");
+    console.log(menu_items);
+    // } else if (user_role == "4") {
+    //   single_nec_path["home"] = true;
+    //   menu_items.push(single_nec_path, bulk_nec_path);
+    //   console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHH");
+    //   console.log(menu_items);
   } else if (user_role == "5") {
+    nec_report_path["home"] = true;
     menu_items.push(nec_report_path, upload_report_path);
-  }else if (user_role == "6") {
+    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHH");
+    console.log(menu_items);
+  } else if (user_role == "6") {
+    nec_report_path["home"] = true;
     menu_items.push(nec_report_path, upload_report_path);
+    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHH");
+    console.log(menu_items);
   }
   return menu_items;
 })();

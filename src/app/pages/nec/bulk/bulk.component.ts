@@ -9,7 +9,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { DataSource } from "ng2-smart-table/lib/lib/data-source/data-source";
 import { Deferred } from "ng2-smart-table/lib/lib/helpers";
 import { DatePipe } from "@angular/common";
-import { SubmitProcessingComponent } from "./submit_processing/submit-for-processing.component";
+import { SubmitForAuthorizationComponent } from "./submit-for-authorization/submit-for-authorization.component";
 import { SingleNECComponent } from "./upload_file_single/single.component";
 
 @Component({
@@ -60,9 +60,9 @@ export class BulkUploadComponent implements OnInit {
   };
   customActions(role_id: string) {
     var custom = [];
-    if (role_id == "4") {
+    if (role_id == "3") {
       custom.push(this.process, this.expand);
-    } else if (role_id == "3") {
+    } else if (role_id == "4") {
       custom.push(this.authorize, this.expand);
     }
     return custom;
@@ -180,7 +180,7 @@ export class BulkUploadComponent implements OnInit {
   submitForAuthorization(event): void {
     console.log(event);
     this.dialogService
-      .open(SubmitProcessingComponent, {
+      .open(SubmitForAuthorizationComponent, {
         context: {
           title: `Do you want to submit ${event.data.fileName} for authorization?`,
           batchId: event.data.batchId,

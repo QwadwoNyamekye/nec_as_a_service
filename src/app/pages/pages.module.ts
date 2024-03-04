@@ -13,6 +13,7 @@ import { NbTableModule } from "@nebular/theme";
 import { AdminModule } from "./admin/admin.module";
 import { NECModule } from "./nec/nec.module";
 import { ReportModule } from "./report/report.module";
+import { AuthGuard } from "./pages-auth-guard.service";
 
 
 @NgModule({
@@ -34,5 +35,6 @@ import { ReportModule } from "./report/report.module";
   ],
   declarations: [PagesComponent],
   bootstrap: [PagesComponent],
+  providers: [AuthGuard],
 })
 export class PagesModule {}

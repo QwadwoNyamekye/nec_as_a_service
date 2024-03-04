@@ -6,7 +6,7 @@ import { ECommerceComponent } from "./e-commerce/e-commerce.component";
 import { NotFoundComponent } from "./miscellaneous/not-found/not-found.component";
 import { AdminDashboardComponent } from "./admin/user-dashboard/user-dashboard.component";
 import { InstitutionDashboardComponent } from "./admin/institution-dashboard/institution-dashboard.component";
-import { AuthGuard } from "../auth-guard.service";
+import { AuthGuard } from "./pages-auth-guard.service";
 
 const routes: Routes = [
   {

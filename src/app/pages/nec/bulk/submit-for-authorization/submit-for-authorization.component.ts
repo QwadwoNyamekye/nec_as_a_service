@@ -20,15 +20,15 @@ import { NbToastrService } from "@nebular/theme";
       </nb-card-body>
     </nb-card>
   `,
-  styleUrls: ["submit-for-processing.component.scss"],
+  styleUrls: ["submit-for-authorization.component.scss"],
 })
-export class SubmitProcessingComponent implements OnInit {
+export class SubmitForAuthorizationComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
   response: any;
   constructor(
-    protected ref: NbDialogRef<SubmitProcessingComponent>,
+    protected ref: NbDialogRef<SubmitForAuthorizationComponent>,
     public service: NecService,
     private toastrService: NbToastrService
   ) {}

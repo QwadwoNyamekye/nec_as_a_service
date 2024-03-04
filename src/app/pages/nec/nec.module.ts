@@ -24,8 +24,8 @@ import { SingleNECComponent } from "./single/single.component";
 import { SingleNECRequestComponent } from "./single/single-nec-request/single-nec-request.component";
 import { BulkNEComponent } from "./bulk/bulk-nec-request/bulk-nec-request.component";
 import { SubmitForProcessingComponent } from "./bulk/submit-for-processing/submit-for-processing.component";
-import { SubmitProcessingComponent } from "./bulk/submit_processing/submit-for-processing.component";
 import { SingleNECComponent as FileRecord } from "./bulk/upload_file_single/single.component";
+import { SubmitForAuthorizationComponent } from "./bulk/submit-for-authorization/submit-for-authorization.component";
 
 @NgModule({
   imports: [
@@ -56,7 +56,7 @@ import { SingleNECComponent as FileRecord } from "./bulk/upload_file_single/sing
     SingleNECRequestComponent,
     BulkNEComponent,
     SubmitForProcessingComponent,
-    SubmitProcessingComponent,
+    SubmitForAuthorizationComponent,
     FileRecord
   ],
 })

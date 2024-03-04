@@ -107,6 +107,7 @@ export class BulkNEComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log(response);
+          this.response = response
           this.close();
         },
         (error) => {
