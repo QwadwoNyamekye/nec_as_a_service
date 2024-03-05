@@ -23,6 +23,7 @@ export class LoginComponent extends NbLoginComponent {
         console.log(JSON.stringify(result.getResponse().body?.user));
 
         if (result.isSuccess()) {
+          this.messages = result.getMessages()
           sessionStorage.setItem(
             "user",
             JSON.stringify(result.getResponse().body.user)

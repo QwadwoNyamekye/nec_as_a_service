@@ -34,7 +34,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   settings = {
     pager: {
-      perPage: 15,
+      perPage: 13,
     },
     hideSubHeader: true,
     actions: {
@@ -121,9 +121,9 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     };
 
     if (
-      this.service.user.role_id == "2" ||
-      this.service.user.role_id == "3" ||
-      this.service.user.role_id == "4"
+      this.service.user.roleId == "2" ||
+      this.service.user.roleId == "3" ||
+      this.service.user.roleId == "4"
     ) {
       this.institutionCode = this.service.user.institutionCode;
       this.showInstitution = false;
@@ -281,11 +281,8 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       this.colour = "yellow";
       this.name = "PROCESSING";
     } else {
-      this.colour = "green";
+      this.colour = "#55DD33";
       this.name = "COMPLETED";
     }
-    return this.domSanitizer.bypassSecurityTrustHtml(
-      `<nb-card-body style="background-color: ${this.colour}; border-radius: 12px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
-    );
   }
 }

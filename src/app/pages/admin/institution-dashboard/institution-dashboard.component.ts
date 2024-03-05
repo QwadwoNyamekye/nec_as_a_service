@@ -38,7 +38,7 @@ export class InstitutionDashboardComponent implements OnInit {
   }
 
   setAccessibles() {
-    if (this.service.user.role_id == "1") {
+    if (this.service.user.roleId == "1") {
       return [
         {
           name: "edit",
@@ -54,7 +54,7 @@ export class InstitutionDashboardComponent implements OnInit {
 
   settings = {
     pager: {
-      perPage: 15,
+      perPage: 13,
     },
     hideSubHeader: true,
     actions: {

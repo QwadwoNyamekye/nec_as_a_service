@@ -12,7 +12,7 @@ import { NbToastrService } from "@nebular/theme";
       >
       <nb-card-body>
         <button nbButton hero status="success" (click)="submit()">
-          Disable
+          {{ this.getOption() }}
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
           Dismiss
@@ -27,6 +27,7 @@ export class ChangeUserStatusComponent implements OnInit {
   @Input() batchId: string;
   @Input() submittedBy: string;
   @Input() email: string;
+  @Input() status: boolean;
   response: any;
 
   constructor(
@@ -43,11 +44,19 @@ export class ChangeUserStatusComponent implements OnInit {
     this.ref.close();
   }
 
+  getOption() {
+    if (this.status) {
+      return "Disable";
+    }
+    return "Enable";
+  }
+
   submit() {
     this.response = this.service
       .changeUserStatus({
         email: this.email,
         createdBy: this.service.user.email,
+        status: !this.status,
       })
       .subscribe(
         (response) => {

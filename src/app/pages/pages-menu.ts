@@ -35,7 +35,7 @@ var upload_report_path = {
 export function MENU_ITEMS () {
   var user = JSON.parse(sessionStorage.getItem("user"));
   console.log(user)
-  var user_role = user?.role_id;
+  var user_role = user?.roleId;
   console.log("###############################");
   console.log(user_role);
   var menu_items = [];

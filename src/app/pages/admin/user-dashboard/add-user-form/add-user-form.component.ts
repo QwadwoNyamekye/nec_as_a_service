@@ -127,7 +127,7 @@ export class AddUserFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if(this.service.user.role_id == '2' || this.service.user.role_id == '3' || this.service.user.role_id == '4'){
+    if(this.service.user.roleId == '2' || this.service.user.roleId == '3' || this.service.user.roleId == '4'){
       this.institutionCode = this.service.user.institutionCode
       this.showInstitution = false
     }
@@ -147,7 +147,7 @@ export class AddUserFormComponent implements OnInit {
     this.service.getRoles().subscribe(
       (data) => {
         this.roles = data;
-        if(this.service.user.role_id!=1){
+        if(this.service.user.roleId!=1){
           this.roles = this.roles.filter(el =>
             el.name.includes('Bank')
           )
@@ -176,7 +176,7 @@ export class AddUserFormComponent implements OnInit {
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
       institutionCode: this.institutionCode ? this.institutionCode : this.form.value.institution,
-      role_id: this.form.value.role,
+      roleId: this.form.value.role,
       email: this.form.value.emailAddress,
       phone: this.form.value.phoneNumber,
       createdBy: this.service.user.email,

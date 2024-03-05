@@ -147,7 +147,7 @@ export class EditUserPropFormComponent implements OnInit {
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
       institutionName: this.form.value.institution,
-      role_id: this.form.value.role,
+      roleId: this.form.value.role,
       email: this.form.value.emailAddress,
     };
     // Send a post request to the server endpoint with the FormData object

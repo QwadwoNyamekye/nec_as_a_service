@@ -12,7 +12,7 @@ import { NbToastrService } from "@nebular/theme";
       >
       <nb-card-body>
         <button nbButton hero status="success" (click)="submit()">
-          Unlock
+          Reject
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
           Dismiss
@@ -20,56 +20,32 @@ import { NbToastrService } from "@nebular/theme";
       </nb-card-body>
     </nb-card>
   `,
-  styleUrls: ["unlock-user.component.scss"],
+  styleUrls: ["reject-file-upload.component.scss"],
 })
-export class UnlockUserComponent implements OnInit {
+export class RejectFileUploadComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
-  @Input() email: string;
   response: any;
   constructor(
-    protected ref: NbDialogRef<UnlockUserComponent>,
+    protected ref: NbDialogRef<RejectFileUploadComponent>,
     public service: NecService,
     private toastrService: NbToastrService
   ) {}
   ngOnInit(): void {
     // this.service.initializeWebSocketConnection();
   }
-  dismiss() {
-    this.ref.close();
-  }
-
   submit() {
-    this.response = this.service
-      .unlockUser({
-        email: this.email,
-        createdBy: this.service.user.email,
-      })
+    this.service
+      .rejectUploadedFile(this.batchId, this.service.user.email)
       .subscribe(
-        (response) => {
-          console.log(response);
-          this.response = response;
-          // window.parent.postMessage(this.service.getUsers());
-        },
-        (error) => {
-          console.error(error);
-          this.toastrService.warning(
-            "Unlock User Failed: " + error.error.errorMessage,
-            "Unlock User",
-            {
-              status: "danger",
-              destroyByClick: true,
-              duration: 8000,
-            }
-          );
-        },
-        () => {
+        (data) => {
+          this.response = data;
           console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
-              "Unlock User Failed: " + this.response.errorMessage,
-              "Unlock User",
+              "Uploaded File Status Change: REJECT Failed: " + this.response.errorMessage,
+              "Bulk File Processing",
               {
                 status: "danger",
                 destroyByClick: true,
@@ -77,14 +53,23 @@ export class UnlockUserComponent implements OnInit {
               }
             );
           } else {
-            this.toastrService.success("Unlock User Success", "Unlock User", {
-              status: "success",
-              destroyByClick: true,
-              duration: 8000,
-            });
-            this.ref.close();
+            this.toastrService.success(
+              "Uploaded File Status Change: REJECT Success: " + this.response.errorMessage,
+              "File Processing",
+              { status: "success", destroyByClick: true, duration: 8000 }
+            );
           }
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          console.log("AAAAAAAAAAAAAAAAAAAAAAA");
+          this.ref.close();
         }
       );
+  }
+  dismiss() {
+    this.ref.close();
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { LocalDataSource, ViewCell } from "ng2-smart-table";
 import { NbDialogService } from "@nebular/theme";
-import { NbWindowService } from "@nebular/theme";
+import { NbWindowService, NbWindowControlButtonsConfig } from "@nebular/theme";
 import { BulkNEComponent } from "./bulk-nec-request/bulk-nec-request.component";
 import { NecService } from "../../../@core/mock/nec.service";
 import { SubmitForProcessingComponent } from "./submit-for-processing/submit-for-processing.component";
@@ -11,7 +11,9 @@ import { Deferred } from "ng2-smart-table/lib/lib/helpers";
 import { DatePipe } from "@angular/common";
 import { SubmitForAuthorizationComponent } from "./submit-for-authorization/submit-for-authorization.component";
 import { SingleNECComponent } from "./upload_file_single/single.component";
+import { RejectFileUploadComponent } from "./reject-file-upload/reject-file-upload.component";
 import { map } from "rxjs/operators";
+import { DeclineFileUploadComponent } from "./decline-file-upload/decline-file-upload.component";
 
 @Component({
   selector: "ngx-bulk",
@@ -42,7 +44,7 @@ export class BulkUploadComponent implements OnInit {
       this.colour = "yellow";
       this.name = "PROCESSING";
     } else {
-      this.colour = "green";
+      this.colour = "#55DD33";
       this.name = "COMPLETED";
     }
     return this.domSanitizer.bypassSecurityTrustHtml(
@@ -52,34 +54,38 @@ export class BulkUploadComponent implements OnInit {
 
   process = {
     name: "edit",
-    title: '<i class="nb-edit"></i>',
+    title: '<i class="nb-paper-plane"></i>',
   };
   authorize = {
     name: "authorize",
     title: '<i class="nb-checkmark"></i>',
   };
+  reject = {
+    name: "reject",
+    title: '<i class="nb-trash"></i>',
+  };
   expand = {
     name: "expand",
     title: '<i class="nb-plus"></i>',
   };
-  customActions(role_id: string) {
+  customActions(roleId: string) {
     var custom = [];
-    if (role_id == "3") {
-      custom.push(this.process, this.expand);
-    } else if (role_id == "4") {
-      custom.push(this.authorize, this.expand);
+    if (roleId == "3") {
+      custom.push(this.process, this.expand, this.reject);
+    } else if (roleId == "4") {
+      custom.push(this.authorize, this.expand, this.reject);
     }
     return custom;
   }
   settings = {
     mode: "external",
     pager: {
-      perPage: 15,
+      perPage: 13,
     },
     hideSubHeader: true,
     actions: {
       position: "right",
-      custom: this.customActions(this.service.user.role_id),
+      custom: this.customActions(this.service.user.roleId),
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -156,6 +162,12 @@ export class BulkUploadComponent implements OnInit {
       this.submitForAuthorization(event);
     } else if (event.action == "expand") {
       this.openFileRecords(event);
+    } else if (event.action == "reject") {
+      if (this.service.user.roleId == "3") {
+        this.declineFileUpload(event);
+      } else if (this.service.user.roleId == "4") {
+        this.rejectFileUpload(event);
+      }
     }
   }
   compare(a, b) {
@@ -214,6 +226,45 @@ export class BulkUploadComponent implements OnInit {
           .subscribe(() => this.getUploads());
       });
   }
+
+  rejectFileUpload(event): void {
+    console.log(event);
+    this.dialogService
+      .open(RejectFileUploadComponent, {
+        context: {
+          title: `Do you want to reject ${event.data.fileName} ?`,
+          batchId: event.data.batchId,
+          submittedBy: this.service.user.email,
+        },
+      })
+      .onClose.pipe((response) => response)
+      .subscribe(() => {
+        console.log(".........................");
+        this.service.comp$
+          .pipe((response) => response)
+          .subscribe(() => this.getUploads());
+      });
+  }
+
+  declineFileUpload(event): void {
+    console.log(event);
+    this.dialogService
+      .open(DeclineFileUploadComponent, {
+        context: {
+          title: `Do you want to decline ${event.data.fileName} ?`,
+          batchId: event.data.batchId,
+          submittedBy: this.service.user.email,
+        },
+      })
+      .onClose.pipe((response) => response)
+      .subscribe(() => {
+        console.log(".........................");
+        this.service.comp$
+          .pipe((response) => response)
+          .subscribe(() => this.getUploads());
+      });
+  }
+
   openWindowForm() {
     this.windowService
       .open(BulkNEComponent, {
@@ -228,11 +279,18 @@ export class BulkUploadComponent implements OnInit {
   }
 
   openFileRecords(event) {
+    const buttonsConfig: NbWindowControlButtonsConfig = {
+      minimize: true,
+      maximize: false,
+      fullScreen: true,
+      close: true,
+    };
     this.windowService.open(SingleNECComponent, {
+      title: event.data.batchId,
       context: {
-        title: `File Test`,
         batchId: event.data.batchId,
       },
+      buttons: buttonsConfig,
     });
   }
 }

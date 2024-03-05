@@ -47,7 +47,8 @@ export class ChangePassword {
   }
 
   resetPass(): void {
-    this.errors = this.messages = [];
+    this.errors = [];
+    this.messages = [];
     this.submitted = true;
     this.new_user_credentials = {
       email: this.necService.user.email,
@@ -56,25 +57,29 @@ export class ChangePassword {
       confirmPassword: this.user.confirmPassword,
     };
 
-    this.necService
-      .changePassword(this.new_user_credentials)
-      .subscribe((result: any) => {
+    this.necService.changePassword(this.new_user_credentials).subscribe(
+      (result: any) => {
         console.log("KKKKKKKKKKKKKKKKKKKKK");
         console.log(this.user);
         console.log(result);
         console.log(typeof result);
         this.submitted = false;
         if (result.errorCode == "0") {
-          this.messages = result.errorMessage;
+          this.messages[0] = result.errorMessage;
           return this.router.navigate(["auth/login"]);
         } else {
-          this.errors = result.errorMessage;
+          this.errors[0] = result.errorMessage;
         }
         // setTimeout(() => {
         //   return this.router.navigateByUrl(homePath);
         // }, this.redirectDelay);
         // this.cd.detectChanges();
-      });
+      },
+      (error) => {
+        console.log("PPPPPPPPPPPPPPP");
+        console.log(error);
+      }
+    );
   }
 
   getConfigValue(key: string): any {

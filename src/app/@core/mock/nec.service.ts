@@ -157,6 +157,26 @@ export class NecService {
       .pipe(map((response) => response));
   }
 
+  rejectUploadedFile(batchId, submittedBy) {
+    return this.http
+      .get(
+        this.baseUrl +
+          `/upload/api/v1/reject_upload/${batchId}/${submittedBy}`,
+        { headers: this.headers }
+      )
+      .pipe(map((response) => response));
+  }
+
+  declineUploadedFile(batchId, submittedBy) {
+    return this.http
+      .get(
+        this.baseUrl +
+          `/upload/api/v1/decline_upload/${batchId}/${submittedBy}`,
+        { headers: this.headers }
+      )
+      .pipe(map((response) => response));
+  }
+
   submitForAuthorization(batchId, submittedBy) {
     return this.http
       .get(

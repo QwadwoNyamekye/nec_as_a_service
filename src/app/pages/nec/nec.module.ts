@@ -26,6 +26,8 @@ import { BulkNEComponent } from "./bulk/bulk-nec-request/bulk-nec-request.compon
 import { SubmitForProcessingComponent } from "./bulk/submit-for-processing/submit-for-processing.component";
 import { SingleNECComponent as FileRecord } from "./bulk/upload_file_single/single.component";
 import { SubmitForAuthorizationComponent } from "./bulk/submit-for-authorization/submit-for-authorization.component";
+import { RejectFileUploadComponent } from "./bulk/reject-file-upload/reject-file-upload.component";
+import { DeclineFileUploadComponent } from "./bulk/decline-file-upload/decline-file-upload.component";
 
 @NgModule({
   imports: [
@@ -57,7 +59,9 @@ import { SubmitForAuthorizationComponent } from "./bulk/submit-for-authorization
     BulkNEComponent,
     SubmitForProcessingComponent,
     SubmitForAuthorizationComponent,
-    FileRecord
+    FileRecord,
+    RejectFileUploadComponent,
+    DeclineFileUploadComponent,
   ],
 })
 export class NECModule {}

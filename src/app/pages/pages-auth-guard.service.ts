@@ -23,7 +23,7 @@ export class PagesAuthGuard {
       tap((authenticated) => {
         if (!authenticated) {
           this.router.navigate(["auth/login"]);
-        } else if (!allowedRoles.includes(this.service.user.role_id)) {
+        } else if (!allowedRoles.includes(this.service.user.roleId)) {
           console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}")
           console.log(allowedRoles)
           this.router.navigate(["pages/miscellaneous/404"]);

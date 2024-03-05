@@ -1,6 +1,6 @@
-<nb-card size="giant">
+<nb-card>
     <nb-card-header>
-      {{batchId}}
+      <button style="float: right; margin-right: 10px" (click)="downloadAsCSV()" nbButton>Download Records</button>
     </nb-card-header>
     <nb-card-body>
       <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (edit)="onEditRowSelect($event)">

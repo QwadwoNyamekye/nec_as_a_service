@@ -3,6 +3,7 @@ import { LocalDataSource } from "ng2-smart-table";
 import { NbWindowService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 import { DatePipe } from "@angular/common";
+import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 
 @Component({
   selector: "ngx-single",
@@ -22,7 +23,7 @@ export class SingleNECComponent implements OnDestroy {
 
   settings = {
     pager: {
-      perPage: 15,
+      perPage: 13,
     },
     hideSubHeader: true,
     actions: {
@@ -104,7 +105,31 @@ export class SingleNECComponent implements OnDestroy {
       }
     );
   }
-
+  downloadAsCSV() {
+    const options = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalseparator: ".",
+      showLabels: true,
+      showTitle: true,
+      useBom: true,
+      headers: [
+        "Destination Institution Code",
+        "Destination Institution",
+        "Destination Account",
+        "Account Name",
+        "Src. Institution Code",
+        "Src. Institution",
+        "Action Code",
+        "Created By",
+      ],
+    };
+    console.log("::::::::::::::::::::::")
+    console.log(this.source.getAll())
+    this.source.getFilteredAndSorted().then((data) => {
+      new Angular5Csv(data, "report", options);
+    });
+  }
   ngOnDestroy() {
     window.removeEventListener("message", this.listener);
   }

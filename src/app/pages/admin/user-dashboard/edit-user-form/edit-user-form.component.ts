@@ -144,11 +144,11 @@ export class EditUserFormComponent implements OnInit {
         this.currentValues.institutionName,
         Validators.required
       ),
-      role: new FormControl(this.currentValues.role_name, Validators.required),
+      role: new FormControl(this.currentValues.roleName, Validators.required),
       phone: new FormControl(this.currentValues.phone, Validators.required),
       // emailAddress: new FormControl("", Validators.required),
     });
-    // this.selectedRoles = this.currentValues.role_name
+    // this.selectedRoles = this.currentValues.roleName
     // this.service.initializeWebSocketConnection();
   }
 
@@ -157,13 +157,13 @@ export class EditUserFormComponent implements OnInit {
     // var object = {
     //   name: this.form.value.firstName + " " + this.form.value.lastName,
     //   institutionCode: this.form.value.institution,
-    //   role_id: this.form.value.role,
+    //   roleId: this.form.value.role,
     //   phone: this.form.value.phone,
     //   status: this.currentValues.status
     // };
     this.currentValues.name = this.form.value.firstName + " " + this.form.value.lastName
     this.currentValues.institutionCode = this.form.value.institution
-    this.currentValues.role_id = this.form.value.role
+    this.currentValues.roleId = this.form.value.role
     this.currentValues.phone = this.form.value.phone
     this.currentValues.createdBy = this.service.user.email
     // Send a post request to the server endpoint with the FormData object

@@ -29,7 +29,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
   shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   settings = {
     pager: {
-      perPage: 15,
+      perPage: 13,
     },
     hideSubHeader: true,
     actions: {
@@ -128,7 +128,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
     };
 
     
-    if(this.service.user.role_id == '2' || this.service.user.role_id == '3' || this.service.user.role_id == '4'){
+    if(this.service.user.roleId == '2' || this.service.user.roleId == '3' || this.service.user.roleId == '4'){
       this.institutionCode = this.service.user.institutionCode
       this.showInstitution = false
     }

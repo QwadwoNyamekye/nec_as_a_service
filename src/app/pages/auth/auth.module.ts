@@ -15,7 +15,7 @@ import {
 import { LoginComponent } from "./login/login.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { ReactiveFormsModule } from "@angular/forms";
-import { NbRequestPasswordComponent } from "./request-password/request-password.component";
+import { RequestPasswordComponent } from "./request-password/request-password.component";
 import { ChangePassword } from "./change-password/change-password.component";
 import {
   NbPasswordAuthStrategy,
@@ -100,7 +100,7 @@ const formSetting: any = {
     LoginComponent,
     NbAuthComponent,
     LogoutComponent,
-    NbRequestPasswordComponent,
+    RequestPasswordComponent,
     ChangePassword,
   ],
   providers: [AuthAuthGuard],

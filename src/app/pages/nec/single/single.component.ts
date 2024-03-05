@@ -36,7 +36,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
   shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   settings = {
     pager: {
-      perPage: 15,
+      perPage: 13,
     },
     hideSubHeader: true,
     actions: {
@@ -103,7 +103,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private service: NecService,
+    protected service: NecService,
     private windowService: NbWindowService
   ) {
     this.getSingleNECRequests();

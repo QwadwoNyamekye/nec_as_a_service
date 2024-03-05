@@ -34,7 +34,7 @@ export class AdminDashboardComponent implements OnInit {
     this.listener = (event: MessageEvent) => {
       console.log(event.data);
       this.receivedData = event.data;
-      this.source.load(this.receivedData.data)
+      this.source.load(this.receivedData.data);
       // if (this.receivedData.key == "add") {
       //   this.source.load(this.receivedData.data.user);
       // } else if (
@@ -49,18 +49,18 @@ export class AdminDashboardComponent implements OnInit {
 
   getHtmlForStatusCell(value: string) {
     if (value) {
-      this.colour = "red";
-      this.name = "LOCKED";
-    } else {
       this.colour = "green";
-      this.name = "UNLOCKED";
+      this.name = "ENABLED";
+    } else {
+      this.colour = "red";
+      this.name = "DISABLED";
     }
     return this.domSanitizer.bypassSecurityTrustHtml(
       `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
     );
   }
 
-  getHtmlForCell(value: string) {
+  getHtmlForLockCell(value: string) {
     if (value) {
       this.colour = "red";
       this.name = "YES";
@@ -75,7 +75,7 @@ export class AdminDashboardComponent implements OnInit {
 
   settings = {
     pager: {
-      perPage: 15,
+      perPage: 13,
     },
     hideSubHeader: true,
     actions: {
@@ -125,7 +125,7 @@ export class AdminDashboardComponent implements OnInit {
         title: "Email Address",
         type: "string",
       },
-      role_name: {
+      roleName: {
         title: "Role",
         type: "string",
       },
@@ -140,15 +140,15 @@ export class AdminDashboardComponent implements OnInit {
       locked: {
         title: "Locked",
         type: "html",
-        valuePrepareFunction: (lock) => {
-          return this.getHtmlForCell(lock);
+        valuePrepareFunction: (cell, row) => {
+          return this.getHtmlForLockCell(row.locked);
         },
       },
       userStatus: {
         title: "User Status",
         type: "html",
-        valuePrepareFunction: (status) => {
-          return this.getHtmlForStatusCell(status);
+        valuePrepareFunction: (cell, row) => {
+          return this.getHtmlForStatusCell(row.status);
         },
       },
     },
@@ -161,10 +161,10 @@ export class AdminDashboardComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private cd: ChangeDetectorRef
   ) {
-    this.getUsers()
+    this.getUsers();
   }
-  compare( a, b ) {
-    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+  compare(a, b) {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
   getUsers() {
     this.service.getUsers(this.service.user.email).subscribe(
@@ -194,65 +194,71 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   addUser() {
-    this.windowService.open(AddUserFormComponent, {
-      title: `Add User`,
-      windowClass: `admin-form-window`,
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.windowService
+      .open(AddUserFormComponent, {
+        title: `Add User`,
+        windowClass: `admin-form-window`,
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
   }
 
   editUser(event): void {
     console.log(event.data);
-    console.log("))))))))))))))))))))))))")
+    console.log("))))))))))))))))))))))))");
     this.row = event;
-    this.windowService.open(EditUserFormComponent, {
-      title: `Edit User`,
-      windowClass: `admin-form-window`,
-      context: {
-        currentValues: event.data
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.windowService
+      .open(EditUserFormComponent, {
+        title: `Edit User`,
+        windowClass: `admin-form-window`,
+        context: {
+          currentValues: event.data,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
     // event.confirm.resolve()
   }
 
   changeUserStatus(event): void {
-    this.dialogService.open(ChangeUserStatusComponent, {
-      context: {
-        title: "Change User Status",
-        email: event.data.email,
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.dialogService
+      .open(ChangeUserStatusComponent, {
+        context: {
+          title: "Change User Status",
+          email: event.data.email,
+          status: event.data.status,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
   }
 
   unlockUser(event): void {
-    this.dialogService.open(UnlockUserComponent, {
-      context: {
-        title: "Unlock User",
-        email: event.data.email,
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.dialogService
+      .open(UnlockUserComponent, {
+        context: {
+          title: "Unlock User",
+          email: event.data.email,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
   }
 
   resetUserPassword(event): void {
-    this.dialogService.open(ResetUserPasswordComponent, {
-      context: {
-        title: "Reset User Password",
-        email: event.data.email,
-      },
-    })
-    .onClose.subscribe(() => {
-      this.getUsers();
-    });
+    this.dialogService
+      .open(ResetUserPasswordComponent, {
+        context: {
+          title: "Reset User Password",
+          email: event.data.email,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
   }
 }
