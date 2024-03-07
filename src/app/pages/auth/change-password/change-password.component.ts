@@ -67,13 +67,13 @@ export class ChangePassword {
         if (result.errorCode == "0") {
           this.messages[0] = result.errorMessage;
           return this.router.navigate(["auth/login"]);
-        } else {
+        } else if (result.errorCode == "1") {
           this.errors[0] = result.errorMessage;
         }
         // setTimeout(() => {
         //   return this.router.navigateByUrl(homePath);
         // }, this.redirectDelay);
-        // this.cd.detectChanges();
+        this.cd.detectChanges();
       },
       (error) => {
         console.log("PPPPPPPPPPPPPPP");
