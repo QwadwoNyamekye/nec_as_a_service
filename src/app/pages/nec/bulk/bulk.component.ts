@@ -43,9 +43,15 @@ export class BulkUploadComponent implements OnInit {
     } else if (value === "3") {
       this.colour = "yellow";
       this.name = "PROCESSING";
-    } else {
+    } else if (value === "4") {
       this.colour = "#55DD33";
       this.name = "COMPLETED";
+    } else if (value === "5") {
+      this.colour = "#bd267e";
+      this.name = "REJECTED";
+    } else if (value === "6") {
+      this.colour = "#4665e0";
+      this.name = "DECLINE";
     }
     return this.domSanitizer.bypassSecurityTrustHtml(
       `<nb-card-body style="background-color: ${this.colour}; border-radius: 12px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
