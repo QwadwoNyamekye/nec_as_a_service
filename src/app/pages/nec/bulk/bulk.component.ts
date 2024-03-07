@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { LocalDataSource, ViewCell } from "ng2-smart-table";
 import { NbDialogService } from "@nebular/theme";
 import { NbWindowService, NbWindowControlButtonsConfig } from "@nebular/theme";
-import { BulkNEComponent } from "./bulk-nec-request/bulk-nec-request.component";
+import { UploadFileComponent } from "./bulk-nec-request/bulk-nec-request.component";
 import { NecService } from "../../../@core/mock/nec.service";
 import { SubmitForProcessingComponent } from "./submit-for-processing/submit-for-processing.component";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -41,7 +41,7 @@ export class BulkUploadComponent implements OnInit {
       this.colour = "yellow";
       this.name = "SUBMITTED";
     } else if (value === "3") {
-      this.colour = "yellow";
+      this.colour = "#fcb103";
       this.name = "PROCESSING";
     } else if (value === "4") {
       this.colour = "#55DD33";
@@ -182,6 +182,8 @@ export class BulkUploadComponent implements OnInit {
   getUploads() {
     this.service.getUploads(this.service.user.email).subscribe(
       (data) => {
+        console.log("WWWWWWWWWWWWWWWW")
+        console.log(data)
         this.files = data;
       },
       (error) => {
@@ -246,9 +248,7 @@ export class BulkUploadComponent implements OnInit {
       .onClose.pipe((response) => response)
       .subscribe(() => {
         console.log(".........................");
-        this.service.comp$
-          .pipe((response) => response)
-          .subscribe(() => this.getUploads());
+        this.getUploads()
       });
   }
 
@@ -265,15 +265,13 @@ export class BulkUploadComponent implements OnInit {
       .onClose.pipe((response) => response)
       .subscribe(() => {
         console.log(".........................");
-        this.service.comp$
-          .pipe((response) => response)
-          .subscribe(() => this.getUploads());
+        this.getUploads()
       });
   }
 
-  openWindowForm() {
+  uploadFile() {
     this.windowService
-      .open(BulkNEComponent, {
+      .open(UploadFileComponent, {
         title: `Upload File`,
         windowClass: `admin-form-window`,
       })

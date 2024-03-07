@@ -52,7 +52,7 @@ import { NbToastrService } from "@nebular/theme";
   `,
   styleUrls: ["bulk-nec-request.component.scss"],
 })
-export class BulkNEComponent implements OnInit {
+export class UploadFileComponent implements OnInit {
   items: any;
   form: FormGroup;
   selectedOption: any;

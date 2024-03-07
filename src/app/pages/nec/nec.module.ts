@@ -22,7 +22,7 @@ import { NECRoutingModule } from "./nec-routing.module";
 import { BulkUploadComponent } from "./bulk/bulk.component";
 import { SingleNECComponent } from "./single/single.component";
 import { SingleNECRequestComponent } from "./single/single-nec-request/single-nec-request.component";
-import { BulkNEComponent } from "./bulk/bulk-nec-request/bulk-nec-request.component";
+import { UploadFileComponent } from "./bulk/bulk-nec-request/bulk-nec-request.component";
 import { SubmitForProcessingComponent } from "./bulk/submit-for-processing/submit-for-processing.component";
 import { SingleNECComponent as FileRecord } from "./bulk/upload_file_single/single.component";
 import { SubmitForAuthorizationComponent } from "./bulk/submit-for-authorization/submit-for-authorization.component";
@@ -56,7 +56,7 @@ import { DeclineFileUploadComponent } from "./bulk/decline-file-upload/decline-f
     SingleNECComponent,
     BulkUploadComponent,
     SingleNECRequestComponent,
-    BulkNEComponent,
+    UploadFileComponent,
     SubmitForProcessingComponent,
     SubmitForAuthorizationComponent,
     FileRecord,

@@ -7,7 +7,7 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 import { NbToastrService } from "@nebular/theme";
 import { environment } from "../../../environments/environment.prod";
-import { Subject } from 'rxjs/Subject';
+import { Subject } from "rxjs/Subject";
 
 @Injectable({ providedIn: "root" })
 export class NecService {
@@ -19,7 +19,7 @@ export class NecService {
   data: any;
   headers: any;
   public stompClient;
-  private compInstance= new Subject<any>();
+  private compInstance = new Subject<any>();
   comp$ = this.compInstance.asObservable();
 
   constructor(
@@ -88,17 +88,22 @@ export class NecService {
         console.log(websocketdata[2]);
         console.log(that.user.id);
         console.log(typeof that.user.id);
-        console.log([websocketdata[1], websocketdata[2]].includes(that.user.id))
+        console.log(
+          [websocketdata[1], websocketdata[2]].includes(that.user.id)
+        );
         var websocketMessage = websocketdata[0];
         console.log(that.user);
-        if (websocketMessage != "" && [websocketdata[1], websocketdata[2]].includes(String(that.user.id))) {
+        if (
+          websocketMessage != "" &&
+          [websocketdata[1], websocketdata[2]].includes(String(that.user.id))
+        ) {
           that.toastrService.success(websocketMessage, "Bulk File Processing", {
             duration: 8000,
             destroyByClick: true,
             duplicatesBehaviour: "previous",
             preventDuplicates: true,
           });
-          that.compInstance.next(); 
+          that.compInstance.next();
         }
       });
     });
@@ -111,7 +116,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/reset_password", user, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   changePassword(user) {
@@ -121,7 +126,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/change_password", user, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   //-------------BULK--------------
@@ -136,7 +141,7 @@ export class NecService {
           headers: this.headers,
         }
       )
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   getUploads(email) {
@@ -144,7 +149,7 @@ export class NecService {
       .get(this.baseUrl + "/upload/api/v1/get_uploads/" + email, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   submitForProcessing(batchId, submittedBy) {
@@ -154,17 +159,16 @@ export class NecService {
           `/upload/api/v1/submit_upload_for_processing/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   rejectUploadedFile(batchId, submittedBy) {
     return this.http
       .get(
-        this.baseUrl +
-          `/upload/api/v1/reject_upload/${batchId}/${submittedBy}`,
+        this.baseUrl + `/upload/api/v1/reject_upload/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   declineUploadedFile(batchId, submittedBy) {
@@ -174,7 +178,7 @@ export class NecService {
           `/upload/api/v1/decline_upload/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   submitForAuthorization(batchId, submittedBy) {
@@ -184,7 +188,7 @@ export class NecService {
           `/upload/api/v1/submit_upload_for_authorization/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   uploadFile(file, description, createdBy, count) {
@@ -200,14 +204,14 @@ export class NecService {
         file,
         { headers: this.headers }
       )
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   //-------------------BANKS------------------
   getBanks() {
     return this.http
       .get(this.bankUrl + "/blaster/api/v1/banks", { headers: this.headers })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   getUploadStatus() {
@@ -215,7 +219,7 @@ export class NecService {
       .get(this.baseUrl + "/upload/api/v1/get_uploads_status", {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   getSingleNECList(email) {
@@ -225,7 +229,7 @@ export class NecService {
       .get(this.baseUrl + "/single/api/v1/nec_list/" + email, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   makeSingleNECRequest(data) {
@@ -234,7 +238,7 @@ export class NecService {
       .post(this.baseUrl + "/single/api/v1/nec", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   //-------------- USERS APIS------------------
@@ -244,13 +248,13 @@ export class NecService {
       .get(this.baseUrl + "/user/api/v1/get_users/" + email, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   getRoles() {
     return this.http
       .get(this.baseUrl + "/user/api/v1/get_roles", { headers: this.headers })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   postUsers(user) {
@@ -258,7 +262,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/create_user", user, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   unlockUser(user) {
@@ -266,7 +270,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/unlock_user", user, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   changeUserStatus(user) {
@@ -274,7 +278,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/change_status", user, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   resetUserPassword(user) {
@@ -282,7 +286,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/reset_password", user, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   //---------------INSTITUTION APIS-----------------
@@ -292,7 +296,7 @@ export class NecService {
       .get(this.baseUrl + "/institution/api/v1/get_institutions", {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   addInstitution(data) {
@@ -301,7 +305,7 @@ export class NecService {
       .post(this.baseUrl + "/institution/api/v1/create_institution", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   editInstitution(data) {
@@ -310,7 +314,7 @@ export class NecService {
       .post(this.baseUrl + "/institution/api/v1/update_institution", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   changeInstitutionStatus(data) {
@@ -319,7 +323,7 @@ export class NecService {
       .post(this.baseUrl + "/institution/api/v1/change_status", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   editUser(user) {
@@ -327,7 +331,7 @@ export class NecService {
       .post(this.baseUrl + "/user/api/v1/update_user", user, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   ///////////////////REPORTS API//////////////
@@ -336,7 +340,7 @@ export class NecService {
       .post(this.reportingUrl + "/nec-report/api/v1/get_nec_report", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 
   getUploadReport(data) {
@@ -344,6 +348,6 @@ export class NecService {
       .post(this.reportingUrl + "/upload/api/v1/get_uploads_report", data, {
         headers: this.headers,
       })
-      .pipe(map((response) => response));
+      .pipe((response) => response);
   }
 }

@@ -54,7 +54,7 @@ import { UploadReportComponent } from "./upload-report/upload-report.component";
     UploadReportComponent,
     //BulkUploadComponent,
     //SingleNECRequestComponent,
-    // BulkNEComponent,
+    // UploadFileComponent,
     // SubmitForProcessingComponent,
     // SubmitProcessingComponent,
     // FileRecord
