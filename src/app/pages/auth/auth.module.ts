@@ -6,11 +6,14 @@ import { AuthRoutingModule } from "./auth-routing.module";
 import { NbAuthComponent } from "./auth.component";
 import { NbLayoutModule } from "@nebular/theme";
 import { NbCardModule } from "@nebular/theme";
+import { MatIconModule } from "@angular/material/icon";
 import {
   NbAlertModule,
   NbButtonModule,
   NbCheckboxModule,
   NbInputModule,
+  NbIconModule,
+  NbFormFieldModule,
 } from "@nebular/theme";
 import { LoginComponent } from "./login/login.component";
 import { LogoutComponent } from "./logout/logout.component";
@@ -23,6 +26,7 @@ import {
   NbAuthJWTToken,
   NbTokenService,
 } from "@nebular/auth";
+import { NbIcon } from "@nebular/theme";
 import { Injector } from "@angular/core";
 import { environment } from "../../../environments/environment.prod";
 import { AuthAuthGuard } from "./auth-auth-guard.service";
@@ -38,6 +42,9 @@ const formSetting: any = {
 
 @NgModule({
   imports: [
+    NbFormFieldModule,
+    NbIconModule,
+    MatIconModule,
     NbCardModule,
     NbLayoutModule,
     CommonModule,

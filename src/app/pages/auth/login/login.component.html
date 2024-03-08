@@ -18,7 +18,7 @@
   </ul>
 </nb-alert>
 
-<form (ngSubmit)="login()" #form="ngForm" aria-labelledby="title">
+<form #form="ngForm" aria-labelledby="title">
 
   <div class="form-control-group">
     <label class="label" for="input-email">Email address:</label>
@@ -38,13 +38,25 @@
 
   <div class="form-control-group">
     <label class="label" for="input-password">Password:</label>
-    <input nbInput fullWidth [(ngModel)]="user.password" #password="ngModel" name="password" type="password"
-      id="input-password" placeholder="Password"
-      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
-      [required]="getConfigValue('forms.validation.password.required')"
-      [minlength]="getConfigValue('forms.validation.password.minLength')"
-      [maxlength]="getConfigValue('forms.validation.password.maxLength')"
-      [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+
+
+    <div>
+      <nb-form-field>
+        <input class="col-md-11" fullWidth nbInput [(ngModel)]="user.password" #password="ngModel" name="password"
+          [type]="getInputType()" id="input-password" placeholder="Password"
+          [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
+          [required]="getConfigValue('forms.validation.password.required')"
+          [minlength]="getConfigValue('forms.validation.password.minLength')"
+          [maxlength]="getConfigValue('forms.validation.password.maxLength')"
+          [attr.aria-invalid]="password.invalid && password.touched ? true : null"
+          type="{{(showPassword === false)?'password':'text'}}">
+        <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+          <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'" pack="eva"
+            [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+          </nb-icon>
+        </button>
+      </nb-form-field>
+    </div>
     <ng-container *ngIf="password.invalid && password.touched ">
       <p class="caption status-danger" *ngIf="password.errors?.required">
         Password is required!
@@ -63,7 +75,8 @@
     </div>
   </div>
 
-  <button nbButton fullWidth status="success" [disabled]="submitted || !form.valid" [class.btn-pulse]="submitted">
+  <button nbButton fullWidth (click)="login()" status="success" [disabled]="submitted || !form.valid"
+    [class.btn-pulse]="submitted">
     Sign In
   </button>
 </form>

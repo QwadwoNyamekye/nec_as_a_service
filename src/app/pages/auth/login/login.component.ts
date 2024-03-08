@@ -11,6 +11,18 @@ import { MENU_ITEMS } from "../../pages-menu";
 })
 export class LoginComponent extends NbLoginComponent {
   necService = AppInjector.get(NecService);
+  showPassword = true;
+
+  getInputType() {
+    if (this.showPassword) {
+      return 'text';
+    }
+    return 'password';
+  }
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
+
   login(): void {
     this.errors = [];
     this.submitted = true;
@@ -23,17 +35,17 @@ export class LoginComponent extends NbLoginComponent {
         console.log(JSON.stringify(result.getResponse().body?.user));
 
         if (result.isSuccess()) {
-          this.messages = result.getMessages()
+          this.messages = result.getMessages();
           sessionStorage.setItem(
             "user",
             JSON.stringify(result.getResponse().body.user)
           );
-          console.log(MENU_ITEMS())
+          console.log(MENU_ITEMS());
           console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^");
-          console.log(sessionStorage.getItem("homePath"))
+          console.log(sessionStorage.getItem("homePath"));
           console.log(result.getResponse().body.token);
           sessionStorage.setItem("token", result.getResponse().body.token);
-          this.necService.initializeVars()
+          this.necService.initializeVars();
           this.necService.initializeWebSocketConnection();
         } else {
           this.errors = result.getErrors();
@@ -46,7 +58,9 @@ export class LoginComponent extends NbLoginComponent {
         const redirect = result.getRedirect();
         if (redirect) {
           setTimeout(() => {
-            return this.router.navigateByUrl(sessionStorage.getItem("homePath"));
+            return this.router.navigateByUrl(
+              sessionStorage.getItem("homePath")
+            );
           }, this.redirectDelay);
         }
         this.cd.detectChanges();
