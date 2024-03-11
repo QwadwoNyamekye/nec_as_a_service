@@ -50,7 +50,7 @@
           [maxlength]="getConfigValue('forms.validation.password.maxLength')"
           [attr.aria-invalid]="password.invalid && password.touched ? true : null"
           type="{{(showPassword === false)?'password':'text'}}">
-        <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+        <button nbSuffix nbButton ghost (click)="toggleShowPassword()" type="button">
           <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'" pack="eva"
             [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
           </nb-icon>

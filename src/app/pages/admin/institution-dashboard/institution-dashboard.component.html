@@ -1,7 +1,8 @@
 <nb-card>
   <nb-card-header>
     Institutions
-    <button style="float: right;" (click)="addInstitution($event)" nbButton>Add Institution</button>
+    <button style="float: right;" (click)="addInstitution($event)" nbButton status="primary" outline>Add
+      Institution</button>
   </nb-card-header>
   <nb-card-body>
     <ng2-smart-table [settings]="settings" [source]="source" (custom)="customFunction($event)">

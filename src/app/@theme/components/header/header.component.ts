@@ -65,7 +65,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (token.isValid()) {
         console.log("############################")
         console.log(this.service.user)
-        this.user = {"name":this.service.user.name, picture: 'assets/images/nick.png' }
+        this.user = {"name":this.service.user.name, picture: 'assets/images/default.jpg' }
         // this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
       }
     });

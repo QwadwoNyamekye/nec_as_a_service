@@ -11,7 +11,7 @@ import { MENU_ITEMS } from "../../pages-menu";
 })
 export class LoginComponent extends NbLoginComponent {
   necService = AppInjector.get(NecService);
-  showPassword = true;
+  showPassword = false;
 
   getInputType() {
     if (this.showPassword) {

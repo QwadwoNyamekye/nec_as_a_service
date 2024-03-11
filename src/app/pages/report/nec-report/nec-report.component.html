@@ -8,12 +8,12 @@
         <div class="col-md-2">
           <label for="subject">Start Date :</label><br>
           <input fullWidth nbInput formControlName="startDate" placeholder="Start Date" [nbDatepicker]="picker1">
-          <nb-datepicker #picker1 [max]="max"></nb-datepicker>
+          <nb-datepicker #picker1 [max]="max" (dateChange)="setMin($event)"></nb-datepicker>
         </div>
         <div class="col-md-2">
           <label for="subject">End Date :</label><br>
           <input fullWidth nbInput formControlName="endDate" placeholder="End Date" [nbDatepicker]="picker2">
-          <nb-datepicker #picker2 [max]="max"></nb-datepicker>
+          <nb-datepicker #picker2 [max]="max" [min]="min"></nb-datepicker>
         </div>
         <div class="col-md-2">
           <label class="text-label" for="text">Type :</label><br>
@@ -53,6 +53,23 @@
 
 
       </div> <!--ROW END-->
+
+      <div class="row">
+        <div class="col-md-2">
+          <label class="text-label" for="text">&nbsp;</label><br>
+          <button fullWidth nbButton type="button" [disabled]="!this.response" [status]="statuses[0]"
+            [shape]="shapes[1]" (click)="downloadAsCSV()">
+            Download CSV
+          </button>
+        </div>
+        <div class="col-md-2">
+          <label class="text-label" for="text">&nbsp;</label><br>
+          <button fullWidth nbButton type="button" [disabled]="!this.response" [status]="statuses[0]"
+            [shape]="shapes[1]" (click)="downloadAsPDF()">
+            Download PDF
+          </button>
+        </div>
+      </div>
 
       <!-- <br>
         <div class="col-md-2">

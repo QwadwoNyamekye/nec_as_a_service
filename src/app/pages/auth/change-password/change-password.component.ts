@@ -10,8 +10,6 @@ import { NB_AUTH_OPTIONS } from "@nebular/auth";
 import { getDeepFromObject } from "@nebular/auth";
 import { NbAuthService } from "@nebular/auth";
 import { NecService } from "../../../@core/mock/nec.service";
-import { timer } from "rxjs";
-import { takeWhile, map } from "rxjs/operators";
 
 @Component({
   selector: "nb-reset-password-page",
@@ -101,14 +99,21 @@ export class ChangePassword implements OnInit {
           this.messages[0] = result.errorMessage;
 
           var time = 5;
-          setInterval(function (router) {
-            var seconds = time;
-            document.getElementById("time").innerHTML = "Redirecting to Login in : " + seconds;
-            if (time == 0) {
-              router.navigate(["auth/login"]);
-            }
-            time--
-          }, 1000, this.router);
+          setInterval(
+            function (router) {
+              var seconds = time;
+              if (document.getElementById("time")) {
+                document.getElementById("time").innerHTML =
+                  "Redirecting to Login in : " + seconds;
+              }
+              if (time == 0) {
+                router.navigate(["auth/login"]);
+              }
+              time--;
+            },
+            1000,
+            this.router
+          );
         } else if (result.errorCode == "1") {
           this.errors[0] = result.errorMessage;
         }

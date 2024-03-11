@@ -10,6 +10,9 @@ import {
   NbComponentStatus,
   NbDateService,
 } from "@nebular/theme"; //NbWindowRef
+import jsPDF from "jspdf";
+import autotable from "jspdf-autotable";
+import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 
 @Component({
   selector: "ngx-upload-report",
@@ -24,6 +27,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   listener: any;
   receivedData: any;
   form: FormGroup;
+  doc = new jsPDF("landscape");
   statuses: NbComponentStatus[] = [
     "primary",
     "success",
@@ -171,35 +175,99 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
-  // getUsers() {
-  //   this.service.getSingleNECList().subscribe(
-  //     (data) => {
-  //       this.users = data;
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //     },
-  //     () => {
-  //       console.log(this.users.sort(this.compare));
-  //       this.source.load(this.users.sort(this.compare));
-  //     }
-  //   );
-  // }
+  setMin(event) {
+    this.min = event;
+  }
+  downloadAsPDF() {
+    var data = this.response.map((item) => {
+      item.createdAt = new DatePipe("en-US").transform(
+        item.createdAt,
+        "YYYY-MM-dd HH:mm:ss"
+      );
+      item.submittedAt = new DatePipe("en-US").transform(
+        item.submittedAt,
+        "YYYY-MM-dd HH:mm:ss"
+      );
+      return item;
+    });
+    console.log("::::::::::::::::::::::");
+    console.log(data);
+    autotable(this.doc, {
+      head: [],
+      body: data,
+      columns: [
+        { header: "Batch ID", dataKey: "batchId" },
+        { header: "Record Count", dataKey: "totalCount" },
+        { header: "Description", dataKey: "description" },
+        { header: "File Name", dataKey: "fileName" },
+        { header: "Status", dataKey: "status" },
+        { header: "Institution Code", dataKey: "institutionCode" },
+        { header: "Submitted By", dataKey: "submittedBy" },
+        { header: "Submitted At", dataKey: "submittedAt" },
+        { header: "Authorized By", dataKey: "authorizedBy" },
+        { header: "Authorized At", dataKey: "authorizedAt" },
+        { header: "Created By", dataKey: "createdBy" },
+        { header: "Created At", dataKey: "createdAt" },
+      ],
+      columnStyles: {
+        0: { cellWidth: "auto" },
+        1: { cellWidth: "auto" },
+        2: { cellWidth: "auto" },
+        3: { cellWidth: "auto" },
+        4: { cellWidth: "auto" },
+        5: { cellWidth: "auto" },
+        6: { cellWidth: "auto" },
+        7: { cellWidth: "auto" },
+        8: { cellWidth: "auto" },
+        9: { cellWidth: "auto" },
+      },
+    });
+    this.doc.save(
+      this.service.user.institutionCode +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
+        "_BULK_UPLOAD_REPORT.pdf"
+    );
+    // this.doc.save("table.pdf");
+  }
+
+  downloadAsCSV() {
+    const options = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalseparator: ".",
+      showLabels: true,
+      // showTitle: true,
+      // useBom: true,
+      headers: [
+        "ID",
+        "Batch ID",
+        "Record Count",
+        "Description",
+        "File Name",
+        "Status",
+        "Institution Code",
+        "Created By",
+        "Authorized By",
+        "Submitted By",
+        "Submitted At",
+        "Created At",
+        "Authorized At",
+      ],
+    };
+    console.log("::::::::::::::::::::::");
+    console.log(this.response);
+    new Angular5Csv(
+      this.response,
+      this.service.user.institutionCode +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
+        "_BULK_UPLOAD_REPORT",
+      options
+    );
+  }
 
   ngOnDestroy() {
     window.removeEventListener("message", this.listener);
   }
-
-  // makeNECRequest() {
-  //   this.response = this.
-  //     .open(SingleNECRequestComponent, {
-  //       title: `Make NEC Request`,
-  //       windowClass: `admin-form-window`,
-  //     })
-  //     .onClose.subscribe(() => {
-  //       this.getUsers();
-  //     });
-  // }
 
   onEditRowSelect(event): void {
     if (window.open()) {
@@ -247,19 +315,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
           }
         );
       },
-      () => {
-        //console.log(this.response);
-        // this.toastrService.success(
-        //   "NEC Report Request Success",
-        //   "NEC Report Request",
-        //   {
-        //     status: "success",
-        //     destroyByClick: true,
-        //     duration: 8000,
-        //   }
-        // );
-        //this.windowRef.close();
-      }
+      () => {}
     );
     //this.close();
   }
