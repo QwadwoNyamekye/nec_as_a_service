@@ -23,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ReportRoutingModule } from "./report-routing.module";
 import { NecReportComponent } from "./nec-report/nec-report.component";
 import { UploadReportComponent } from "./upload-report/upload-report.component";
+import { AuditLogsComponent } from "./audit-logs/audit-logs.component";
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { UploadReportComponent } from "./upload-report/upload-report.component";
   declarations: [
     NecReportComponent,
     UploadReportComponent,
+    AuditLogsComponent
     //BulkUploadComponent,
     //SingleNECRequestComponent,
     // UploadFileComponent,

@@ -223,11 +223,10 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode +
-        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
-        "_BULK_UPLOAD_REPORT.pdf"
+      this.service.user.institutionCode + "_BULK_UPLOAD_REPORT" +
+      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
+      +".pdf"
     );
-    // this.doc.save("table.pdf");
   }
 
   downloadAsCSV() {
@@ -258,9 +257,8 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     console.log(this.response);
     new Angular5Csv(
       this.response,
-      this.service.user.institutionCode +
-        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
-        "_BULK_UPLOAD_REPORT",
+      this.service.user.institutionCode + "_BULK_UPLOAD_REPORT" +
+      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
     );
   }
@@ -315,7 +313,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
           }
         );
       },
-      () => {}
+      () => { }
     );
     //this.close();
   }

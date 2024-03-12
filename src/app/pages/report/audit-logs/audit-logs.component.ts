@@ -15,11 +15,11 @@ import autotable from "jspdf-autotable";
 import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 
 @Component({
-  selector: "ngx-nec-report",
-  templateUrl: "./nec-report.component.html",
-  styleUrls: ["./nec-report.component.scss"],
+  selector: "ngx-audit-logs",
+  templateUrl: "./audit-logs.component.html",
+  styleUrls: ["./audit-logs.component.scss"],
 })
-export class NecReportComponent implements OnInit, OnDestroy {
+export class AuditLogsComponent implements OnInit, OnDestroy {
   source: LocalDataSource = new LocalDataSource();
   users: any;
   stompClient: any;
@@ -62,56 +62,33 @@ export class NecReportComponent implements OnInit, OnDestroy {
       confirmDelete: true,
     },
     columns: {
-      sessionId: {
-        title: "Session ID",
+      id: {
+        title: "ID",
         type: "string",
       },
-      narration: {
-        title: "Narration",
+      action: {
+        title: "Action",
         type: "string",
       },
-      destInstitution: {
-        title: "Dest. Institution Code",
+      ipAddr: {
+        title: "IP Address",
         type: "string",
       },
-      destInstitutionName: {
-        title: "Dest. Institution",
+      request: {
+        title: "Request",
         type: "string",
       },
-      destAccountNumber: {
-        title: "Destination Account",
-        type: "string",
-      },
-      destAccountName: {
-        title: "Account Name",
-        type: "string",
-      },
-      srcInstitution: {
-        title: "Src. Institution Code",
-        type: "string",
-      },
-      srcInstitutionName: {
-        title: "Src. Institution",
-        type: "string",
-      },
-      actionCode: {
-        title: "Action Code",
-        type: "string",
-      },
-      accountStatus: {
-        title: "Account Status",
+      response: {
+        title: "Response",
         type: "string",
       },
       createdBy: {
         title: "Created By",
         type: "string",
       },
-      createdAt: {
-        title: "Created At",
+      timeStamp: {
+        title: "Timestamp",
         type: "string",
-        valuePrepareFunction: (date) => {
-          return new DatePipe("en-US").transform(date, "YYYY-MM-dd HH:mm:ss");
-        },
       },
     },
   };
@@ -126,7 +103,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
     private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>
   ) {
-    //this.getUsers();
+    this.getAuditLogs()
   }
 
   ngOnInit() {
@@ -158,21 +135,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
       code: new FormControl("", Validators.required),
     });
 
-    /////GET BANKS///////////////
-    this.service.getBanks().subscribe(
-      (data) => {
-        this.bankList = data;
-        console.log(this.bankList);
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        console.log(this.bankList);
-      }
-    );
-
-    this.service.getInstitutions().subscribe(
+    this.service.getAuditLogs().subscribe(
       (data) => {
         this.institutions = data;
       },
@@ -193,17 +156,13 @@ export class NecReportComponent implements OnInit, OnDestroy {
       head: [],
       body: this.response,
       columns: [
-        { header: "Session Id", dataKey: "sessionId" },
-        { header: "Narration", dataKey: "narration" },
-        { header: "Dest. Institution Code", dataKey: "destInstitution" },
-        { header: "Dest. Institution", dataKey: "destInstitutionName" },
-        { header: "Dest. Account", dataKey: "destAccountNumber" },
-        { header: "Account Name", dataKey: "destAccountName" },
-        { header: "Src. Institution Code", dataKey: "srcInstitution" },
-        { header: "Action Code", dataKey: "actionCode" },
-        { header: "Account Status", dataKey: "accountStatus" },
+        { header: "ID", dataKey: "id" },
+        { header: "Action", dataKey: "action" },
+        { header: "IP Address", dataKey: "ipAddr" },
+        { header: "Request", dataKey: "request" },
+        { header: "Response", dataKey: "response" },
         { header: "Created By", dataKey: "createdBy" },
-        { header: "Created At", dataKey: "createdAt" },
+        { header: "Timestamp", dataKey: "timeStamp" },
       ],
       columnStyles: {
         0: { cellWidth: "auto" },
@@ -213,14 +172,10 @@ export class NecReportComponent implements OnInit, OnDestroy {
         4: { cellWidth: "auto" },
         5: { cellWidth: "auto" },
         6: { cellWidth: "auto" },
-        7: { cellWidth: "auto" },
-        8: { cellWidth: "auto" },
-        9: { cellWidth: "auto" },
-        10: { cellWidth: "auto" },
       },
     });
     this.doc.save(
-      this.service.user.institutionCode + "_SINGLE_NEC_REPORT" +
+      this.service.user.institutionCode + "_AUDIT_LOGS_REPORT" +
       new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
       +".pdf"
     );
@@ -235,25 +190,20 @@ export class NecReportComponent implements OnInit, OnDestroy {
       // showTitle: true,
       // useBom: true,
       headers: [
-        "Account Status",
-        "Destination Institution",
-        "Destination Account Code",
-        "Source Institution Code",
-        "Account Name",
-        "Destination Account",
-        "Session ID",
-        "Action Code",
-        "Batch ID",
-        "Narration",
+        "ID",
+        "Action",
+        "IP Address",
+        "Request",
+        "Response",
         "Created By",
-        "Created At",
+        "Timestamp",
       ],
     };
     console.log("::::::::::::::::::::::");
     console.log(this.response);
     new Angular5Csv(
       this.response,
-      this.service.user.institutionCode + "_SINGLE_NEC_REPORT" +
+      this.service.user.institutionCode + "_AUDIT_LOGS_REPORT" +
       new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
     );
@@ -288,16 +238,8 @@ export class NecReportComponent implements OnInit, OnDestroy {
 
   /////////////////FORM STUFF
 
-  onSubmit(): void {
-    this.form.value.endDate.setHours("23");
-    this.form.value.endDate.setMinutes("59");
-    this.form.value.endDate.setSeconds("59");
-    this.form.value.endDate.setMilliseconds("999");
-    this.form.value.code = this.institutionCode
-      ? this.institutionCode
-      : this.form.value.code;
-
-    this.service.getNecReport(this.form.value).subscribe(
+  getAuditLogs() {
+    this.service.getAuditLogs().subscribe(
       (response) => {
         console.log(response);
         this.response = response;
@@ -307,8 +249,8 @@ export class NecReportComponent implements OnInit, OnDestroy {
       (error) => {
         console.error(error);
         this.toastrService.warning(
-          "NEC Report Request Failed: " + error.error.errorMessage,
-          "NEC Report Request",
+          "Audit Log Request Failed: " + error.error.errorMessage,
+          "Audit Log Request",
           {
             status: "danger",
             destroyByClick: true,
@@ -318,8 +260,8 @@ export class NecReportComponent implements OnInit, OnDestroy {
       },
       () => { }
     );
-    //this.close();
   }
+
   close() {
     //this.windowRef.close();
   }

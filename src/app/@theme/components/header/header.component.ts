@@ -102,6 +102,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (event.item.title === "Log out") {
         console.log("logout clicked");
         sessionStorage.clear()
+        localStorage.clear()
         this.router.navigate(["auth/login"]);
       }
     });

@@ -19,9 +19,9 @@
     align-content: center;
   }
 
-  nb-user {
+  nb-user .user-name{
     cursor: pointer;
-    color: white;
+    color: white !important;
   }
 
   ::ng-deep nb-search button {

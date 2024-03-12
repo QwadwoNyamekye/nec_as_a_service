@@ -130,12 +130,24 @@ export class NecService {
 
   //-------------BULK--------------
 
+  getAuditLogs() {
+    return this.http
+      .get(
+        this.baseUrl +
+        "/api/v1/audit/get_all_audit_logs",
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe((response) => response);
+  }
+
   getFileRecords(batch_id) {
     return this.http
       .get(
         this.baseUrl +
-          "/batch_details/api/v1/get_branch_details_by_batch_id/" +
-          batch_id,
+        "/batch_details/api/v1/get_branch_details_by_batch_id/" +
+        batch_id,
         {
           headers: this.headers,
         }
@@ -155,7 +167,7 @@ export class NecService {
     return this.http
       .get(
         this.baseUrl +
-          `/upload/api/v1/submit_upload_for_processing/${batchId}/${submittedBy}`,
+        `/upload/api/v1/submit_upload_for_processing/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
       .pipe((response) => response);
@@ -174,7 +186,7 @@ export class NecService {
     return this.http
       .get(
         this.baseUrl +
-          `/upload/api/v1/decline_upload/${batchId}/${submittedBy}`,
+        `/upload/api/v1/decline_upload/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
       .pipe((response) => response);
@@ -184,7 +196,7 @@ export class NecService {
     return this.http
       .get(
         this.baseUrl +
-          `/upload/api/v1/submit_upload_for_authorization/${batchId}/${submittedBy}`,
+        `/upload/api/v1/submit_upload_for_authorization/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
       .pipe((response) => response);
@@ -194,12 +206,12 @@ export class NecService {
     return this.http
       .post(
         this.baseUrl +
-          "/upload/api/v1/create_upload/" +
-          description +
-          "/" +
-          createdBy +
-          "/" +
-          count,
+        "/upload/api/v1/create_upload/" +
+        description +
+        "/" +
+        createdBy +
+        "/" +
+        count,
         file,
         { headers: this.headers }
       )

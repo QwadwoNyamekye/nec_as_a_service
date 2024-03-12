@@ -25,11 +25,15 @@ var nec_report_path = {
   icon: "bookmark",
   link: "/pages/nec-report",
 };
-
 var upload_report_path = {
   title: "Upload Report",
   icon: "bookmark",
   link: "/pages/upload-report",
+};
+var audit_logs_path = {
+  title: "Audit Logs",
+  icon: "bookmark",
+  link: "/pages/audit-logs",
 };
 
 export function MENU_ITEMS () {
@@ -46,7 +50,8 @@ export function MENU_ITEMS () {
       user_path,
       institution_path,
       nec_report_path,
-      upload_report_path
+      upload_report_path,
+      audit_logs_path
     );
     console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHH");
     console.log(menu_items);

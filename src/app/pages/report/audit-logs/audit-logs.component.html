@@ -1,0 +1,30 @@
+<nb-card>
+  <nb-card-header>
+    Audit Logs
+  </nb-card-header>
+  <nb-card-body id="reportForm">
+    <form class="form" [formGroup]="form">
+      <div class="row">
+        <div class="col-md-2">
+          <label class="text-label" for="text"></label>
+          <button fullWidth nbButton type="button" [disabled]="!this.response" [status]="statuses[0]"
+            [shape]="shapes[1]" (click)="downloadAsCSV()">
+            Download CSV
+          </button>
+        </div>
+        <div class="col-md-2">
+          <label class="text-label" for="text"></label>
+          <button fullWidth nbButton type="button" [disabled]="!this.response" [status]="statuses[0]"
+            [shape]="shapes[1]" (click)="downloadAsPDF()">
+            Download PDF
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"
+      (edit)="onEditRowSelect($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
