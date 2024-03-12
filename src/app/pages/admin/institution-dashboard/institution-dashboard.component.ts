@@ -62,11 +62,11 @@ export class InstitutionDashboardComponent implements OnInit {
       custom: [
         {
           name: "edit",
-          title: '<i class="nb-edit"></i>',
+          title: '<i class="nb-edit" data-toggle="tooltip" data-placement="top" title="Edit Institution"></i>',
         },
         {
           name: "unlock",
-          title: '<i class="nb-locked"></i>',
+          title: '<i class="nb-locked" data-toggle="tooltip" data-placement="top" title="Change Institution Status"></i>',
         },
       ],
       add: false, //  if you want to remove add button

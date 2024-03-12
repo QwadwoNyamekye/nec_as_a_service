@@ -83,19 +83,19 @@ export class AdminDashboardComponent implements OnInit {
       custom: [
         {
           name: "edit",
-          title: '<i class="nb-edit"></i>',
+          title: '<i class="nb-edit" data-toggle="tooltip" data-placement="top" title="Edit User"></i>',
         },
         {
           name: "unlock",
-          title: '<i class="nb-locked"></i>',
+          title: '<i class="nb-locked" data-toggle="tooltip" data-placement="top" title="Unlock User"></i>',
         },
         {
           name: "reset",
-          title: '<i class="nb-loop-circled"></i>',
+          title: '<i class="nb-loop-circled" data-toggle="tooltip" data-placement="top" title="Reset User"></i>',
         },
         {
           name: "userStatus",
-          title: '<i class="nb-alert"></i>',
+          title: '<i class="nb-alert" data-toggle="tooltip" data-placement="top" title="Change User Status"></i>',
         },
       ],
       add: false, //  if you want to remove add button

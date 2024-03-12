@@ -60,19 +60,19 @@ export class BulkUploadComponent implements OnInit {
 
   process = {
     name: "edit",
-    title: '<i class="nb-paper-plane"></i>',
+    title: '<i class="nb-paper-plane" data-toggle="tooltip" data-placement="top" title="Process File"></i>',
   };
   authorize = {
     name: "authorize",
-    title: '<i class="nb-checkmark"></i>',
+    title: '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Authorize File"></i>',
   };
   reject = {
     name: "reject",
-    title: '<i class="nb-trash"></i>',
+    title: '<i class="nb-trash" data-toggle="tooltip" data-placement="top" title="Reject File"></i>',
   };
   expand = {
     name: "expand",
-    title: '<i class="nb-plus"></i>',
+    title: '<i class="nb-plus" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
   };
   customActions(roleId: string) {
     var custom = [];
