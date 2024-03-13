@@ -56,6 +56,7 @@ export class LoginComponent extends NbLoginComponent {
         }
 
         const redirect = result.getRedirect();
+        console.log(redirect)
         if (redirect) {
           setTimeout(() => {
             return this.router.navigateByUrl(
@@ -65,8 +66,8 @@ export class LoginComponent extends NbLoginComponent {
         }
         this.cd.detectChanges();
       },
-      (error) => console.log(error),
-      () => {}
+      (error) => { console.log("kkkkkkkkkkkkkkk"); console.log(error) },
+      () => { }
     );
   }
 }

@@ -17,6 +17,8 @@
 
 @import './layout';
 @import './overrides';
+// @import '~ngx-spinner/animations/ball-pulse-sync.css';
+
 
 // install the framework and custom global styles
 @include nb-install() {
