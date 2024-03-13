@@ -72,7 +72,7 @@ export class BulkUploadComponent implements OnInit {
   };
   expand = {
     name: "expand",
-    title: '<i class="nb-plus" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
+    title: '<i class="nb-list" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
   };
   customActions(roleId: string) {
     var custom = [];

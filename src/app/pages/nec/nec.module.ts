@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Ng2SmartTableModule } from "ng2-smart-table";
+import { NbSpinnerModule } from "@nebular/theme";
 import {
   NbMenuModule,
   NbButtonModule,
@@ -31,6 +32,7 @@ import { DeclineFileUploadComponent } from "./bulk/decline-file-upload/decline-f
 
 @NgModule({
   imports: [
+    NbSpinnerModule,
     NbInputModule,
     NbWindowModule,
     NbMenuModule,

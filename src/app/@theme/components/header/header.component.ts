@@ -60,14 +60,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {
     this.authService
       .authenticate("email")
-      .subscribe((data: any) => console.log("+++++++++++++++++"));
+      .subscribe((data: any) => { console.log("+++++++++++++++++"); this.user = { "name": this.service.user?.name, picture: 'assets/images/default.jpg' } });
     this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
-      if (token.isValid()) {
-        console.log("############################")
-        console.log(this.service.user)
-        this.user = {"name":this.service.user.name, picture: 'assets/images/default.jpg' }
-        // this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
-      }
+      console.log(token)
+      // if (token.isValid()) {
+      console.log("############################")
+      console.log(this.service.user)
+      this.user = { "name": this.service.user.name, picture: 'assets/images/default.jpg' }
+      // this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
+      // }
     });
   }
 

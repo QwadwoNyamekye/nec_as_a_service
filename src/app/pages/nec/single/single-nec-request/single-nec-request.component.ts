@@ -31,6 +31,8 @@ import { NbToastrService } from "@nebular/theme";
         [status]="statuses[0]"
         (click)="onSubmit()"
         [shape]="shapes[1]"
+        [nbSpinner]="loading" nbSpinnerStatus="danger"
+        [disabled]="loading"
       >
         Submit
       </button>
@@ -54,11 +56,12 @@ export class SingleNECRequestComponent {
   object: any;
   bankList: any;
   response: any;
+  loading: boolean = false;
   constructor(
     public windowRef: NbWindowRef,
     private toastrService: NbToastrService,
     private service: NecService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Initialize the form model with three form controls
@@ -82,6 +85,7 @@ export class SingleNECRequestComponent {
   }
 
   onSubmit(): void {
+    this.loading = true;
     console.log("ON SUBMIT");
     this.object = {
       destAccount: this.form.value.destAccount,
@@ -129,6 +133,7 @@ export class SingleNECRequestComponent {
         );
       },
       () => {
+        this.loading = false
         console.log("AAAAAAAAAAAAAAAAAAAAAAA");
         this.windowRef.close();
       }
