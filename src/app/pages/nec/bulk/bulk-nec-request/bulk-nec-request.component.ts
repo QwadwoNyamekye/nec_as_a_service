@@ -45,6 +45,8 @@ import { NbToastrService } from "@nebular/theme";
         [disabled]="!form.valid"
         [status]="statuses[0]"
         [shape]="shapes[1]"
+        [nbSpinner]="loading" nbSpinnerStatus="danger"
+        [disabled]="loading"
       >
         Submit
       </button>
@@ -69,6 +71,7 @@ export class UploadFileComponent implements OnInit {
   shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   source: LocalDataSource = new LocalDataSource();
   response: any;
+  loading: boolean = false;
   constructor(
     public windowRef: NbWindowRef,
     private service: NecService,
@@ -92,6 +95,7 @@ export class UploadFileComponent implements OnInit {
   }
 
   onSaveFile() {
+    this.loading = true;
     const formData: FormData = new FormData();
     console.log(this.filesToUpload);
     this.filesToUpload.forEach((file) => {
@@ -122,6 +126,7 @@ export class UploadFileComponent implements OnInit {
           );
         },
         () => {
+          this.loading = false
           console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(

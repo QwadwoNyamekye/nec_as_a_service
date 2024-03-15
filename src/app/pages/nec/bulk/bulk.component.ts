@@ -153,10 +153,10 @@ export class BulkUploadComponent implements OnInit {
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
-  ) {
-    this.getUploads();
-  }
+  ) { }
+
   ngOnInit(): void {
+    this.getUploadedFiles();
     // this.service.initializeWebSocketConnection()
   }
 
@@ -179,7 +179,7 @@ export class BulkUploadComponent implements OnInit {
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
-  getUploads() {
+  getUploadedFiles() {
     this.service.getUploads(this.service.user.email).subscribe(
       (data) => {
         console.log("WWWWWWWWWWWWWWWW")
@@ -212,7 +212,7 @@ export class BulkUploadComponent implements OnInit {
         },
       })
       .onClose.subscribe(() => {
-        this.getUploads();
+        this.getUploadedFiles();
       });
   }
 
@@ -231,7 +231,7 @@ export class BulkUploadComponent implements OnInit {
         console.log(".........................");
         this.service.comp$
           .pipe((response) => response)
-          .subscribe(() => this.getUploads());
+          .subscribe(() => this.getUploadedFiles());
       });
   }
 
@@ -248,7 +248,7 @@ export class BulkUploadComponent implements OnInit {
       .onClose.pipe((response) => response)
       .subscribe(() => {
         console.log(".........................");
-        this.getUploads()
+        this.getUploadedFiles()
       });
   }
 
@@ -264,8 +264,7 @@ export class BulkUploadComponent implements OnInit {
       })
       .onClose.pipe((response) => response)
       .subscribe(() => {
-        console.log(".........................");
-        this.getUploads()
+        this.getUploadedFiles()
       });
   }
 
@@ -278,23 +277,26 @@ export class BulkUploadComponent implements OnInit {
       .onClose.subscribe(() => {
         this.service.comp$
           .pipe((response) => response)
-          .subscribe(() => this.getUploads());
+          .subscribe(() => this.getUploadedFiles());
       });
   }
 
   openFileRecords(event) {
-    const buttonsConfig: NbWindowControlButtonsConfig = {
-      minimize: true,
-      maximize: false,
-      fullScreen: true,
-      close: true,
-    };
-    this.windowService.open(SingleNECComponent, {
-      title: event.data.batchId,
+    console.log(".........................");
+    console.log(event)
+    console.log(event.data.batchId)
+    // const buttonsConfig: NbWindowControlButtonsConfig = {
+    //   minimize: true,
+    //   maximize: false,
+    //   fullScreen: false,
+    //   close: true,
+    // };
+    this.dialogService.open(SingleNECComponent, {
       context: {
+        title: event.data.batchId,
         batchId: event.data.batchId,
       },
-      buttons: buttonsConfig,
+      // buttons: buttonsConfig,
     });
   }
 }
