@@ -134,19 +134,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
       startDate: new FormControl("", Validators.required),
       code: new FormControl("", Validators.required),
     });
-
-    this.service.getAuditLogs().subscribe(
-      (data) => {
-        this.institutions = data;
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        //console.log(this.institutions.sort(this.compare));
-        //this.source.load(this.institutions.sort(this.compare));
-      }
-    );
+    this.getAuditLogs()
   }
 
   downloadAsPDF() {
@@ -212,8 +200,9 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
   setMin(event) {
     this.min = event;
   }
+  
   compare(a, b) {
-    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
+    return new Date(b.timeStamp).valueOf() - new Date(a.timeStamp).valueOf();
   }
 
   ngOnDestroy() {
@@ -243,7 +232,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
       (response) => {
         console.log(response);
         this.response = response;
-        this.source.load(this.response);
+        this.source.load(this.response.sort(this.compare));
         return response;
       },
       (error) => {
