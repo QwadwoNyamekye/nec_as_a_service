@@ -28,6 +28,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   receivedData: any;
   form: FormGroup;
   doc = new jsPDF("landscape");
+  loading: boolean = false;
   statuses: NbComponentStatus[] = [
     "primary",
     "success",
@@ -139,10 +140,10 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     // this.service.initializeWebSocketConnection()
 
     this.form = new FormGroup({
-      status: new FormControl("", Validators.required),
+      status: new FormControl(""),
       endDate: new FormControl("", Validators.required),
       startDate: new FormControl("", Validators.required),
-      code: new FormControl("", Validators.required),
+      code: new FormControl(""),
     });
 
     this.service.getInstitutions().subscribe(
@@ -286,6 +287,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   /////////////////FORM STUFF
 
   onSubmit(): void {
+    this.loading = true;
     this.form.value.endDate.setHours("23");
     this.form.value.endDate.setMinutes("59");
     this.form.value.endDate.setSeconds("59");
@@ -299,9 +301,11 @@ export class UploadReportComponent implements OnInit, OnDestroy {
         console.log(response);
         this.response = response;
         this.source.load(this.response);
+        this.loading = false;
         return response;
       },
       (error) => {
+        this.loading = false;
         console.error(error);
         this.toastrService.warning(
           "Upload Report Request Failed: " + error.error.errorMessage,

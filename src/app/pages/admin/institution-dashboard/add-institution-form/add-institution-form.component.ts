@@ -38,7 +38,7 @@ import { NbToastrService } from "@nebular/theme";
         id="button"
         type="submit"
         [status]="statuses[0]"
-        [shape]="shapes[1]"
+        [shape]="shapes[2]"
       >
         Submit
       </button>

@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Ng2SmartTableModule } from "ng2-smart-table";
+import { NbSpinnerModule } from "@nebular/theme";
 import {
   NbMenuModule,
   NbButtonModule,
@@ -28,6 +29,7 @@ import { AuditLogsComponent } from "./audit-logs/audit-logs.component";
 
 @NgModule({
   imports: [
+    NbSpinnerModule,
     NbInputModule,
     NbWindowModule,
     NbMenuModule,

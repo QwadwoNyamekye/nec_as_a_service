@@ -121,6 +121,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
   institutions: Object;
   showInstitution: Boolean = true;
   institutionCode;
+  loading: boolean = false;
   constructor(
     public service: NecService,
     private toastrService: NbToastrService,
@@ -151,11 +152,11 @@ export class NecReportComponent implements OnInit, OnDestroy {
     // this.service.initializeWebSocketConnection()
 
     this.form = new FormGroup({
-      type: new FormControl("", Validators.required),
-      destBank: new FormControl("", Validators.required),
+      type: new FormControl(""),
+      destBank: new FormControl(""),
       endDate: new FormControl("", Validators.required),
       startDate: new FormControl("", Validators.required),
-      code: new FormControl("", Validators.required),
+      code: new FormControl(""),
     });
 
     /////GET BANKS///////////////
@@ -289,6 +290,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
   /////////////////FORM STUFF
 
   onSubmit(): void {
+    this.loading = true;
     this.form.value.endDate.setHours("23");
     this.form.value.endDate.setMinutes("59");
     this.form.value.endDate.setSeconds("59");
@@ -302,9 +304,11 @@ export class NecReportComponent implements OnInit, OnDestroy {
         console.log(response);
         this.response = response;
         this.source.load(this.response);
+        this.loading = false
         return response;
       },
       (error) => {
+        this.loading = false;
         console.error(error);
         this.toastrService.warning(
           "NEC Report Request Failed: " + error.error.errorMessage,

@@ -46,7 +46,8 @@
         </div>
         <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button fullWidth  nbButton status="primary" outline type="submit" [status]="statuses[0]" [shape]="shapes[1]">
+          <button fullWidth nbButton status="primary" outline type="submit" [status]="statuses[0]" [shape]="shapes[2]"
+            [nbSpinner]="loading" nbSpinnerStatus="danger" [disabled]="loading || !form.valid">
             Submit
           </button>
         </div>

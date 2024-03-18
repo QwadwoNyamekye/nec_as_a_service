@@ -30,7 +30,7 @@ import { NbToastrService } from "@nebular/theme";
         type="submit"
         [status]="statuses[0]"
         (click)="onSubmit()"
-        [shape]="shapes[1]"
+        [shape]="shapes[2]"
         [nbSpinner]="loading" nbSpinnerStatus="danger"
         [disabled]="loading"
       >

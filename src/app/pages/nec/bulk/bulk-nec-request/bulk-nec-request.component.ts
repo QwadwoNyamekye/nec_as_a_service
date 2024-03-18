@@ -44,7 +44,7 @@ import { NbToastrService } from "@nebular/theme";
         (click)="onSaveFile()"
         [disabled]="!form.valid"
         [status]="statuses[0]"
-        [shape]="shapes[1]"
+        [shape]="shapes[2]"
         [nbSpinner]="loading" nbSpinnerStatus="danger"
         [disabled]="loading"
       >
