@@ -99,15 +99,15 @@ export class ChangePassword implements OnInit {
           this.messages[0] = result.errorMessage;
 
           var time = 5;
-          setInterval(
+          var intervalId = setInterval(
             function (router) {
-              var seconds = time;
               if (document.getElementById("time")) {
                 document.getElementById("time").innerHTML =
-                  "Redirecting to Login in : " + seconds;
+                  "Redirecting to Login in : " + time;
               }
               if (time == 0) {
                 router.navigate(["auth/login"]);
+                window.clearInterval(intervalId)
               }
               time--;
             },
