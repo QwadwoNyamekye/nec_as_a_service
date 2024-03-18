@@ -21,13 +21,15 @@ import { NbToastrService } from "@nebular/theme";
         id="subject"
         type="text"
       />
-      <label class="text-label" for="subject">Phone:</label>
+      <label class="text-label" for="subject">Phone Number:</label>
       <input
         nbInput
         fullWidth
         formControlName="phone"
         id="subject"
-        type="text"
+        type="tel"
+        pattern="[0-9]{10}" 
+        maxlength="10"
       />
       <br />
       <button
