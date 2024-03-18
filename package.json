@@ -13,7 +13,7 @@
     "ng": "ng",
     "conventional-changelog": "conventional-changelog",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --output-path=C:\\Users\\DOPPONG-NKRUMAH\\Documents\\blaster\\blaster\\src\\main\\resources\\static",
     "build:prod": "npm run build -- --configuration production --aot",
     "test": "ng test",
     "test:coverage": "rimraf coverage && npm run test -- --code-coverage",

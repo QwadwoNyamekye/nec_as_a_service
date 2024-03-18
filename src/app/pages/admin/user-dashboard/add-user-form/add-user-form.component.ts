@@ -63,15 +63,20 @@ import { NbToastrService } from "@nebular/theme";
         </div>
       </div>
 
+      
+    <div class="form-control-group">
       <label class="text-label" for="text">Phone Number:</label>
       <input
         nbInput
         fullWidth
         formControlName="phoneNumber"
         id="text"
-        type="text"
+        type="tel"
+        pattern="[0-9]{10}" 
+        maxlength="10"
         placeholder="Phone Number"
       />
+      </div>
       <label class="text-label" for="text">Email Address:</label>
       <input
         nbInput

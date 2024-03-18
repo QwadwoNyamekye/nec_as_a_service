@@ -11,7 +11,9 @@ import { NbToastrService } from "@nebular/theme";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()">
+        <button nbButton hero status="success" (click)="submit()" 
+        [nbSpinner]="loading" nbSpinnerStatus="danger"
+        [disabled]="loading">
           Accept
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
@@ -27,6 +29,7 @@ export class SubmitForProcessingComponent implements OnInit {
   @Input() batchId: string;
   @Input() submittedBy: string;
   response: any;
+  loading: boolean = false;
   constructor(
     protected ref: NbDialogRef<SubmitForProcessingComponent>,
     public service: NecService,
@@ -36,10 +39,12 @@ export class SubmitForProcessingComponent implements OnInit {
     // this.service.initializeWebSocketConnection();
   }
   submit() {
+    this.loading = true;
     this.service
       .submitForProcessing(this.batchId, this.service.user.email)
       .subscribe(
         (data) => {
+          this.loading = true;
           this.response = data;
           console.log(this.response);
           if (this.response.errorCode != "0") {
@@ -61,9 +66,11 @@ export class SubmitForProcessingComponent implements OnInit {
           }
         },
         (error) => {
+          this.loading = false;
           console.log(error);
         },
         () => {
+          this.loading = false;
           console.log("AAAAAAAAAAAAAAAAAAAAAAA");
           this.ref.close();
         }

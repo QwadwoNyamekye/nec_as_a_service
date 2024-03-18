@@ -39,7 +39,9 @@ import { NbToastrService } from "@nebular/theme";
         fullWidth
         formControlName="phone"
         id="text"
-        type="text"
+        type="tel"
+        pattern="[0-9]{10}" 
+        maxlength="10"
         placeholder="Phone Number"
       />
 

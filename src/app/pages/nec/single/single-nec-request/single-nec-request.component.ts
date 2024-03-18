@@ -121,6 +121,7 @@ export class SingleNECRequestComponent {
         // window.parent.postMessage(response);
       },
       (error) => {
+        this.loading = false;
         console.error(error);
         this.toastrService.warning(
           "Single NEC Request Failed: " + error.error.errorMessage,
