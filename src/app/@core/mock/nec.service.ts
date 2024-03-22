@@ -3,7 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { HttpHeaders } from "@angular/common/http";
 import { NbAuthService, NbAuthJWTToken } from "@nebular/auth";
 import { CompatClient, Stomp } from "@stomp/stompjs";
-import * as SockJS from "sockjs-client";
+// import * as SockJS from "sockjs-client";
+import SockJS from 'sockjs-client'
 import { NbToastrService } from "@nebular/theme";
 import { environment } from "../../../environments/environment.prod";
 import { Subject } from "rxjs/Subject";
@@ -11,13 +12,12 @@ import { Subject } from "rxjs/Subject";
 @Injectable({ providedIn: "root" })
 export class NecService {
   user: any;
-  websocket = environment.websocket;
   baseUrl = environment.baseUrl;
   bankUrl = environment.bankUrl;
   reportingUrl = environment.reportingUrl;
   data: any;
   headers: any;
-  public stompClient;
+  public stompClient: CompatClient;
   private compInstance = new Subject<any>();
   comp$ = this.compInstance.asObservable();
 
@@ -41,55 +41,24 @@ export class NecService {
     console.log(this.user);
   }
 
-  websocketSuccessCallback() {
-    this.stompClient.subscribe("/realtime/alert", (message) => {
-      console.log("WEBSOCKET MESSAGE");
-      console.log(message);
-      var websocketdata = message.body.split(":");
-      var websocketMessage = websocketdata[0];
-      var websocketUser = websocketdata[1];
-      console.log(this.user);
-      if (websocketMessage != "" && websocketUser == this.user.id) {
-        this.toastrService.success(websocketMessage, "Bulk File Processing", {
-          duration: 8000,
-          destroyByClick: true,
-          duplicatesBehaviour: "previous",
-          preventDuplicates: true,
-        });
-      }
-    });
-  }
-
-  websocketFailureCallback(error) {
-    console.log("STOMP: " + error);
-    setTimeout(this.initializeWebSocketConnection, 10000);
-    console.log("STOMP: Reconecting in 10 seconds");
-  }
-
   initializeWebSocketConnection() {
-    const serverUrl = this.websocket;
+    var websocket = environment.websocket;
+    const serverUrl = websocket;
     const ws = new SockJS(serverUrl);
-    this.stompClient = Stomp.over(ws);
+    this.stompClient = Stomp.over(() => { return ws });
 
     const that = this;
     console.log("STOMP CLIENT");
     console.log(this.stompClient);
+    // this.stompClient.reconnect_delay = 1000;
+    // this.stompClient.reconnectDelay = 10000;
 
-    this.stompClient.connect({}, function (frame) {
-      console.log("STOMP CLIENT");
-      console.log(that.stompClient);
+    this.stompClient.connect({}, (frame) => {
+      console.log("WEBSOCKET CONNECTED");
       that.stompClient.subscribe("/realtime/alert", (message) => {
-        console.log("NEW WEBSOCKET CONNECTION");
+        console.log("WEBSOCKET SUBSCRIBED SUCCESSFULLY");
         console.log(message);
         var websocketdata = message.body.split(":");
-        console.log(websocketdata);
-        console.log(websocketdata[1]);
-        console.log(websocketdata[2]);
-        console.log(that.user.id);
-        console.log(typeof that.user.id);
-        console.log(
-          [websocketdata[1], websocketdata[2]].includes(that.user.id)
-        );
         var websocketMessage = websocketdata[0];
         console.log(that.user);
         if (
@@ -105,7 +74,8 @@ export class NecService {
           that.compInstance.next();
         }
       });
-    });
+    }, (error) => { console.log("WEBSOCKET ERROR"); console.log(error); this.initializeWebSocketConnection(); },
+      (frame) => { console.log("WEBSOCKET DISCONNECTED"); console.log(frame); this.initializeWebSocketConnection() });
   }
 
   resetPassword(user) {
