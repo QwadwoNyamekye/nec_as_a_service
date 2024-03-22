@@ -14,7 +14,6 @@ import {
   NbInputModule,
   NbMenuModule,
 } from "@nebular/theme";
-import { NgxEchartsModule } from "ngx-echarts";
 import { ThemeModule } from "../../@theme/theme.module";
 import { AdminDashboardComponent } from "./user-dashboard/user-dashboard.component";
 import { AddUserFormComponent } from "./user-dashboard/add-user-form/add-user-form.component";
@@ -46,7 +45,6 @@ import { ChangeInstitutionStatusComponent } from "./institution-dashboard/change
     NbListModule,
     NbIconModule,
     NbButtonModule,
-    NgxEchartsModule,
     Ng2SmartTableModule,
     ReactiveFormsModule,
   ],

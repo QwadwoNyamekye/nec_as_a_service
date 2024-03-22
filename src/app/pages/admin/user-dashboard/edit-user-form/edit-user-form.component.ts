@@ -150,19 +150,12 @@ export class EditUserFormComponent implements OnInit {
       phone: new FormControl(this.currentValues.phone, Validators.required),
       // emailAddress: new FormControl("", Validators.required),
     });
-    // this.selectedRoles = this.currentValues.roleName
+    // this.currentRole = this.currentValues.roleName
     // this.service.initializeWebSocketConnection();
   }
 
   // Define a method to handle the form submission
   onSubmit(): void {
-    // var object = {
-    //   name: this.form.value.firstName + " " + this.form.value.lastName,
-    //   institutionCode: this.form.value.institution,
-    //   roleId: this.form.value.role,
-    //   phone: this.form.value.phone,
-    //   status: this.currentValues.status
-    // };
     this.currentValues.name = this.form.value.firstName + " " + this.form.value.lastName
     this.currentValues.institutionCode = this.form.value.institution
     this.currentValues.roleId = this.form.value.role
