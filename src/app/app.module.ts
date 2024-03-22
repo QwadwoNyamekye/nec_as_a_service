@@ -14,9 +14,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import {NbButtonModule, NbCardModule, NbRowComponent} from '@nebular/theme';
 import {NbTableModule} from '@nebular/theme';
 import { FlexLayoutModule } from "@angular/flex-layout";
-import { NbAuthComponent } from "./pages/auth/auth.component";
 import {
-  NbChatModule,
   NbDatepickerModule,
   NbDialogModule,
   NbMenuModule,
@@ -40,9 +38,6 @@ import { AuthGuard } from './auth-guard.service';
     NbDialogModule.forRoot(),
     NbWindowModule.forRoot(),
     NbToastrModule.forRoot(),
-    NbChatModule.forRoot({
-      messageGoogleMapKey: "AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY",
-    }),
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
     NbCardModule,
