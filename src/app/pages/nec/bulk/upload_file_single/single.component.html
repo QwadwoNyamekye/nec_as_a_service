@@ -6,7 +6,7 @@
   </nb-card-header>
   <nb-card-body>
     <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"
-      (edit)="onEditRowSelect($event)">
+      (edit)="onEditRowSelect($event)" [nbSpinner]="loading" nbSpinnerStatus="danger">
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>

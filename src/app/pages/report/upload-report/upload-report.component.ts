@@ -41,7 +41,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     pager: {
       perPage: 13,
     },
-    hideSubHeader: true,
+    // hideSubHeader: true,
     actions: {
       position: "right",
       add: false, //  if you want to remove add button
@@ -153,10 +153,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       (error) => {
         console.log(error);
       },
-      () => {
-        //console.log(this.institutions.sort(this.compare));
-        //this.source.load(this.institutions.sort(this.compare));
-      }
+      () => { }
     );
 
     this.service.getUploadStatus().subscribe(
@@ -166,10 +163,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       (error) => {
         console.log(error);
       },
-      () => {
-        //console.log(this.institutions.sort(this.compare));
-        //this.source.load(this.institutions.sort(this.compare));
-      }
+      () => { }
     );
   }
 
@@ -177,8 +171,15 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
   setMin(event) {
+    console.log("iiiiiiiiiiiiiiiiiiiii")
     this.min = event;
   }
+
+  setMax(event) {
+    console.log("MAXXXXXXXXXX")
+    this.max = event;
+  }
+
   downloadAsPDF() {
     var data = this.response.map((item) => {
       item.createdAt = new DatePipe("en-US").transform(
@@ -225,8 +226,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     });
     this.doc.save(
       this.service.user.institutionCode + "_BULK_UPLOAD_REPORT" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
-      +".pdf"
+      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") + ".pdf"
     );
   }
 

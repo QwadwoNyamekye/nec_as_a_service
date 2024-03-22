@@ -40,7 +40,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     pager: {
       perPage: 13,
     },
-    hideSubHeader: true,
+    // hideSubHeader: true,
     actions: {
       position: "right",
       add: false, //  if you want to remove add button
@@ -164,8 +164,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     });
     this.doc.save(
       this.service.user.institutionCode + "_AUDIT_LOGS_REPORT" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
-      +".pdf"
+      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") + ".pdf"
     );
   }
 

@@ -22,13 +22,14 @@ export class SingleNECComponent implements OnDestroy {
   response: any;
   listener: any;
   receivedData: any;
+  loading: boolean = true;
   doc = new jsPDF("landscape");
 
   settings = {
     pager: {
       perPage: 13,
     },
-    hideSubHeader: true,
+    // hideSubHeader: true,
     actions: {
       position: "right",
       add: false, //  if you want to remove add button
@@ -114,8 +115,10 @@ export class SingleNECComponent implements OnDestroy {
         console.log(error);
       },
       () => {
-        console.log(this.singleNECList.sort(this.compare));
-        this.source.load(this.singleNECList.sort(this.compare));
+        this.singleNECList = this.singleNECList.sort(this.compare)
+        console.log(this.singleNECList);
+        this.source.load(this.singleNECList);
+        this.loading = false;
       }
     );
   }
@@ -169,9 +172,9 @@ export class SingleNECComponent implements OnDestroy {
     });
     this.doc.save(
       this.service.user.institutionCode +
-        "_SINGLE_NEC_REQUESTS_" +
-        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
-        ".pdf"
+      "_SINGLE_NEC_REQUESTS_" +
+      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
+      ".pdf"
     );
   }
 
@@ -214,8 +217,8 @@ export class SingleNECComponent implements OnDestroy {
     new Angular5Csv(
       this.singleNECList,
       this.service.user.institutionCode +
-        "_SINGLE_NEC_REQUESTS_" +
-        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
+      "_SINGLE_NEC_REQUESTS_" +
+      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
     );
   }

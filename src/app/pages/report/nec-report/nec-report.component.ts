@@ -40,7 +40,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
     pager: {
       perPage: 13,
     },
-    hideSubHeader: true,
+    // hideSubHeader: true,
     actions: {
       position: "right",
       add: false, //  if you want to remove add button
@@ -180,10 +180,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
       (error) => {
         console.log(error);
       },
-      () => {
-        //console.log(this.institutions.sort(this.compare));
-        //this.source.load(this.institutions.sort(this.compare));
-      }
+      () => { }
     );
   }
 
@@ -222,8 +219,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
     });
     this.doc.save(
       this.service.user.institutionCode + "_SINGLE_NEC_REPORT" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
-      +".pdf"
+      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") + ".pdf"
     );
   }
 
@@ -263,6 +259,12 @@ export class NecReportComponent implements OnInit, OnDestroy {
   setMin(event) {
     this.min = event;
   }
+
+  setMax(event) {
+    console.log("MAXXXXXXXXXX")
+    this.max = event;
+  }
+
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }

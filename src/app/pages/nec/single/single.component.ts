@@ -41,7 +41,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     pager: {
       perPage: 13,
     },
-    hideSubHeader: true,
+    // hideSubHeader: true,
     actions: {
       position: "right",
       add: false, //  if you want to remove add button
@@ -129,8 +129,9 @@ export class SingleNECComponent implements OnInit, OnDestroy {
         console.log(error);
       },
       () => {
-        console.log(this.singleNECList.sort(this.compare));
-        this.source.load(this.singleNECList.sort(this.compare));
+        this.singleNECList = this.singleNECList.sort(this.compare)
+        console.log(this.singleNECList);
+        this.source.load(this.singleNECList);
       }
     );
   }

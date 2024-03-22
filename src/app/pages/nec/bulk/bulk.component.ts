@@ -77,9 +77,9 @@ export class BulkUploadComponent implements OnInit {
   customActions(roleId: string) {
     var custom = [];
     if (roleId == "3") {
-      custom.push(this.process, this.expand, this.reject);
+      custom.push(this.process, this.reject, this.expand);
     } else if (roleId == "4") {
-      custom.push(this.authorize, this.expand, this.reject);
+      custom.push(this.authorize, this.reject, this.expand);
     }
     return custom;
   }
@@ -88,7 +88,7 @@ export class BulkUploadComponent implements OnInit {
     pager: {
       perPage: 13,
     },
-    hideSubHeader: true,
+    // hideSubHeader: true,
     actions: {
       position: "right",
       custom: this.customActions(this.service.user.roleId),
@@ -190,8 +190,9 @@ export class BulkUploadComponent implements OnInit {
         console.log(error);
       },
       () => {
-        console.log(this.files.sort(this.compare));
-        this.source.load(this.files.sort(this.compare));
+        this.files = this.files.sort(this.compare)
+        console.log(this.files);
+        this.source.load(this.files);
       }
     );
   }
@@ -228,6 +229,7 @@ export class BulkUploadComponent implements OnInit {
       })
       .onClose.pipe((response) => response)
       .subscribe(() => {
+        this.getUploadedFiles();
         console.log(".........................");
         this.service.comp$
           .pipe((response) => response)
