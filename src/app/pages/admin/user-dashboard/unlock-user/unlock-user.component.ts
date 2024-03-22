@@ -48,7 +48,6 @@ export class UnlockUserComponent implements OnInit {
       })
       .subscribe(
         (response) => {
-          console.log(response);
           this.response = response;
           // window.parent.postMessage(this.service.getUsers());
         },
@@ -65,7 +64,6 @@ export class UnlockUserComponent implements OnInit {
           );
         },
         () => {
-          console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
               "Unlock User Failed: " + this.response.errorMessage,

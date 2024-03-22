@@ -32,7 +32,6 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getUsers();
     this.listener = (event: MessageEvent) => {
-      console.log(event.data);
       this.receivedData = event.data;
       this.source.load(this.receivedData.data);
       // if (this.receivedData.key == "add") {
@@ -172,11 +171,9 @@ export class AdminDashboardComponent implements OnInit {
         this.users = data;
       },
       (error) => {
-        console.log(error);
       },
       () => {
         this.users = this.users.sort(this.compare)
-        console.log(this.users);
         this.source.load(this.users);
       }
     );
@@ -206,8 +203,6 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   editUser(event): void {
-    console.log(event.data);
-    console.log("))))))))))))))))))))))))");
     this.row = event;
     this.windowService
       .open(EditUserFormComponent, {

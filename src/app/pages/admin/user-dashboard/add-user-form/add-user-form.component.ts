@@ -140,10 +140,8 @@ export class AddUserFormComponent implements OnInit {
     this.service.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
-        console.log(this.institutions);
       },
       (error) => {
-        console.log(error);
       }
     );
 
@@ -157,10 +155,8 @@ export class AddUserFormComponent implements OnInit {
             el.name.includes('Bank')
           )
         }
-        console.log(this.roles);
       },
       (error) => {
-        console.log(error);
       }
     );
 
@@ -190,7 +186,6 @@ export class AddUserFormComponent implements OnInit {
     // Send a post request to the server endpoint with the FormData object
     this.service.postUsers(object).subscribe(
       (data) => {
-        console.log(data);
         // window.parent.postMessage(this.service.getUsers());
         this.response = data;
       },
@@ -207,7 +202,6 @@ export class AddUserFormComponent implements OnInit {
         );
       },
       () => {
-        console.log(this.response);
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
             "User Creation Failed: " + this.response.errorMessage,

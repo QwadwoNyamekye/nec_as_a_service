@@ -110,7 +110,6 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     this.listener = (event: MessageEvent) => {
       this.receivedData = event.data;
       this.source.load(this.receivedData);
-      console.log(this.receivedData);
     };
 
     if (
@@ -138,8 +137,6 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
   }
 
   downloadAsPDF() {
-    console.log("::::::::::::::::::::::");
-    console.log(this.response);
     autotable(this.doc, {
       head: [],
       body: this.response,
@@ -186,8 +183,6 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
         "Timestamp",
       ],
     };
-    console.log("::::::::::::::::::::::");
-    console.log(this.response);
     new Angular5Csv(
       this.response,
       this.service.user.institutionCode + "_AUDIT_LOGS_REPORT" +
@@ -229,7 +224,6 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
   getAuditLogs() {
     this.service.getAuditLogs().subscribe(
       (response) => {
-        console.log(response);
         this.response = response;
         this.source.load(this.response.sort(this.compare));
         return response;

@@ -49,29 +49,18 @@ export class ChangePassword implements OnInit {
     this.passwordRegexInvalid = true;
   }
 
-  _console(v) {
-    console.log(v);
-  }
   validatePassword(password) {
-    console.log("YYYYYYYYYYYYYYYYYYYY");
     if (this.passwordRegex.test(password)) {
-      console.log("Password is valid!");
       this.passwordRegexInvalid = false;
       return "Password is Valid";
     } else {
-      console.log(this.passwordRegex.test(password));
-      console.log("Password is invalid. Reasons:");
       if (!/[a-z]/.test(password)) {
-        console.log("- Password must contain at least one lowercase letter.");
         return "Password must contain at least one lowercase letter.";
       } else if (!/[A-Z]/.test(password)) {
-        console.log("- Password must contain at least one uppercase letter.");
         return "Password must contain at least one uppercase letter.";
       } else if (!/[0-9]/.test(password)) {
-        console.log("- Password must contain at least one digit.");
         return "Password must contain at least one digit.";
       } else if (!/[!@#$%^&*_=+-]/.test(password)) {
-        console.log("- Password must contain at least one special character.");
         return "Password must contain at least one special character.";
       }
     }
@@ -90,10 +79,6 @@ export class ChangePassword implements OnInit {
 
     this.necService.changePassword(this.new_user_credentials).subscribe(
       (result: any) => {
-        console.log("KKKKKKKKKKKKKKKKKKKKK");
-        console.log(this.user);
-        console.log(result);
-        console.log(typeof result);
         this.submitted = false;
         if (result.errorCode == "0") {
           this.messages[0] = result.errorMessage;
@@ -123,8 +108,6 @@ export class ChangePassword implements OnInit {
         this.cd.detectChanges();
       },
       (error) => {
-        console.log("PPPPPPPPPPPPPPP");
-        console.log(error);
       }
     );
   }

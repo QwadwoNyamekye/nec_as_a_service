@@ -8,7 +8,6 @@ import { NbAuthResult } from "@nebular/auth";
 })
 export class LogoutComponent extends NbLogoutComponent {
   logout(strategy: string): void {
-    console.log("JJJJJJJJJJJJJJJJJJJJ")
     sessionStorage.clear()
     this.service.logout(strategy).subscribe((result: NbAuthResult) => {
       const redirect = result.getRedirect();

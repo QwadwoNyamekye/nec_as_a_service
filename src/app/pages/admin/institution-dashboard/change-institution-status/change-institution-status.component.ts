@@ -47,7 +47,6 @@ export class ChangeInstitutionStatusComponent implements OnInit {
   }
 
   submit(event) {
-    console.log(event);
     this.response = this.service
       .changeInstitutionStatus({
         code: this.code,
@@ -56,7 +55,6 @@ export class ChangeInstitutionStatusComponent implements OnInit {
       })
       .subscribe(
         (response) => {
-          console.log(response);
           this.response = response;
           // window.parent.postMessage(this.service.getInstitutions());
           return response;
@@ -74,7 +72,6 @@ export class ChangeInstitutionStatusComponent implements OnInit {
           );
         },
         () => {
-          console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
               "Institution Status Change Failed: " + this.response.errorMessage,

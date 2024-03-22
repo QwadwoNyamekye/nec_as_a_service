@@ -60,7 +60,6 @@ export class ChangeUserStatusComponent implements OnInit {
       })
       .subscribe(
         (response) => {
-          console.log(response);
           this.response = response;
           // window.parent.postMessage(this.service.getUsers());
         },
@@ -77,7 +76,6 @@ export class ChangeUserStatusComponent implements OnInit {
           );
         },
         () => {
-          console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
               "User Status Change Failed: " + this.response.errorMessage,

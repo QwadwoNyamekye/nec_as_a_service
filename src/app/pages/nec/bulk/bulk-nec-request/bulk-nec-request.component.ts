@@ -97,7 +97,6 @@ export class UploadFileComponent implements OnInit {
   onSaveFile() {
     this.loading = true;
     const formData: FormData = new FormData();
-    console.log(this.filesToUpload);
     this.filesToUpload.forEach((file) => {
       formData.append("files", file);
     });
@@ -110,7 +109,6 @@ export class UploadFileComponent implements OnInit {
       )
       .subscribe(
         (response) => {
-          console.log(response);
           this.response = response
         },
         (error) => {
@@ -128,7 +126,6 @@ export class UploadFileComponent implements OnInit {
         },
         () => {
           this.loading = false
-          console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
               "File Upload Failed: " + this.response.errorMessage,

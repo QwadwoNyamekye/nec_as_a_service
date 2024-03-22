@@ -18,7 +18,6 @@ export class AuthAuthGuard {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const allowedRoles = route.data.allowedRoles as string[];
-    console.log(allowedRoles)
     return this.authService.isAuthenticated().pipe(
       tap((authenticated) => {
         if (!authenticated) {

@@ -72,13 +72,10 @@ export class SingleNECRequestComponent {
     this.service.getBanks().subscribe(
       (data) => {
         this.bankList = data;
-        console.log(this.bankList);
       },
       (error) => {
-        console.log(error);
       },
       () => {
-        console.log(this.bankList);
       }
     );
     // this.service.initializeWebSocketConnection();
@@ -86,7 +83,6 @@ export class SingleNECRequestComponent {
 
   onSubmit(): void {
     this.loading = true;
-    console.log("ON SUBMIT");
     this.object = {
       destAccount: this.form.value.destAccount,
       destBank: this.form.value.destBank,
@@ -94,7 +90,6 @@ export class SingleNECRequestComponent {
     };
     this.service.makeSingleNECRequest(this.object).subscribe(
       (response: any) => {
-        console.log(response);
         if (response.errorCode == "0") {
           this.response = response;
           this.toastrService.success(
@@ -135,7 +130,6 @@ export class SingleNECRequestComponent {
       },
       () => {
         this.loading = false
-        console.log("AAAAAAAAAAAAAAAAAAAAAAA");
         this.windowRef.close();
       }
     );

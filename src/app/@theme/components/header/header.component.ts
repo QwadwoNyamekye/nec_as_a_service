@@ -60,12 +60,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {
     this.authService
       .authenticate("email")
-      .subscribe((data: any) => { console.log("+++++++++++++++++"); this.user = { "name": this.service.user?.name, picture: 'assets/images/default.jpg' } });
+      .subscribe((data: any) => { this.user = { "name": this.service.user?.name, picture: 'assets/images/default.jpg' } });
     this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
-      console.log(token)
       // if (token.isValid()) {
-      console.log("############################")
-      console.log(this.service.user)
       this.user = { "name": this.service.user.name, picture: 'assets/images/default.jpg' }
       // this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
       // }
@@ -101,7 +98,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.menuService.onItemClick().subscribe((event) => {
       if (event.item.title === "Log out") {
-        console.log("logout clicked");
         sessionStorage.clear()
         localStorage.clear()
         this.router.navigate(["auth/login"]);

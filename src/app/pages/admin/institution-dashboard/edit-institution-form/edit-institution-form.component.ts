@@ -99,7 +99,6 @@ export class EditInstitutionFormComponent implements OnInit {
     // Send a post request to the server endpoint with the FormData object
     this.service.editInstitution(object).subscribe(
       (response) => {
-        console.log(response);
         this.response = response;
       },
       (error) => {
@@ -115,7 +114,6 @@ export class EditInstitutionFormComponent implements OnInit {
         );
       },
       () => {
-        console.log(this.response);
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
             "Institution Edit Failed: " + this.response.errorMessage,

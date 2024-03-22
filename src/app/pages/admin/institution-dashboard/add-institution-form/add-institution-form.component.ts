@@ -83,7 +83,6 @@ export class AddInstitutionFormComponent implements OnInit {
     };
     this.service.addInstitution(this.object).subscribe(
       (response) => {
-        console.log(response);
         this.response = response;
         // window.parent.postMessage(this.service.getInstitutions());
         return response;

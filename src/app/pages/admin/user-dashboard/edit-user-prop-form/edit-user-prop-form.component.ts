@@ -117,19 +117,15 @@ export class EditUserPropFormComponent implements OnInit {
     this.service.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
-        console.log(this.institutions);
       },
       (error) => {
-        console.log(error);
       }
     );
     this.service.getRoles().subscribe(
       (data) => {
         this.roles = data;
-        console.log(this.roles);
       },
       (error) => {
-        console.log(error);
       }
     );
     this.form = new FormGroup({
@@ -153,7 +149,6 @@ export class EditUserPropFormComponent implements OnInit {
     // Send a post request to the server endpoint with the FormData object
     this.service.editUser(object).subscribe(
       (response) => {
-        console.log(response);
         // window.parent.postMessage(this.service.getUsers());
         this.response = response;
       },
@@ -170,7 +165,6 @@ export class EditUserPropFormComponent implements OnInit {
         );
       },
       () => {
-        console.log(this.response);
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
             "Institution Creation Failed: " + this.response.errorMessage,

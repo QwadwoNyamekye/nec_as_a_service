@@ -121,16 +121,12 @@ export class SingleNECComponent implements OnInit, OnDestroy {
   getSingleNECRecordsRequest() {
     this.service.getSingleNECList(this.service.user.email).subscribe(
       (response: any) => {
-        console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-        console.log(response);
         this.singleNECList = response.data;
       },
       (error) => {
-        console.log(error);
       },
       () => {
         this.singleNECList = this.singleNECList.sort(this.compare)
-        console.log(this.singleNECList);
         this.source.load(this.singleNECList);
       }
     );
@@ -141,7 +137,6 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     // this.listener = (event: MessageEvent) => {
     //   this.receivedData = event.data;
     //   this.source.load(this.receivedData);
-    //   console.log(this.receivedData);
     // };
     // window.addEventListener("message", this.listener);
     // this.service.initializeWebSocketConnection()
@@ -160,12 +155,9 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       .onClose.pipe(map((response) => response))
       .subscribe(
         (event) => {
-          console.log("WWWWWWWWWWWWWWWWWWW");
-          console.log(event);
         },
         (error) => {},
         () => {
-          console.log("ON CLOSE");
           this.getSingleNECRecordsRequest();
         }
       );
@@ -180,8 +172,6 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       );
       return item;
     });
-    console.log("::::::::::::::::::::::");
-    console.log(data);
     autotable(this.doc, {
       head: [],
       body: data,
@@ -247,8 +237,6 @@ export class SingleNECComponent implements OnInit, OnDestroy {
         "Created At",
       ],
     };
-    console.log("::::::::::::::::::::::");
-    console.log(this.singleNECList);
     this.singleNECList.map((data) => {
       delete data.id;
       delete data.trackingNum;

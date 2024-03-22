@@ -134,7 +134,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
     this.listener = (event: MessageEvent) => {
       this.receivedData = event.data;
       this.source.load(this.receivedData);
-      console.log(this.receivedData);
     };
 
     if (
@@ -163,13 +162,10 @@ export class NecReportComponent implements OnInit, OnDestroy {
     this.service.getBanks().subscribe(
       (data) => {
         this.bankList = data;
-        console.log(this.bankList);
       },
       (error) => {
-        console.log(error);
       },
       () => {
-        console.log(this.bankList);
       }
     );
 
@@ -178,15 +174,12 @@ export class NecReportComponent implements OnInit, OnDestroy {
         this.institutions = data;
       },
       (error) => {
-        console.log(error);
       },
       () => { }
     );
   }
 
   downloadAsPDF() {
-    console.log("::::::::::::::::::::::");
-    console.log(this.response);
     autotable(this.doc, {
       head: [],
       body: this.response,
@@ -246,8 +239,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
         "Created At",
       ],
     };
-    console.log("::::::::::::::::::::::");
-    console.log(this.response);
     new Angular5Csv(
       this.response,
       this.service.user.institutionCode + "_SINGLE_NEC_REPORT" +
@@ -261,7 +252,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
   }
 
   setMax(event) {
-    console.log("MAXXXXXXXXXX")
     this.max = event;
   }
 
@@ -303,7 +293,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
 
     this.service.getNecReport(this.form.value).subscribe(
       (response) => {
-        console.log(response);
         this.response = response;
         this.source.load(this.response);
         this.loading = false

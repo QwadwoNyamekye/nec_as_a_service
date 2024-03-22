@@ -161,7 +161,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   customFunction(event) {
-    console.log(event);
     if (event.action == "edit") {
       this.submitForProcessing(event);
     } else if (event.action == "authorize") {
@@ -182,16 +181,11 @@ export class BulkUploadComponent implements OnInit {
   getUploadedFiles() {
     this.service.getUploads(this.service.user.email).subscribe(
       (data) => {
-        console.log("WWWWWWWWWWWWWWWW")
-        console.log(data)
         this.files = data;
       },
-      (error) => {
-        console.log(error);
-      },
+      (error) => {},
       () => {
-        this.files = this.files.sort(this.compare)
-        console.log(this.files);
+        this.files = this.files.sort(this.compare);
         this.source.load(this.files);
       }
     );
@@ -203,7 +197,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   submitForAuthorization(event): void {
-    console.log(event);
     this.dialogService
       .open(SubmitForAuthorizationComponent, {
         context: {
@@ -218,7 +211,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   submitForProcessing(event): void {
-    console.log(event);
     this.dialogService
       .open(SubmitForProcessingComponent, {
         context: {
@@ -230,7 +222,6 @@ export class BulkUploadComponent implements OnInit {
       .onClose.pipe((response) => response)
       .subscribe(() => {
         this.getUploadedFiles();
-        console.log(".........................");
         this.service.comp$
           .pipe((response) => response)
           .subscribe(() => this.getUploadedFiles());
@@ -238,7 +229,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   rejectFileUpload(event): void {
-    console.log(event);
     this.dialogService
       .open(RejectFileUploadComponent, {
         context: {
@@ -249,13 +239,11 @@ export class BulkUploadComponent implements OnInit {
       })
       .onClose.pipe((response) => response)
       .subscribe(() => {
-        console.log(".........................");
         this.getUploadedFiles()
       });
   }
 
   declineFileUpload(event): void {
-    console.log(event);
     this.dialogService
       .open(DeclineFileUploadComponent, {
         context: {
@@ -284,9 +272,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   openFileRecords(event) {
-    console.log(".........................");
-    console.log(event)
-    console.log(event.data.batchId)
     // const buttonsConfig: NbWindowControlButtonsConfig = {
     //   minimize: true,
     //   maximize: false,

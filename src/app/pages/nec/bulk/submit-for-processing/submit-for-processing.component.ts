@@ -46,7 +46,6 @@ export class SubmitForProcessingComponent implements OnInit {
         (data) => {
           this.loading = true;
           this.response = data;
-          console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
               "File Processing Failed: " + this.response.errorMessage,
@@ -67,11 +66,9 @@ export class SubmitForProcessingComponent implements OnInit {
         },
         (error) => {
           this.loading = false;
-          console.log(error);
         },
         () => {
           this.loading = false;
-          console.log("AAAAAAAAAAAAAAAAAAAAAAA");
           this.ref.close();
         }
       );

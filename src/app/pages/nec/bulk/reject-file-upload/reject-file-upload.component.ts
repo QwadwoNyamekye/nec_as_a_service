@@ -41,7 +41,6 @@ export class RejectFileUploadComponent implements OnInit {
       .subscribe(
         (data) => {
           this.response = data;
-          console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
               "Uploaded File Status Change: REJECT Failed: " + this.response.errorMessage,
@@ -60,11 +59,8 @@ export class RejectFileUploadComponent implements OnInit {
             );
           }
         },
-        (error) => {
-          console.log(error);
-        },
+        (error) => {},
         () => {
-          console.log("AAAAAAAAAAAAAAAAAAAAAAA");
           this.ref.close();
         }
       );

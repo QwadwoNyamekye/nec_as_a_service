@@ -53,7 +53,7 @@ export class RequestPasswordComponent extends NbRequestPasswordComponent {
         }
         this.cd.detectChanges();
       },
-      (error) => console.log(error),
+      (error) => {},
       () => {}
     );
   }

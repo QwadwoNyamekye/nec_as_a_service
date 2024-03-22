@@ -118,25 +118,19 @@ export class EditUserFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("KKKKKKKKKKKKKKKKKKKKKKKKK");
-    console.log(this.currentValues);
     this.name = this.currentValues.name.split(" ");
     this.service.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
-        console.log(this.institutions);
       },
       (error) => {
-        console.log(error);
       }
     );
     this.service.getRoles().subscribe(
       (data) => {
         this.roles = data;
-        console.log(this.roles);
       },
       (error) => {
-        console.log(error);
       }
     );
     this.form = new FormGroup({
@@ -164,7 +158,6 @@ export class EditUserFormComponent implements OnInit {
     // Send a post request to the server endpoint with the FormData object
     this.service.editUser(this.currentValues).subscribe(
       (response) => {
-        console.log(response);
         this.response = response;
         // window.parent.postMessage(this.service.getUsers());
       },
@@ -181,7 +174,6 @@ export class EditUserFormComponent implements OnInit {
         );
       },
       () => {
-        console.log(this.response);
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
             "User Edit Failed: " + this.response.errorMessage,

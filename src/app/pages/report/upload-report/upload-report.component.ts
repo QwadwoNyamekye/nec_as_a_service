@@ -122,7 +122,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     this.listener = (event: MessageEvent) => {
       this.receivedData = event.data;
       this.source.load(this.receivedData);
-      console.log(this.receivedData);
     };
 
     if (
@@ -151,7 +150,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
         this.institutions = data;
       },
       (error) => {
-        console.log(error);
       },
       () => { }
     );
@@ -161,7 +159,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
         this.uploadStatus = data;
       },
       (error) => {
-        console.log(error);
       },
       () => { }
     );
@@ -171,12 +168,10 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
   setMin(event) {
-    console.log("iiiiiiiiiiiiiiiiiiiii")
     this.min = event;
   }
 
   setMax(event) {
-    console.log("MAXXXXXXXXXX")
     this.max = event;
   }
 
@@ -192,8 +187,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       );
       return item;
     });
-    console.log("::::::::::::::::::::::");
-    console.log(data);
     autotable(this.doc, {
       head: [],
       body: data,
@@ -254,8 +247,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
         "Authorized At",
       ],
     };
-    console.log("::::::::::::::::::::::");
-    console.log(this.response);
     new Angular5Csv(
       this.response,
       this.service.user.institutionCode + "_BULK_UPLOAD_REPORT" +
@@ -298,7 +289,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
 
     this.service.getUploadReport(this.form.value).subscribe(
       (response) => {
-        console.log(response);
         this.response = response;
         this.source.load(this.response);
         this.loading = false;

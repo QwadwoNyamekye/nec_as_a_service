@@ -26,24 +26,16 @@ export class LoginComponent extends NbLoginComponent {
   login(): void {
     this.errors = [];
     this.submitted = true;
-
-    console.log(this.user);
     this.service.authenticate("email", this.user).subscribe(
       (result: NbAuthResult) => {
         this.submitted = false;
-        console.log(result);
-        console.log(JSON.stringify(result.getResponse().body?.user));
-
         if (result.isSuccess()) {
           this.messages = result.getMessages();
           sessionStorage.setItem(
             "user",
             JSON.stringify(result.getResponse().body.user)
           );
-          console.log(MENU_ITEMS());
-          console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^");
-          console.log(sessionStorage.getItem("homePath"));
-          console.log(result.getResponse().body.token);
+          MENU_ITEMS()
           sessionStorage.setItem("token", result.getResponse().body.token);
           this.necService.initializeVars();
           this.necService.initializeWebSocketConnection();
@@ -52,7 +44,6 @@ export class LoginComponent extends NbLoginComponent {
           if (this.errors[0] == "Token is empty or invalid.") {
             this.errors[0] = "Please check your username or password";
           }
-          console.log(this.errors);
         }
 
         const redirect = result.getRedirect();
@@ -65,8 +56,8 @@ export class LoginComponent extends NbLoginComponent {
         }
         this.cd.detectChanges();
       },
-      (error) => console.log(error),
-      () => {}
+      (error) => {},
+      () => { }
     );
   }
 }

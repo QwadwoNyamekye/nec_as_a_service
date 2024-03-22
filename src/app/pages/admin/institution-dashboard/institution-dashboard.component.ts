@@ -119,7 +119,6 @@ export class InstitutionDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.listener = (event: MessageEvent) => {
-      console.log(event);
       this.receivedData = event.data.data;
       this.source.load(this.receivedData.data);
       // if (
@@ -132,7 +131,6 @@ export class InstitutionDashboardComponent implements OnInit {
       // } else {
       //   window.location.reload();
       // }
-      console.log(this.receivedData);
     };
     window.addEventListener("message", this.listener);
     // this.service.initializeWebSocketConnection()
@@ -157,11 +155,9 @@ export class InstitutionDashboardComponent implements OnInit {
         this.institutions = data;
       },
       (error) => {
-        console.log(error);
       },
       () => {
         this.institutions = this.institutions.sort(this.compare);
-        console.log(this.institutions);
         this.source.load(this.institutions);
       }
     );
@@ -192,7 +188,6 @@ export class InstitutionDashboardComponent implements OnInit {
   }
 
   changeInstitutionStatus(event): void {
-    console.log(event);
     this.dialogService
       .open(ChangeInstitutionStatusComponent, {
         context: {

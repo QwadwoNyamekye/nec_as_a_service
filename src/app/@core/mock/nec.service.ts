@@ -31,14 +31,11 @@ export class NecService {
   }
 
   initializeVars() {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>");
-    console.log(sessionStorage.getItem("token"));
     this.headers = new HttpHeaders().set(
       "Authorization",
       "Bearer " + sessionStorage.getItem("token")
     );
     this.user = JSON.parse(sessionStorage.getItem("user")); // here we receive a payload from the token and assigns it to our `user` variable
-    console.log(this.user);
   }
 
   initializeWebSocketConnection() {
@@ -48,19 +45,13 @@ export class NecService {
     this.stompClient = Stomp.over(() => { return ws });
 
     const that = this;
-    console.log("STOMP CLIENT");
-    console.log(this.stompClient);
     // this.stompClient.reconnect_delay = 1000;
     // this.stompClient.reconnectDelay = 10000;
 
     this.stompClient.connect({}, (frame) => {
-      console.log("WEBSOCKET CONNECTED");
       that.stompClient.subscribe("/realtime/alert", (message) => {
-        console.log("WEBSOCKET SUBSCRIBED SUCCESSFULLY");
-        console.log(message);
         var websocketdata = message.body.split(":");
         var websocketMessage = websocketdata[0];
-        console.log(that.user);
         if (
           websocketMessage != "" &&
           [websocketdata[1], websocketdata[2]].includes(String(that.user.id))
@@ -74,13 +65,11 @@ export class NecService {
           that.compInstance.next();
         }
       });
-    }, (error) => { console.log("WEBSOCKET ERROR"); console.log(error); this.initializeWebSocketConnection(); },
-      (frame) => { console.log("WEBSOCKET DISCONNECTED"); console.log(frame); this.initializeWebSocketConnection() });
+    }, (error) => { this.initializeWebSocketConnection(); },
+      (frame) => { this.initializeWebSocketConnection() });
   }
 
   resetPassword(user) {
-    console.log("EEEEEEEEEEEEEEEEEEEEEE");
-    console.log(user);
     return this.http
       .post(this.baseUrl + "/user/api/v1/reset_password", user, {
         headers: this.headers,
@@ -89,8 +78,6 @@ export class NecService {
   }
 
   changePassword(user) {
-    console.log("EEEEEEEEEEEEEEEEEEEEEE");
-    console.log(user);
     return this.http
       .post(this.baseUrl + "/user/api/v1/change_password", user, {
         headers: this.headers,
@@ -204,8 +191,6 @@ export class NecService {
   }
 
   getSingleNECList(email) {
-    console.log(">>>>>>>>>>>>");
-    console.log(this.headers);
     return this.http
       .get(this.baseUrl + "/single/api/v1/nec_list/" + email, {
         headers: this.headers,
@@ -214,7 +199,6 @@ export class NecService {
   }
 
   makeSingleNECRequest(data) {
-    console.log(data);
     return this.http
       .post(this.baseUrl + "/single/api/v1/nec", data, {
         headers: this.headers,
@@ -281,7 +265,6 @@ export class NecService {
   }
 
   addInstitution(data) {
-    console.log(data);
     return this.http
       .post(this.baseUrl + "/institution/api/v1/create_institution", data, {
         headers: this.headers,
@@ -290,7 +273,6 @@ export class NecService {
   }
 
   editInstitution(data) {
-    console.log(data);
     return this.http
       .post(this.baseUrl + "/institution/api/v1/update_institution", data, {
         headers: this.headers,
@@ -299,7 +281,6 @@ export class NecService {
   }
 
   changeInstitutionStatus(data) {
-    console.log(data);
     return this.http
       .post(this.baseUrl + "/institution/api/v1/change_status", data, {
         headers: this.headers,

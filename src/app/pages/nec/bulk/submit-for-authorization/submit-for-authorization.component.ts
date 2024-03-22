@@ -48,11 +48,9 @@ export class SubmitForAuthorizationComponent implements OnInit {
         },
         (error) => {
           this.loading = false;
-          console.log(error);
         },
         () => {
           this.loading = false;
-          console.log(this.response);
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
               "File Authorization Failed: " + this.response.errorMessage,

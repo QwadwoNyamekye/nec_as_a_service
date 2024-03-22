@@ -108,15 +108,11 @@ export class SingleNECComponent implements OnDestroy {
     this.service.getFileRecords(this.batchId).subscribe(
       (data: any) => {
         this.singleNECList = data.sort(this.compare);
-        console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-        console.log(this.singleNECList);
       },
       (error) => {
-        console.log(error);
       },
       () => {
         this.singleNECList = this.singleNECList.sort(this.compare)
-        console.log(this.singleNECList);
         this.source.load(this.singleNECList);
         this.loading = false;
       }
@@ -132,8 +128,6 @@ export class SingleNECComponent implements OnDestroy {
       );
       return item;
     });
-    console.log("::::::::::::::::::::::");
-    console.log(data);
     autotable(this.doc, {
       head: [],
       body: data,
@@ -188,8 +182,6 @@ export class SingleNECComponent implements OnDestroy {
         "Created At",
       ],
     };
-    console.log("::::::::::::::::::::::");
-    console.log(this.singleNECList);
     this.singleNECList.map((data) => {
       delete data.id;
       delete data.trackingNum;
