@@ -2,22 +2,22 @@ import { NbMenuItem } from "@nebular/theme";
 
 var user_path = {
   title: "User",
-  icon: "briefcase",
+  icon: "person",
   link: "/pages/user-dashboard",
 };
 var institution_path = {
   title: "Institution",
-  icon: "home-outline",
+  icon: "briefcase",
   link: "/pages/institution-dashboard",
 };
 var single_nec_path = {
   title: "Single NEC",
-  icon: "shopping-cart-outline",
+  icon: "minus-square",
   link: "/pages/nec/single",
 };
 var bulk_nec_path = {
   title: "Bulk NEC",
-  icon: "bookmark",
+  icon: "plus-square",
   link: "/pages/nec/bulk",
 };
 var nec_report_path = {
@@ -27,12 +27,12 @@ var nec_report_path = {
 };
 var upload_report_path = {
   title: "Upload Report",
-  icon: "bookmark",
+  icon: "book",
   link: "/pages/upload-report",
 };
 var audit_logs_path = {
   title: "Audit Logs",
-  icon: "bookmark",
+  icon: "star",
   link: "/pages/audit-logs",
 };
 

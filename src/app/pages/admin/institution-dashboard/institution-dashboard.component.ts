@@ -56,7 +56,7 @@ export class InstitutionDashboardComponent implements OnInit {
     pager: {
       perPage: 13,
     },
-    hideSubHeader: true,
+    // hideSubHeader: true,
     actions: {
       position: "right",
       custom: [
@@ -160,8 +160,9 @@ export class InstitutionDashboardComponent implements OnInit {
         console.log(error);
       },
       () => {
-        console.log(this.institutions.sort(this.compare));
-        this.source.load(this.institutions.sort(this.compare));
+        this.institutions = this.institutions.sort(this.compare);
+        console.log(this.institutions);
+        this.source.load(this.institutions);
       }
     );
   }

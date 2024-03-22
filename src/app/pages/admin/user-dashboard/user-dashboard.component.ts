@@ -77,7 +77,7 @@ export class AdminDashboardComponent implements OnInit {
     pager: {
       perPage: 13,
     },
-    hideSubHeader: true,
+    // hideSubHeader: true,
     actions: {
       position: "right",
       custom: [
@@ -175,8 +175,9 @@ export class AdminDashboardComponent implements OnInit {
         console.log(error);
       },
       () => {
-        console.log(this.users.sort(this.compare));
-        this.source.load(this.users.sort(this.compare));
+        this.users = this.users.sort(this.compare)
+        console.log(this.users);
+        this.source.load(this.users);
       }
     );
   }
