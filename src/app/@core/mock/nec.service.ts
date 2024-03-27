@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { HttpHeaders } from "@angular/common/http";
-import { NbAuthService, NbAuthJWTToken } from "@nebular/auth";
+import { NbAuthService } from "@nebular/auth";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 // import * as SockJS from "sockjs-client";
 import SockJS from 'sockjs-client'
-import { NbToastrService } from "@nebular/theme";
+import { NbToastrService, NbGlobalPhysicalPosition, NbToastRef } from "@nebular/theme";
 import { environment } from "../../../environments/environment.prod";
 import { Subject } from "rxjs/Subject";
 
@@ -20,6 +20,7 @@ export class NecService {
   public stompClient: CompatClient;
   private compInstance = new Subject<any>();
   comp$ = this.compInstance.asObservable();
+  errorToastr: NbToastRef;
 
   constructor(
     private http: HttpClient,
@@ -27,7 +28,7 @@ export class NecService {
     private toastrService: NbToastrService
   ) {
     this.initializeVars();
-    this.initializeWebSocketConnection();
+    this.initializeWebSocketConnection(this.errorToastr);
   }
 
   initializeVars() {
@@ -38,35 +39,77 @@ export class NecService {
     this.user = JSON.parse(sessionStorage.getItem("user")); // here we receive a payload from the token and assigns it to our `user` variable
   }
 
-  initializeWebSocketConnection() {
+  initializeWebSocketConnection(errorToastr: NbToastRef) {
     var websocket = environment.websocket;
     const serverUrl = websocket;
     const ws = new SockJS(serverUrl);
     this.stompClient = Stomp.over(() => { return ws });
 
-    const that = this;
     // this.stompClient.reconnect_delay = 1000;
     // this.stompClient.reconnectDelay = 10000;
 
     this.stompClient.connect({}, (frame) => {
-      that.stompClient.subscribe("/realtime/alert", (message) => {
+      if (errorToastr) {
+        errorToastr.close()
+        var value = this.toastrService.success('Connection Success', 'Connection', {
+          position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
+          preventDuplicates: true,
+          destroyByClick: true,
+          duration: 10000
+        });
+
+        // show connection success toaster and redirection text in 5 seconds
+        var time = 5;
+        var intervalId = setInterval(
+          function () {
+            value.toastInstance.toast.message = "Reloading in  : " + time;
+            if (time == 0) {
+              window.location.reload();
+              window.clearInterval(intervalId)
+            }
+            time--;
+          },
+          1000
+        );
+      };
+      this.stompClient.subscribe("/realtime/alert", (message) => {
         var websocketdata = message.body.split(":");
         var websocketMessage = websocketdata[0];
         if (
           websocketMessage != "" &&
-          [websocketdata[1], websocketdata[2]].includes(String(that.user.id))
+          [websocketdata[1], websocketdata[2]].includes(String(this.user.id))
         ) {
-          that.toastrService.success(websocketMessage, "Bulk File Processing", {
+          this.toastrService.success(websocketMessage, "Bulk File Processing", {
             duration: 8000,
             destroyByClick: true,
             duplicatesBehaviour: "previous",
             preventDuplicates: true,
           });
-          that.compInstance.next();
+          this.compInstance.next();
         }
       });
-    }, (error) => { this.initializeWebSocketConnection(); },
-      (frame) => { this.initializeWebSocketConnection() });
+    }, (error) => {
+      if (!errorToastr && this.user) { // if there isn't a 'Connection Lost' toaster already and user is logged in
+        errorToastr = this.toastrService.danger('Connection Lost', 'Connection', {
+          position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
+          preventDuplicates: true,
+          destroyByClick: true,
+          duration: 0
+        });
+      }
+      this.initializeWebSocketConnection(errorToastr);
+    },
+      (frame) => {
+        if (!errorToastr && this.user) { // if there isn't a 'Connection Lost' toaster already and user is logged in
+          errorToastr = this.toastrService.danger('Connection Lost', 'Connection', {
+            position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
+            preventDuplicates: true,
+            destroyByClick: true,
+            duration: 0
+          });
+        }
+        this.initializeWebSocketConnection(errorToastr);
+      });
   }
 
   resetPassword(user) {

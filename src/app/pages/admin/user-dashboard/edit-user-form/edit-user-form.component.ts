@@ -123,15 +123,13 @@ export class EditUserFormComponent implements OnInit {
       (data) => {
         this.institutions = data;
       },
-      (error) => {
-      }
+      (error) => {}
     );
     this.service.getRoles().subscribe(
       (data) => {
         this.roles = data;
       },
-      (error) => {
-      }
+      (error) => {}
     );
     this.form = new FormGroup({
       firstName: new FormControl(this.name[0], Validators.required),

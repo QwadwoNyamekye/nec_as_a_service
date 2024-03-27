@@ -69,8 +69,8 @@ export class EditInstitutionFormComponent implements OnInit {
   ];
   shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   institutionStatuses: any = [
-    { key: "Enable", value: true },
-    { key: "Disable", value: false },
+    { key: "ENABLE", value: true },
+    { key: "DISABLE", value: false },
   ];
   response: any;
 

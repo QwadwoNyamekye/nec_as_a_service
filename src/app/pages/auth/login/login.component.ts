@@ -38,7 +38,7 @@ export class LoginComponent extends NbLoginComponent {
           MENU_ITEMS()
           sessionStorage.setItem("token", result.getResponse().body.token);
           this.necService.initializeVars();
-          this.necService.initializeWebSocketConnection();
+          this.necService.initializeWebSocketConnection(this.necService.errorToastr);
         } else {
           this.errors = result.getErrors();
           if (this.errors[0] == "Token is empty or invalid.") {

@@ -120,17 +120,7 @@ export class InstitutionDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.listener = (event: MessageEvent) => {
       this.receivedData = event.data.data;
-      this.source.load(this.receivedData.data);
-      // if (
-      //   event.data.key == "add_institution" &&
-      //   this.receivedData.institution
-      // ) {
-      //   this.source.append(this.receivedData.institution);
-      // } else if (event.data.key == "change_institution") {
-      //   this.source.update(this.row.data, this.receivedData.data.institution);
-      // } else {
-      //   window.location.reload();
-      // }
+      this.source.load(this.receivedData?.data);
     };
     window.addEventListener("message", this.listener);
     // this.service.initializeWebSocketConnection()

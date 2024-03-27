@@ -83,14 +83,14 @@ export class SingleNECComponent implements OnInit, OnDestroy {
         title: "Account Name",
         type: "string",
       },
-      srcInstitution: {
-        title: "Src. Institution Code",
-        type: "string",
-      },
-      srcInstitutionName: {
-        title: "Src. Institution",
-        type: "string",
-      },
+      // srcInstitution: {
+      //   title: "Src. Institution Code",
+      //   type: "string",
+      // },
+      // srcInstitutionName: {
+      //   title: "Src. Institution",
+      //   type: "string",
+      // },
       actionCode: {
         title: "Action Code",
         type: "string",
