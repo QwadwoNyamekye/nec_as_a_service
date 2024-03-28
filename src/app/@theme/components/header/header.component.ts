@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private router: Router,
     private authService: NbAuthService,
-    private service: NecService
+    public service: NecService
   ) {
     this.authService
       .authenticate("email")
