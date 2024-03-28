@@ -9,7 +9,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   websocket: "http://172.27.21.210:8088/nec",
   baseUrl: "http://172.27.21.210:8089",
   bankUrl: "http://172.27.10.230:8003",

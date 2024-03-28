@@ -29,7 +29,7 @@ export class NecService {
   ) {
     this.initializeVars();
     this.initializeWebSocketConnection(this.errorToastr);
-    
+
     // window.addEventListener('online', () => console.log('Became online'));
     window.addEventListener('offline', () => {
       console.log('Became offline');
@@ -113,7 +113,9 @@ export class NecService {
           duration: 0
         });
       }
-      this.initializeWebSocketConnection(errorToastr);
+      setTimeout(() => {
+        this.initializeWebSocketConnection(errorToastr);
+      }, 5000)
     },
       (frame) => {
         if (!errorToastr && this.user) { // if there isn't a 'Connection Lost' toaster already and user is logged in
@@ -124,7 +126,9 @@ export class NecService {
             duration: 0
           });
         }
-        this.initializeWebSocketConnection(errorToastr);
+        setTimeout(() => {
+          this.initializeWebSocketConnection(errorToastr);
+        }, 5000)
       });
   }
 
