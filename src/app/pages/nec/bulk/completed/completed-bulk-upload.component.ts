@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { LocalDataSource, ViewCell } from "ng2-smart-table";
+import { LocalDataSource } from "ng2-smart-table";
 import { NbDialogService } from "@nebular/theme";
 import { NbWindowService, NbWindowControlButtonsConfig } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
@@ -56,15 +56,6 @@ export class BulkCompletedUploadComponent implements OnInit {
     title:
       '<i class="nb-list" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
   };
-  customActions(roleId: string) {
-    var custom = [];
-    if (roleId == "3") {
-      custom.push(this.process, this.reject, this.expand);
-    } else if (roleId == "4") {
-      custom.push(this.authorize, this.reject, this.expand);
-    }
-    return custom;
-  }
   settings = {
     mode: "external",
     pager: {
@@ -73,7 +64,7 @@ export class BulkCompletedUploadComponent implements OnInit {
     // hideSubHeader: true,
     actions: {
       position: "right",
-      custom: this.customActions(this.service.user.roleId),
+      custom: [this.expand],
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -139,7 +130,6 @@ export class BulkCompletedUploadComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSubmittedUploadedFiles();
-    
   }
 
   customFunction(event) {

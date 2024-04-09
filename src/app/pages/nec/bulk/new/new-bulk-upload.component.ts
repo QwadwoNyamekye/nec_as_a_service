@@ -62,6 +62,7 @@ export class BulkNewUploadComponent implements OnInit {
     title:
       '<i class="nb-list" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
   };
+  
   customActions(roleId: string) {
     var custom = [];
     if (roleId == "3") {

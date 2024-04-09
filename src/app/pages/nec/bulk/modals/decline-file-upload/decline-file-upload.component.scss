@@ -1,4 +1,4 @@
-@import '../../../../@theme/styles/themes';
+@import '../../../../../@theme/styles/themes';
 
 @include nb-install-component() {
   nb-card {
@@ -6,10 +6,15 @@
     max-height: 500px;
     border-radius: 10px;
   }
-  nb-card nb-card-body button {
-    width: 200px;
-    margin: 10px;
-    display: inline;
+  nb-card nb-card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      width: 200px;
+      margin: 10px;
+      display: inline;
+    }
   }
 
   ::ng-deep .form {

@@ -11,9 +11,15 @@ import { NbToastrService } from "@nebular/theme";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()" 
-        [nbSpinner]="loading" nbSpinnerStatus="danger"
-        [disabled]="loading">
+        <button
+          nbButton
+          hero
+          status="success"
+          (click)="submit()"
+          [nbSpinner]="loading"
+          nbSpinnerStatus="danger"
+          [disabled]="loading"
+        >
           Accept
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
@@ -35,9 +41,7 @@ export class SubmitForAuthorizationComponent implements OnInit {
     public service: NecService,
     private toastrService: NbToastrService
   ) {}
-  ngOnInit(): void {
-    ;
-  }
+  ngOnInit(): void {}
   submit() {
     this.loading = true;
     this.service
