@@ -126,9 +126,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
     public service: NecService,
     private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>
-  ) {
-    //this.getUsers();
-  }
+  ) {}
 
   ngOnInit() {
     this.listener = (event: MessageEvent) => {
@@ -148,7 +146,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
     this.max = this.dateService.addDay(this.dateService.today(), 0);
 
     window.addEventListener("message", this.listener);
-    
 
     this.form = new FormGroup({
       type: new FormControl(""),
@@ -163,19 +160,16 @@ export class NecReportComponent implements OnInit, OnDestroy {
       (data) => {
         this.bankList = data;
       },
-      (error) => {
-      },
-      () => {
-      }
+      (error) => {},
+      () => {}
     );
 
     this.service.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
       },
-      (error) => {
-      },
-      () => { }
+      (error) => {},
+      () => {}
     );
   }
 
@@ -211,8 +205,10 @@ export class NecReportComponent implements OnInit, OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode + "_SINGLE_NEC_REPORT" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") + ".pdf"
+      this.service.user.institutionCode +
+        "_SINGLE_NEC_REPORT" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
+        ".pdf"
     );
   }
 
@@ -241,8 +237,9 @@ export class NecReportComponent implements OnInit, OnDestroy {
     };
     new Angular5Csv(
       this.response,
-      this.service.user.institutionCode + "_SINGLE_NEC_REPORT" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
+      this.service.user.institutionCode +
+        "_SINGLE_NEC_REPORT" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
     );
   }
@@ -295,7 +292,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
       (response) => {
         this.response = response;
         this.source.load(this.response);
-        this.loading = false
+        this.loading = false;
         return response;
       },
       (error) => {
@@ -311,7 +308,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
           }
         );
       },
-      () => { }
+      () => {}
     );
     //this.close();
   }

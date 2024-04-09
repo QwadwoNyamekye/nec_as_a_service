@@ -7,7 +7,6 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { EditInstitutionFormComponent } from "./edit-institution-form/edit-institution-form.component";
 import { ChangeInstitutionStatusComponent } from "./change-institution-status/change-institution-status.component";
 import { DatePipe } from "@angular/common";
-import { environment } from "../../../../environments/environment.prod";
 
 @Component({
   selector: "ngx-admin-institution-dashboard",
@@ -164,7 +163,7 @@ export class InstitutionDashboardComponent implements OnInit {
   editInstitution(event): void {
     this.windowService
       .open(EditInstitutionFormComponent, {
-        title: `Edit Institution`,
+        title: `Edit Institution:`,
         windowClass: `admin-form-window`,
         context: {
           currentValues: event.data,
@@ -181,7 +180,7 @@ export class InstitutionDashboardComponent implements OnInit {
     this.dialogService
       .open(ChangeInstitutionStatusComponent, {
         context: {
-          title: "Change Institution Status",
+          title: "Change Institution Status: " + event.data.name,
           status: event.data.status,
           code: event.data.code,
         },

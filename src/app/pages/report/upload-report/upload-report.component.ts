@@ -114,9 +114,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     public service: NecService,
     private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>
-  ) {
-    //this.getUsers();
-  }
+  ) {}
 
   ngOnInit() {
     this.listener = (event: MessageEvent) => {
@@ -136,7 +134,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     this.max = this.dateService.addDay(this.dateService.today(), 0);
 
     window.addEventListener("message", this.listener);
-    
 
     this.form = new FormGroup({
       status: new FormControl(""),
@@ -149,18 +146,16 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       (data) => {
         this.institutions = data;
       },
-      (error) => {
-      },
-      () => { }
+      (error) => {},
+      () => {}
     );
 
     this.service.getUploadStatus().subscribe(
       (data) => {
         this.uploadStatus = data;
       },
-      (error) => {
-      },
-      () => { }
+      (error) => {},
+      () => {}
     );
   }
 
@@ -218,8 +213,10 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode + "_BULK_UPLOAD_REPORT" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") + ".pdf"
+      this.service.user.institutionCode +
+        "_BULK_UPLOAD_REPORT" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
+        ".pdf"
     );
   }
 
@@ -249,8 +246,9 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     };
     new Angular5Csv(
       this.response,
-      this.service.user.institutionCode + "_BULK_UPLOAD_REPORT" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
+      this.service.user.institutionCode +
+        "_BULK_UPLOAD_REPORT" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
     );
   }
@@ -307,7 +305,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
           }
         );
       },
-      () => { }
+      () => {}
     );
     //this.close();
   }

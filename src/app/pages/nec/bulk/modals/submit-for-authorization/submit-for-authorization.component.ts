@@ -41,7 +41,9 @@ export class SubmitForAuthorizationComponent implements OnInit {
     public service: NecService,
     private toastrService: NbToastrService
   ) {}
-  ngOnInit(): void {}
+
+  ngOnInit() {}
+  
   submit() {
     this.loading = true;
     this.service

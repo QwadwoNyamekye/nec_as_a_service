@@ -24,8 +24,6 @@ import { NbToastrService } from "@nebular/theme";
 })
 export class UnlockUserComponent implements OnInit {
   @Input() title: string;
-  @Input() batchId: string;
-  @Input() submittedBy: string;
   @Input() email: string;
   response: any;
   constructor(

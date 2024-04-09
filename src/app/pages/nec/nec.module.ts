@@ -24,7 +24,7 @@ import { SingleNECComponent } from "./single/single.component";
 import { SingleNECRequestComponent } from "./single/single-nec-request/single-nec-request.component";
 import { UploadFileComponent } from "./bulk/new/bulk-nec-request/bulk-nec-request.component";
 import { SubmitForProcessingComponent } from "./bulk/modals/submit-for-processing/submit-for-processing.component";
-import { SingleNECComponent as FileRecord } from "./bulk/modals/upload_file_single/single.component";
+import { BulkSingleRecordsComponent } from "./bulk/modals/upload_file_single/upload_file_single.component";
 import { SubmitForAuthorizationComponent } from "./bulk/modals/submit-for-authorization/submit-for-authorization.component";
 import { RejectFileUploadComponent } from "./bulk/modals/reject-file-upload/reject-file-upload.component";
 import { DeclineFileUploadComponent } from "./bulk/modals/decline-file-upload/decline-file-upload.component";
@@ -59,7 +59,7 @@ import { DeclineFileUploadComponent } from "./bulk/modals/decline-file-upload/de
     UploadFileComponent,
     SubmitForProcessingComponent,
     SubmitForAuthorizationComponent,
-    FileRecord,
+    BulkSingleRecordsComponent,
     RejectFileUploadComponent,
     DeclineFileUploadComponent,
     ...routedComponents,

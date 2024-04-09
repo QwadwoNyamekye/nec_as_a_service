@@ -222,7 +222,7 @@ export class AdminDashboardComponent implements OnInit {
     this.dialogService
       .open(ChangeUserStatusComponent, {
         context: {
-          title: "Change User Status",
+          title: "Change User Status: " + event.data.name,
           email: event.data.email,
           status: event.data.status,
         },
@@ -236,7 +236,7 @@ export class AdminDashboardComponent implements OnInit {
     this.dialogService
       .open(UnlockUserComponent, {
         context: {
-          title: "Unlock User",
+          title: "Unlock User: " + event.data.name,
           email: event.data.email,
         },
       })
@@ -249,7 +249,7 @@ export class AdminDashboardComponent implements OnInit {
     this.dialogService
       .open(ResetUserPasswordComponent, {
         context: {
-          title: "Reset User Password",
+          title: "Reset User Password for User: " + event.data.name,
           email: event.data.email,
         },
       })
@@ -262,7 +262,7 @@ export class AdminDashboardComponent implements OnInit {
     this.dialogService
       .open(DeleteUserComponent, {
         context: {
-          title: "Delete User " + event.data?.name + "?",
+          title: "Delete User: " + event.data?.name,
           data: event.data,
         },
       })

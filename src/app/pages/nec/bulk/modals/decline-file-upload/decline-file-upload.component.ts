@@ -11,7 +11,9 @@ import { NbToastrService } from "@nebular/theme";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()">Decline</button>
+        <button nbButton hero status="success" (click)="submit()">
+          Decline
+        </button>
         <button nbButton hero status="danger" (click)="dismiss()">
           Dismiss
         </button>
@@ -30,9 +32,9 @@ export class DeclineFileUploadComponent implements OnInit {
     public service: NecService,
     private toastrService: NbToastrService
   ) {}
-  ngOnInit(): void {
-    ;
-  }
+
+  ngOnInit() {}
+  
   submit() {
     this.service
       .declineUploadedFile(this.batchId, this.service.user.email)

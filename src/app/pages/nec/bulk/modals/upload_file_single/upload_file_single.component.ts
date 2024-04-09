@@ -10,10 +10,10 @@ import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
 
 @Component({
   selector: "ngx-single",
-  templateUrl: "./single.component.html",
-  styleUrls: ["./single.component.scss"],
+  templateUrl: "./upload_file_single.component.html",
+  styleUrls: ["./upload_file_single.component.scss"],
 })
-export class SingleNECComponent implements OnDestroy {
+export class BulkSingleRecordsComponent implements OnDestroy {
   @Input() title: string;
   @Input() batchId: any;
 
@@ -36,7 +36,7 @@ export class SingleNECComponent implements OnDestroy {
 
   settings = {
     pager: {
-      perPage: 13,
+      perPage: 10,
     },
     // hideSubHeader: true,
     actions: {

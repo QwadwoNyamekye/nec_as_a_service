@@ -32,9 +32,9 @@ export class RejectFileUploadComponent implements OnInit {
     public service: NecService,
     private toastrService: NbToastrService
   ) {}
-  ngOnInit(): void {
-    ;
-  }
+
+  ngOnInit() {}
+  
   submit() {
     this.service
       .rejectUploadedFile(this.batchId, this.service.user.email)
@@ -43,7 +43,8 @@ export class RejectFileUploadComponent implements OnInit {
           this.response = data;
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
-              "Uploaded File Status Change: REJECT Failed: " + this.response.errorMessage,
+              "Uploaded File Status Change: REJECT Failed: " +
+                this.response.errorMessage,
               "Bulk File Processing",
               {
                 status: "danger",
@@ -53,7 +54,8 @@ export class RejectFileUploadComponent implements OnInit {
             );
           } else {
             this.toastrService.success(
-              "Uploaded File Status Change: REJECT Success: " + this.response.errorMessage,
+              "Uploaded File Status Change: REJECT Success: " +
+                this.response.errorMessage,
               "File Processing",
               { status: "success", destroyByClick: true, duration: 8000 }
             );

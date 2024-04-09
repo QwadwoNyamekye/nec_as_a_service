@@ -112,9 +112,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
   constructor(
     protected service: NecService,
     private windowService: NbWindowService
-  ) {
-    this.getSingleNECRecordsRequest();
-  }
+  ) {}
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
@@ -123,10 +121,9 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       (response: any) => {
         this.singleNECList = response.data;
       },
-      (error) => {
-      },
+      (error) => {},
       () => {
-        this.singleNECList = this.singleNECList.sort(this.compare)
+        this.singleNECList = this.singleNECList.sort(this.compare);
         this.source.load(this.singleNECList);
       }
     );
@@ -134,12 +131,6 @@ export class SingleNECComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getSingleNECRecordsRequest();
-    // this.listener = (event: MessageEvent) => {
-    //   this.receivedData = event.data;
-    //   this.source.load(this.receivedData);
-    // };
-    // window.addEventListener("message", this.listener);
-    
   }
 
   ngOnDestroy() {
@@ -154,8 +145,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       })
       .onClose.pipe(map((response) => response))
       .subscribe(
-        (event) => {
-        },
+        (event) => {},
         (error) => {},
         () => {
           this.getSingleNECRecordsRequest();

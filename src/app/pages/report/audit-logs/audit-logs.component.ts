@@ -102,9 +102,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     public service: NecService,
     private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>
-  ) {
-    this.getAuditLogs()
-  }
+  ) {}
 
   ngOnInit() {
     this.listener = (event: MessageEvent) => {
@@ -124,7 +122,6 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     this.max = this.dateService.addDay(this.dateService.today(), 0);
 
     window.addEventListener("message", this.listener);
-    
 
     this.form = new FormGroup({
       type: new FormControl("", Validators.required),
@@ -133,7 +130,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
       startDate: new FormControl("", Validators.required),
       code: new FormControl("", Validators.required),
     });
-    this.getAuditLogs()
+    this.getAuditLogs();
   }
 
   downloadAsPDF() {
@@ -160,8 +157,10 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode + "_AUDIT_LOGS_REPORT" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") + ".pdf"
+      this.service.user.institutionCode +
+        "_AUDIT_LOGS_REPORT" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
+        ".pdf"
     );
   }
 
@@ -185,8 +184,9 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     };
     new Angular5Csv(
       this.response,
-      this.service.user.institutionCode + "_AUDIT_LOGS_REPORT" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
+      this.service.user.institutionCode +
+        "_AUDIT_LOGS_REPORT" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
     );
   }
@@ -194,7 +194,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
   setMin(event) {
     this.min = event;
   }
-  
+
   compare(a, b) {
     return new Date(b.timeStamp).valueOf() - new Date(a.timeStamp).valueOf();
   }
@@ -240,7 +240,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
           }
         );
       },
-      () => { }
+      () => {}
     );
   }
 

@@ -9,7 +9,7 @@ import { DataSource } from "ng2-smart-table/lib/lib/data-source/data-source";
 import { Deferred } from "ng2-smart-table/lib/lib/helpers";
 import { DatePipe } from "@angular/common";
 import { SubmitForAuthorizationComponent } from "../modals/submit-for-authorization/submit-for-authorization.component";
-import { SingleNECComponent } from "../modals/upload_file_single/single.component";
+import { BulkSingleRecordsComponent } from "../modals/upload_file_single/upload_file_single.component";
 import { RejectFileUploadComponent } from "../modals/reject-file-upload/reject-file-upload.component";
 import { DeclineFileUploadComponent } from "../modals/decline-file-upload/decline-file-upload.component";
 
@@ -247,7 +247,7 @@ export class BulkRejectedUploadComponent implements OnInit {
       fullScreen: false,
       close: true,
     };
-    this.windowService.open(SingleNECComponent, {
+    this.windowService.open(BulkSingleRecordsComponent, {
       context: {
         title: event.data.batchId,
         batchId: event.data.batchId,
