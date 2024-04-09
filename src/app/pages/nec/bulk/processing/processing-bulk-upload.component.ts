@@ -160,7 +160,7 @@ export class BulkProcessingUploadComponent implements OnInit {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
   getSubmittedUploadedFiles() {
-    this.service.getUploadsByStatus("SUBMITTED").subscribe(
+    this.service.getUploadsByStatus("PROCESSING").subscribe(
       (data) => {
         this.files = data;
       },
