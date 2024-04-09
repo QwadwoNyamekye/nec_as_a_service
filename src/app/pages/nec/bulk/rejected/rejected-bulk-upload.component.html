@@ -1,0 +1,11 @@
+<nb-card>
+  <nb-card-header> Rejected Bulk NEC Requests </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (custom)="customFunction($event)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

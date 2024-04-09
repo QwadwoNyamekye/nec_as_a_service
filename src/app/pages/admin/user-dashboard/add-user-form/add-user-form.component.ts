@@ -145,7 +145,7 @@ export class AddUserFormComponent implements OnInit {
       }
     );
 
-    // this.service.initializeWebSocketConnection();
+    ;
 
     this.service.getRoles().subscribe(
       (data) => {

@@ -34,7 +34,7 @@ export class UnlockUserComponent implements OnInit {
     private toastrService: NbToastrService
   ) {}
   ngOnInit(): void {
-    // this.service.initializeWebSocketConnection();
+    ;
   }
   dismiss() {
     this.ref.close();

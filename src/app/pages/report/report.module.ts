@@ -56,12 +56,6 @@ import { AuditLogsComponent } from "./audit-logs/audit-logs.component";
     NecReportComponent,
     UploadReportComponent,
     AuditLogsComponent
-    //BulkUploadComponent,
-    //SingleNECRequestComponent,
-    // UploadFileComponent,
-    // SubmitForProcessingComponent,
-    // SubmitProcessingComponent,
-    // FileRecord
   ],
 })
 export class ReportModule {}

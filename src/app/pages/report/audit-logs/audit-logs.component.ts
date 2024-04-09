@@ -124,7 +124,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     this.max = this.dateService.addDay(this.dateService.today(), 0);
 
     window.addEventListener("message", this.listener);
-    // this.service.initializeWebSocketConnection()
+    
 
     this.form = new FormGroup({
       type: new FormControl("", Validators.required),

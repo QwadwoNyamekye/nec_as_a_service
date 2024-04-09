@@ -13,6 +13,7 @@ import { UnlockUserComponent } from "./unlock-user/unlock-user.component";
 import { ResetUserPasswordComponent } from "./reset-user-password/reset-user-password.component";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ChangeUserStatusComponent } from "./change-user-status/change-user-status.component";
+import { DeleteUserComponent } from "./delete-user/delete-user.component";
 
 @Component({
   selector: "ngx-admin-dashboard",
@@ -36,7 +37,6 @@ export class AdminDashboardComponent implements OnInit {
       this.source.load(this.receivedData?.data);
     };
     window.addEventListener("message", this.listener);
-    // this.service.initializeWebSocketConnection()
   }
 
   getHtmlForStatusCell(value: string) {
@@ -75,19 +75,28 @@ export class AdminDashboardComponent implements OnInit {
       custom: [
         {
           name: "edit",
-          title: '<i class="nb-edit" data-toggle="tooltip" data-placement="top" title="Edit User"></i>',
+          title:
+            '<i class="nb-edit" data-toggle="tooltip" data-placement="top" title="Edit User"></i>',
         },
         {
           name: "unlock",
-          title: '<i class="nb-locked" data-toggle="tooltip" data-placement="top" title="Unlock User"></i>',
+          title:
+            '<i class="nb-locked" data-toggle="tooltip" data-placement="top" title="Unlock User"></i>',
         },
         {
           name: "reset",
-          title: '<i class="nb-loop-circled" data-toggle="tooltip" data-placement="top" title="Reset User"></i>',
+          title:
+            '<i class="nb-loop-circled" data-toggle="tooltip" data-placement="top" title="Reset User"></i>',
         },
         {
           name: "userStatus",
-          title: '<i class="nb-alert" data-toggle="tooltip" data-placement="top" title="Change User Status"></i>',
+          title:
+            '<i class="nb-alert" data-toggle="tooltip" data-placement="top" title="Enable/Disable User"></i>',
+        },
+        {
+          name: "delete",
+          title:
+            '<i class="nb-trash" data-toggle="tooltip" data-placement="top" title="Delete User"></i>',
         },
       ],
       add: false, //  if you want to remove add button
@@ -152,9 +161,7 @@ export class AdminDashboardComponent implements OnInit {
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer,
     private cd: ChangeDetectorRef
-  ) {
-    this.getUsers();
-  }
+  ) {}
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
@@ -163,10 +170,9 @@ export class AdminDashboardComponent implements OnInit {
       (data) => {
         this.users = data;
       },
-      (error) => {
-      },
+      (error) => {},
       () => {
-        this.users = this.users.sort(this.compare)
+        this.users = this.users.sort(this.compare);
         this.source.load(this.users);
       }
     );
@@ -181,6 +187,8 @@ export class AdminDashboardComponent implements OnInit {
       this.changeUserStatus(event);
     } else if (event.action == "reset") {
       this.resetUserPassword(event);
+    } else if (event.action == "delete") {
+      this.deleteUser(event);
     }
   }
 
@@ -208,7 +216,6 @@ export class AdminDashboardComponent implements OnInit {
       .onClose.subscribe(() => {
         this.getUsers();
       });
-    // event.confirm.resolve()
   }
 
   changeUserStatus(event): void {
@@ -244,6 +251,19 @@ export class AdminDashboardComponent implements OnInit {
         context: {
           title: "Reset User Password",
           email: event.data.email,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers();
+      });
+  }
+
+  deleteUser(event): void {
+    this.dialogService
+      .open(DeleteUserComponent, {
+        context: {
+          title: "Delete User " + event.data?.name + "?",
+          data: event.data,
         },
       })
       .onClose.subscribe(() => {

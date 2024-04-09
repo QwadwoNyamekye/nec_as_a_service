@@ -1,11 +1,12 @@
 import { Component, OnDestroy, Input } from "@angular/core";
 import { LocalDataSource } from "ng2-smart-table";
-import { NbWindowService } from "@nebular/theme";
-import { NecService } from "../../../../@core/mock/nec.service";
+import { NbWindowRef } from "@nebular/theme";
+import { NecService } from "../../../../../@core/mock/nec.service";
 import { DatePipe } from "@angular/common";
 import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
+import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
 
 @Component({
   selector: "ngx-single",
@@ -24,6 +25,14 @@ export class SingleNECComponent implements OnDestroy {
   receivedData: any;
   loading: boolean = true;
   doc = new jsPDF("landscape");
+  statuses: NbComponentStatus[] = [
+    "primary",
+    "success",
+    "info",
+    "warning",
+    "danger",
+  ];
+  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
 
   settings = {
     pager: {
@@ -89,15 +98,14 @@ export class SingleNECComponent implements OnDestroy {
     },
   };
 
-  constructor(
-    private service: NecService,
-    private windowService: NbWindowService
-  ) {
-    this.getSingleNECRecordsRequest();
-  }
+  constructor(private service: NecService, private windowRef: NbWindowRef) {}
 
   ngOnInit() {
     this.getSingleNECRecordsRequest();
+  }
+
+  close() {
+    this.windowRef.close();
   }
 
   compare(a, b) {
@@ -109,10 +117,9 @@ export class SingleNECComponent implements OnDestroy {
       (data: any) => {
         this.singleNECList = data.sort(this.compare);
       },
-      (error) => {
-      },
+      (error) => {},
       () => {
-        this.singleNECList = this.singleNECList.sort(this.compare)
+        this.singleNECList = this.singleNECList.sort(this.compare);
         this.source.load(this.singleNECList);
         this.loading = false;
       }
@@ -155,9 +162,9 @@ export class SingleNECComponent implements OnDestroy {
     });
     this.doc.save(
       this.service.user.institutionCode +
-      "_SINGLE_NEC_REQUESTS_" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
-      ".pdf"
+        "_SINGLE_NEC_REQUESTS_" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
+        ".pdf"
     );
   }
 
@@ -198,8 +205,8 @@ export class SingleNECComponent implements OnDestroy {
     new Angular5Csv(
       this.singleNECList,
       this.service.user.institutionCode +
-      "_SINGLE_NEC_REQUESTS_" +
-      new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
+        "_SINGLE_NEC_REQUESTS_" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
     );
   }

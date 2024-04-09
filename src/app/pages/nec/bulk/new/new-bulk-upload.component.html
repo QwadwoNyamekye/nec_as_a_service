@@ -1,0 +1,33 @@
+<nb-card>
+  <nb-card-header>
+    New Bulk NEC Requests
+    <button
+      *ngIf="this.service.user.roleId == '4'"
+      style="float: right; margin-right: 10px"
+      (click)="uploadFile()"
+      nbButton
+      status="primary"
+      outline
+    >
+      Upload File
+    </button>
+    <a
+      *ngIf="this.service.user.roleId == '4'"
+      style="float: right; margin-right: 10px"
+      href="../../../../assets/sample.csv"
+      nbButton
+      status="primary"
+      outline
+    >
+      Download Sample File
+    </a>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (custom)="customFunction($event)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

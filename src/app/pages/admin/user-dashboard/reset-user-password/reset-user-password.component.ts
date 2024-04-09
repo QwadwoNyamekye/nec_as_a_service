@@ -34,7 +34,7 @@ export class ResetUserPasswordComponent implements OnInit {
     private toastrService: NbToastrService
   ) {}
   ngOnInit(): void {
-    // this.service.initializeWebSocketConnection();
+    ;
   }
   dismiss() {
     this.ref.close();

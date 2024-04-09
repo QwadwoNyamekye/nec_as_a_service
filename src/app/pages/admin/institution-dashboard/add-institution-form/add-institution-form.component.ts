@@ -72,7 +72,7 @@ export class AddInstitutionFormComponent implements OnInit {
       name: new FormControl("", Validators.required),
       phone: new FormControl("", Validators.required),
     });
-    // this.service.initializeWebSocketConnection();
+    ;
   }
 
   onSubmit(): void {

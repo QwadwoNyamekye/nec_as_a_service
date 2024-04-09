@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NbWindowRef } from "@nebular/theme";
-import { NecService } from "../../../../@core/mock/nec.service";
+import { NecService } from "../../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
 import { LocalDataSource } from "ng2-smart-table";
@@ -42,11 +42,11 @@ import { NbToastrService } from "@nebular/theme";
         nbButton
         type="submit"
         (click)="onSaveFile()"
-        [disabled]="!form.valid"
         [status]="statuses[0]"
         [shape]="shapes[2]"
-        [nbSpinner]="loading" nbSpinnerStatus="danger"
-        [disabled]="loading"
+        [nbSpinner]="loading"
+        nbSpinnerStatus="danger"
+        [disabled]="loading || !fileType || !form.valid"
       >
         Submit
       </button>
@@ -72,6 +72,8 @@ export class UploadFileComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   response: any;
   loading: boolean = false;
+  fileType: boolean = false;
+
   constructor(
     public windowRef: NbWindowRef,
     private service: NecService,
@@ -85,12 +87,27 @@ export class UploadFileComponent implements OnInit {
       description: new FormControl("", Validators.required),
       count: new FormControl("", Validators.required),
     });
-    // this.service.initializeWebSocketConnection();
+    ;
   }
 
   onFileSelected(event: FileList) {
     for (let index = 0; index < event.length; index++) {
-      this.filesToUpload.push(event.item(index));
+      if (event.item(index).type == "text/csv") {
+        this.fileType = true;
+        this.filesToUpload.push(event.item(index));
+      } else {
+        this.toastrService.warning(
+          "Invalid File Type: ." +
+            event.item(index).name.split(".").pop() +
+            " Only *.CSV* files accepted.",
+          "File Type",
+          {
+            status: "danger",
+            destroyByClick: true,
+            duration: 8000,
+          }
+        );
+      }
     }
   }
 
@@ -109,7 +126,7 @@ export class UploadFileComponent implements OnInit {
       )
       .subscribe(
         (response) => {
-          this.response = response
+          this.response = response;
         },
         (error) => {
           this.loading = false;
@@ -125,7 +142,7 @@ export class UploadFileComponent implements OnInit {
           );
         },
         () => {
-          this.loading = false
+          this.loading = false;
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
               "File Upload Failed: " + this.response.errorMessage,

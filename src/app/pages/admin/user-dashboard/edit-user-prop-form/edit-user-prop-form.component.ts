@@ -135,7 +135,7 @@ export class EditUserPropFormComponent implements OnInit {
       role: new FormControl("", Validators.required),
       emailAddress: new FormControl("", Validators.required),
     });
-    // this.service.initializeWebSocketConnection();
+    ;
   }
   // Define a method to handle the form submission
 

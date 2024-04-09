@@ -38,7 +38,7 @@ export class ChangeInstitutionStatusComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.service.initializeWebSocketConnection()
+    
     if (this.status) {
       this.action = "Disable";
     } else {

@@ -119,7 +119,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
   getSingleNECRecordsRequest() {
-    this.service.getSingleNECList(this.service.user.email).subscribe(
+    this.service.getSingleNECList().subscribe(
       (response: any) => {
         this.singleNECList = response.data;
       },
@@ -139,7 +139,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     //   this.source.load(this.receivedData);
     // };
     // window.addEventListener("message", this.listener);
-    // this.service.initializeWebSocketConnection()
+    
   }
 
   ngOnDestroy() {

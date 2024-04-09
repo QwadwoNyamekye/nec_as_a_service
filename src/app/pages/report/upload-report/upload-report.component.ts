@@ -136,7 +136,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     this.max = this.dateService.addDay(this.dateService.today(), 0);
 
     window.addEventListener("message", this.listener);
-    // this.service.initializeWebSocketConnection()
+    
 
     this.form = new FormGroup({
       status: new FormControl(""),

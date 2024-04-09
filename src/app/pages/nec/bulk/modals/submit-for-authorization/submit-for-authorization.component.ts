@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
-import { NecService } from "../../../../@core/mock/nec.service";
+import { NecService } from "../../../../../@core/mock/nec.service";
 import { NbToastrService } from "@nebular/theme";
 
 @Component({
@@ -36,7 +36,7 @@ export class SubmitForAuthorizationComponent implements OnInit {
     private toastrService: NbToastrService
   ) {}
   ngOnInit(): void {
-    // this.service.initializeWebSocketConnection();
+    ;
   }
   submit() {
     this.loading = true;

@@ -37,7 +37,7 @@ export class ChangeUserStatusComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.service.initializeWebSocketConnection()
+    
   }
 
   dismiss() {

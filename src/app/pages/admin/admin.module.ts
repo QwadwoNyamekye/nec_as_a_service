@@ -27,6 +27,7 @@ import { ResetUserPasswordComponent } from "./user-dashboard/reset-user-password
 import { UnlockUserComponent } from "./user-dashboard/unlock-user/unlock-user.component";
 import { ChangeUserStatusComponent } from "./user-dashboard/change-user-status/change-user-status.component";
 import { ChangeInstitutionStatusComponent } from "./institution-dashboard/change-institution-status/change-institution-status.component";
+import { DeleteUserComponent } from "./user-dashboard/delete-user/delete-user.component";
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { ChangeInstitutionStatusComponent } from "./institution-dashboard/change
     ResetUserPasswordComponent,
     UnlockUserComponent,
     ChangeUserStatusComponent,
-    ChangeInstitutionStatusComponent
+    ChangeInstitutionStatusComponent,
+    DeleteUserComponent
   ],
 })
 export class AdminModule {}

@@ -78,7 +78,7 @@ export class SingleNECRequestComponent {
       () => {
       }
     );
-    // this.service.initializeWebSocketConnection();
+    ;
   }
 
   onSubmit(): void {

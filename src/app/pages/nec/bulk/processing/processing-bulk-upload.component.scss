@@ -1,0 +1,83 @@
+@import '../../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  nb-card {
+    transform: translate3d(0, 0, 0);
+    border-radius: 12px;
+  }
+
+  .full-screen {
+    width: 100%
+  }
+
+  nb-card.good {
+    color: #0ef506;
+  }
+
+  nb-card .warning {
+    color: #ffa500;
+  }
+
+  ::ng-deep {
+    ng2-st-tbody-edit-delete {
+      display: none;
+      height: 0 !important;
+    }
+
+    ng2-st-tbody-custom {
+      display: flex;
+      text-align: center;
+    }
+  }
+
+  ::ng-deep ng2-st-tbody-delete-delete {
+    display: flex !important;
+    height: 0 !important;
+  }
+
+  ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom {
+    display: flex;
+    width: 50px;
+    text-align: center;
+    font-size: 1.1em;
+  }
+
+  ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom:hover {
+    color: #0caa27;
+  }
+
+  .order-table {
+
+    thead th.ng2-smart-actions.ng-star-inserted {
+      width: 1em;
+    }
+
+    td.ng2-smart-actions {
+      float: left !important;
+
+      ng2-st-tbody-custom {
+        float: left;
+        width: auto;
+        display: flex;
+        margin-top: 0.5em;
+
+        a.ng2-smart-action.ng2-smart-action-custom-custom {
+          margin-left: 0.5em;
+        }
+      }
+    }
+  }
+}
+
+
+:host ::ng-deep ng2-smart-table thead th {
+  text-align: center;
+}
+
+:host ::ng-deep ng2-smart-table tbody>tr>td {
+  text-align: center;
+}
+
+:host ::ng-deep ng2-smart-table thead input-filter input {
+  text-align: center;
+}

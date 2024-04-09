@@ -123,7 +123,7 @@ export class InstitutionDashboardComponent implements OnInit {
       this.source.load(this.receivedData?.data);
     };
     window.addEventListener("message", this.listener);
-    // this.service.initializeWebSocketConnection()
+    
   }
 
   constructor(

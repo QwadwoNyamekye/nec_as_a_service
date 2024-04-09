@@ -183,6 +183,14 @@ export class NecService {
       .pipe((response) => response);
   }
 
+  getUploadsByStatus(status) {
+    return this.http
+      .get(this.reportingUrl + "/upload/api/v1/get_uploads_by_status/" + status + '/' + this.user.email, {
+        headers: this.headers,
+      })
+      .pipe((response) => response);
+  }
+
   submitForProcessing(batchId, submittedBy) {
     return this.http
       .get(
@@ -253,9 +261,9 @@ export class NecService {
       .pipe((response) => response);
   }
 
-  getSingleNECList(email) {
+  getSingleNECList() {
     return this.http
-      .get(this.baseUrl + "/single/api/v1/nec_list/" + email, {
+      .get(this.baseUrl + "/single/api/v1/nec_list/" + this.user.email, {
         headers: this.headers,
       })
       .pipe((response) => response);
@@ -312,6 +320,14 @@ export class NecService {
   resetUserPassword(user) {
     return this.http
       .post(this.baseUrl + "/user/api/v1/reset_password", user, {
+        headers: this.headers,
+      })
+      .pipe((response) => response);
+  }
+
+  deleteUser(user) {
+    return this.http
+      .post(this.baseUrl + "/user/api/v1/delete_user", user, {
         headers: this.headers,
       })
       .pipe((response) => response);

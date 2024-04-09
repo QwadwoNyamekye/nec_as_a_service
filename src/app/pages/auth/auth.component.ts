@@ -37,7 +37,7 @@ export class NbAuthComponent implements OnDestroy, OnInit {
       });
   }
   ngOnInit(): void {
-    // this.service.initializeWebSocketConnection();
+    ;
   }
 
   back() {

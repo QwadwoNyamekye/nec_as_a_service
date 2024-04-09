@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 import { NbToastrService } from "@nebular/theme";
@@ -12,7 +12,7 @@ import { NbToastrService } from "@nebular/theme";
       >
       <nb-card-body>
         <button nbButton hero status="success" (click)="submit()">
-          Reject
+          Delete
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
           Dismiss
@@ -20,31 +20,55 @@ import { NbToastrService } from "@nebular/theme";
       </nb-card-body>
     </nb-card>
   `,
-  styleUrls: ["reject-file-upload.component.scss"],
+  styleUrls: ["delete-user.component.scss"],
 })
-export class RejectFileUploadComponent implements OnInit {
+export class DeleteUserComponent {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
+  @Input() data: any;
+
   response: any;
+
   constructor(
-    protected ref: NbDialogRef<RejectFileUploadComponent>,
+    protected ref: NbDialogRef<DeleteUserComponent>,
     public service: NecService,
     private toastrService: NbToastrService
   ) {}
-  ngOnInit(): void {
-    // this.service.initializeWebSocketConnection();
+
+  dismiss() {
+    this.ref.close();
   }
+
   submit() {
-    this.service
-      .rejectUploadedFile(this.batchId, this.service.user.email)
+    this.response = this.service
+      .deleteUser({
+        email: this.data.email,
+        createdBy: this.service.user.email,
+      })
       .subscribe(
-        (data) => {
-          this.response = data;
+        (response) => {
+          this.response = response;
+        },
+        (error) => {
+          console.error(error);
+          this.toastrService.warning(
+            this.data.name + " Deletion Failed: " + error.error.errorMessage,
+            "Delete User",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 8000,
+            }
+          );
+        },
+        () => {
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
-              "Uploaded File Status Change: REJECT Failed: " + this.response.errorMessage,
-              "Bulk File Processing",
+              this.data.name +
+                " Deletion Failed: " +
+                this.response.errorMessage,
+              "Delete User",
               {
                 status: "danger",
                 destroyByClick: true,
@@ -53,19 +77,13 @@ export class RejectFileUploadComponent implements OnInit {
             );
           } else {
             this.toastrService.success(
-              "Uploaded File Status Change: REJECT Success: " + this.response.errorMessage,
-              "File Processing",
+              this.data.name + " Successfully Deleted",
+              "Delete User",
               { status: "success", destroyByClick: true, duration: 8000 }
             );
+            this.dismiss();
           }
-        },
-        (error) => {},
-        () => {
-          this.ref.close();
         }
       );
-  }
-  dismiss() {
-    this.ref.close();
   }
 }

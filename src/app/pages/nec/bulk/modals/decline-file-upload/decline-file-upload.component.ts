@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
-import { NecService } from "../../../../@core/mock/nec.service";
+import { NecService } from "../../../../../@core/mock/nec.service";
 import { NbToastrService } from "@nebular/theme";
 
 @Component({
@@ -11,44 +11,38 @@ import { NbToastrService } from "@nebular/theme";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()" 
-        [nbSpinner]="loading" nbSpinnerStatus="danger"
-        [disabled]="loading">
-          Accept
-        </button>
+        <button nbButton hero status="success" (click)="submit()">Decline</button>
         <button nbButton hero status="danger" (click)="dismiss()">
           Dismiss
         </button>
       </nb-card-body>
     </nb-card>
   `,
-  styleUrls: ["submit-for-processing.component.scss"],
+  styleUrls: ["decline-file-upload.component.scss"],
 })
-export class SubmitForProcessingComponent implements OnInit {
+export class DeclineFileUploadComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
   response: any;
-  loading: boolean = false;
   constructor(
-    protected ref: NbDialogRef<SubmitForProcessingComponent>,
+    protected ref: NbDialogRef<DeclineFileUploadComponent>,
     public service: NecService,
     private toastrService: NbToastrService
   ) {}
   ngOnInit(): void {
-    // this.service.initializeWebSocketConnection();
+    ;
   }
   submit() {
-    this.loading = true;
     this.service
-      .submitForProcessing(this.batchId, this.service.user.email)
+      .declineUploadedFile(this.batchId, this.service.user.email)
       .subscribe(
         (data) => {
-          this.loading = true;
           this.response = data;
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
-              "File Processing Failed: " + this.response.errorMessage,
+              "Uploaded File Status Change: DENY Failed: " +
+                this.response.errorMessage,
               "Bulk File Processing",
               {
                 status: "danger",
@@ -58,17 +52,15 @@ export class SubmitForProcessingComponent implements OnInit {
             );
           } else {
             this.toastrService.success(
-              "File Processing Success: " + this.response.errorMessage,
+              "Uploaded File Status Change: DENY Success: " +
+                this.response.errorMessage,
               "File Processing",
               { status: "success", destroyByClick: true, duration: 8000 }
             );
           }
         },
-        (error) => {
-          this.loading = false;
-        },
+        (error) => {},
         () => {
-          this.loading = false;
           this.ref.close();
         }
       );

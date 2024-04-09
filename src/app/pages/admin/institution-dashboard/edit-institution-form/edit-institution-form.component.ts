@@ -86,7 +86,7 @@ export class EditInstitutionFormComponent implements OnInit {
       status: new FormControl(this.currentValues.status, [Validators.required]),
       phone: new FormControl(this.currentValues.phone, Validators.required),
     });
-    // this.service.initializeWebSocketConnection();
+    ;
   }
 
   submitInstitutionEdit(): void {

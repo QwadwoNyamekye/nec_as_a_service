@@ -143,7 +143,7 @@ export class EditUserFormComponent implements OnInit {
       // emailAddress: new FormControl("", Validators.required),
     });
     // this.currentRole = this.currentValues.roleName
-    // this.service.initializeWebSocketConnection();
+    ;
   }
 
   // Define a method to handle the form submission

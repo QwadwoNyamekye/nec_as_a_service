@@ -2,25 +2,23 @@ import { Component, OnInit } from "@angular/core";
 import { LocalDataSource, ViewCell } from "ng2-smart-table";
 import { NbDialogService } from "@nebular/theme";
 import { NbWindowService, NbWindowControlButtonsConfig } from "@nebular/theme";
-import { UploadFileComponent } from "./bulk-nec-request/bulk-nec-request.component";
-import { NecService } from "../../../@core/mock/nec.service";
-import { SubmitForProcessingComponent } from "./submit-for-processing/submit-for-processing.component";
+import { NecService } from "../../../../@core/mock/nec.service";
+import { SubmitForProcessingComponent } from "../modals/submit-for-processing/submit-for-processing.component";
 import { DomSanitizer } from "@angular/platform-browser";
 import { DataSource } from "ng2-smart-table/lib/lib/data-source/data-source";
 import { Deferred } from "ng2-smart-table/lib/lib/helpers";
 import { DatePipe } from "@angular/common";
-import { SubmitForAuthorizationComponent } from "./submit-for-authorization/submit-for-authorization.component";
-import { SingleNECComponent } from "./upload_file_single/single.component";
-import { RejectFileUploadComponent } from "./reject-file-upload/reject-file-upload.component";
-import { map } from "rxjs/operators";
-import { DeclineFileUploadComponent } from "./decline-file-upload/decline-file-upload.component";
+import { SubmitForAuthorizationComponent } from "../modals/submit-for-authorization/submit-for-authorization.component";
+import { SingleNECComponent } from "../modals/upload_file_single/single.component";
+import { RejectFileUploadComponent } from "../modals/reject-file-upload/reject-file-upload.component";
+import { DeclineFileUploadComponent } from "../modals/decline-file-upload/decline-file-upload.component";
 
 @Component({
   selector: "ngx-bulk",
-  templateUrl: "./bulk.component.html",
-  styleUrls: ["./bulk.component.scss"],
+  templateUrl: "./declined-bulk-upload.component.html",
+  styleUrls: ["./declined-bulk-upload.component.scss"],
 })
-export class BulkUploadComponent implements OnInit {
+export class BulkDeclinedUploadComponent implements OnInit {
   colour: string;
   name: string;
   source: LocalDataSource = new LocalDataSource();
@@ -31,28 +29,8 @@ export class BulkUploadComponent implements OnInit {
   receivedData: any;
 
   getHtmlForCell(value: string) {
-    if (value === "0") {
-      this.colour = "lightcoral";
-      this.name = "UPLOADING";
-    } else if (value === "1") {
-      this.colour = "lightskyblue";
-      this.name = "NEW";
-    } else if (value === "2") {
-      this.colour = "yellow";
-      this.name = "SUBMITTED";
-    } else if (value === "3") {
-      this.colour = "#fcb103";
-      this.name = "PROCESSING";
-    } else if (value === "4") {
-      this.colour = "#55DD33";
-      this.name = "COMPLETED";
-    } else if (value === "5") {
-      this.colour = "#bd267e";
-      this.name = "REJECTED";
-    } else if (value === "6") {
-      this.colour = "#4665e0";
-      this.name = "DECLINE";
-    }
+    this.colour = "#4665e0";
+    this.name = "DECLINE";
     return this.domSanitizer.bypassSecurityTrustHtml(
       `<nb-card-body style="background-color: ${this.colour}; border-radius: 12px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
     );
@@ -60,19 +38,23 @@ export class BulkUploadComponent implements OnInit {
 
   process = {
     name: "edit",
-    title: '<i class="nb-paper-plane" data-toggle="tooltip" data-placement="top" title="Process File"></i>',
+    title:
+      '<i class="nb-paper-plane" data-toggle="tooltip" data-placement="top" title="Process File"></i>',
   };
   authorize = {
     name: "authorize",
-    title: '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Authorize File"></i>',
+    title:
+      '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Authorize File"></i>',
   };
   reject = {
     name: "reject",
-    title: '<i class="nb-trash" data-toggle="tooltip" data-placement="top" title="Reject File"></i>',
+    title:
+      '<i class="nb-trash" data-toggle="tooltip" data-placement="top" title="Reject File"></i>',
   };
   expand = {
     name: "expand",
-    title: '<i class="nb-list" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
+    title:
+      '<i class="nb-list" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
   };
   customActions(roleId: string) {
     var custom = [];
@@ -153,11 +135,11 @@ export class BulkUploadComponent implements OnInit {
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.getUploadedFiles();
-    // this.service.initializeWebSocketConnection()
+    this.getSubmittedUploadedFiles();
+    
   }
 
   customFunction(event) {
@@ -178,8 +160,8 @@ export class BulkUploadComponent implements OnInit {
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
-  getUploadedFiles() {
-    this.service.getUploads(this.service.user.email).subscribe(
+  getSubmittedUploadedFiles() {
+    this.service.getUploadsByStatus("DECLINE").subscribe(
       (data) => {
         this.files = data;
       },
@@ -206,7 +188,7 @@ export class BulkUploadComponent implements OnInit {
         },
       })
       .onClose.subscribe(() => {
-        this.getUploadedFiles();
+        this.getSubmittedUploadedFiles();
       });
   }
 
@@ -221,10 +203,10 @@ export class BulkUploadComponent implements OnInit {
       })
       .onClose.pipe((response) => response)
       .subscribe(() => {
-        this.getUploadedFiles();
+        this.getSubmittedUploadedFiles();
         this.service.comp$
           .pipe((response) => response)
-          .subscribe(() => this.getUploadedFiles());
+          .subscribe(() => this.getSubmittedUploadedFiles());
       });
   }
 
@@ -239,7 +221,7 @@ export class BulkUploadComponent implements OnInit {
       })
       .onClose.pipe((response) => response)
       .subscribe(() => {
-        this.getUploadedFiles()
+        this.getSubmittedUploadedFiles();
       });
   }
 
@@ -254,36 +236,23 @@ export class BulkUploadComponent implements OnInit {
       })
       .onClose.pipe((response) => response)
       .subscribe(() => {
-        this.getUploadedFiles()
-      });
-  }
-
-  uploadFile() {
-    this.windowService
-      .open(UploadFileComponent, {
-        title: `Upload File`,
-        windowClass: `admin-form-window`,
-      })
-      .onClose.subscribe(() => {
-        this.service.comp$
-          .pipe((response) => response)
-          .subscribe(() => this.getUploadedFiles());
+        this.getSubmittedUploadedFiles();
       });
   }
 
   openFileRecords(event) {
-    // const buttonsConfig: NbWindowControlButtonsConfig = {
-    //   minimize: true,
-    //   maximize: false,
-    //   fullScreen: false,
-    //   close: true,
-    // };
-    this.dialogService.open(SingleNECComponent, {
+    const buttonsConfig: NbWindowControlButtonsConfig = {
+      minimize: true,
+      maximize: false,
+      fullScreen: false,
+      close: true,
+    };
+    this.windowService.open(SingleNECComponent, {
       context: {
         title: event.data.batchId,
         batchId: event.data.batchId,
       },
-      // buttons: buttonsConfig,
+      buttons: buttonsConfig,
     });
   }
 }
