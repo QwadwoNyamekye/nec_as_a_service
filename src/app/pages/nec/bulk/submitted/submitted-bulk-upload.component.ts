@@ -61,7 +61,7 @@ export class BulkSubmittedUploadComponent implements OnInit {
     if (roleId == "3") {
       custom.push(this.process, this.reject, this.expand);
     } else if (roleId == "4") {
-      custom.push(this.authorize, this.reject, this.expand);
+      custom.push(this.expand);
     }
     return custom;
   }

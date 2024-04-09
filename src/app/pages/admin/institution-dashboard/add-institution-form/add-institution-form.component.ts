@@ -28,8 +28,16 @@ import { NbToastrService } from "@nebular/theme";
         formControlName="phone"
         id="subject"
         type="tel"
-        pattern="[0-9]{10}" 
+        pattern="[0-9]{10}"
         maxlength="10"
+      />
+      <label class="text-label" for="subject">Fee:</label>
+      <input
+        nbInput
+        fullWidth
+        formControlName="fee"
+        id="subject"
+        type="number"
       />
       <br />
       <button
@@ -71,8 +79,8 @@ export class AddInstitutionFormComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
       phone: new FormControl("", Validators.required),
+      fee: new FormControl(0, Validators.required),
     });
-    ;
   }
 
   onSubmit(): void {
@@ -80,6 +88,7 @@ export class AddInstitutionFormComponent implements OnInit {
       name: this.form.value.name,
       phone: this.form.value.phone,
       createdBy: this.service.user.email,
+      fee: this.form.value.fee,
     };
     this.service.addInstitution(this.object).subscribe(
       (response) => {

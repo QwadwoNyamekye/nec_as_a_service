@@ -41,6 +41,14 @@ import { NbToastrService } from "@nebular/theme";
         maxlength="10"
         placeholder="Phone Number"
       />
+      <label class="text-label" for="subject">Fee:</label>
+      <input
+        nbInput
+        fullWidth
+        formControlName="fee"
+        id="subject"
+        type="number"
+      />
       <br />
       <button
         nbButton
@@ -85,6 +93,7 @@ export class EditInstitutionFormComponent implements OnInit {
       name: new FormControl(this.currentValues.name, Validators.required),
       status: new FormControl(this.currentValues.status, [Validators.required]),
       phone: new FormControl(this.currentValues.phone, Validators.required),
+      fee: new FormControl(this.currentValues.fee, Validators.required),
     });
     ;
   }
@@ -95,6 +104,7 @@ export class EditInstitutionFormComponent implements OnInit {
       status: this.form.value.status,
       phone: this.form.value.phone,
       code: this.currentValues.code,
+      fee: this.form.value.fee
     };
     // Send a post request to the server endpoint with the FormData object
     this.service.editInstitution(object).subscribe(

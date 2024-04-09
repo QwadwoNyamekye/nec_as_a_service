@@ -106,6 +106,10 @@ export class InstitutionDashboardComponent implements OnInit {
         title: "Phone",
         type: "string",
       },
+      fee: {
+        title: "Fee",
+        type: "string",
+      },
       createdAt: {
         title: "Created By",
         type: "string",
