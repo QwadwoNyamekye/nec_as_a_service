@@ -1,0 +1,57 @@
+<nb-card>
+  <nb-card-header>
+    NEC Report
+  </nb-card-header>
+  <nb-card-body id="reportForm">
+    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-2">
+          <label for="subject">Start Date :</label><span style="color: red;">*</span><br>
+          <input fullWidth nbInput formControlName="startDate" placeholder="Start Date" [nbDatepicker]="picker1">
+          <nb-datepicker #picker1 [max]="max" [min]="min" (dateChange)="setMin($event)"></nb-datepicker>
+        </div>
+        <div class="col-md-2">
+          <label for="subject">End Date :</label><span style="color: red;">*</span><br>
+          <input fullWidth nbInput formControlName="endDate" placeholder="End Date" [nbDatepicker]="picker2">
+          <nb-datepicker #picker2 [max]="max" [min]="min" (dateChange)="setMax($event)"></nb-datepicker>
+        </div>
+      </div> <!--ROW END-->
+
+      <div class="row">
+        <div class="col-md-2">
+          <label class="text-label" for="text">&nbsp;</label><br>
+          <button fullWidth nbButton type="button" [disabled]="!this.response" [status]="statuses[0]"
+            [shape]="shapes[1]" (click)="downloadAsCSV()">
+            Download CSV
+          </button>
+        </div>
+        <div class="col-md-2">
+          <label class="text-label" for="text">&nbsp;</label><br>
+          <button fullWidth nbButton type="button" [disabled]="!this.response" [status]="statuses[0]"
+            [shape]="shapes[1]" (click)="downloadAsPDF()">
+            Download PDF
+          </button>
+        </div>
+        <div class="col-md-2" style="margin-left: auto;">
+          <label class="text-label" for="text">&nbsp;</label><br>
+          <button fullWidth nbButton status="primary" outline type="submit" [status]="statuses[0]" [shape]="shapes[2]"
+            [nbSpinner]="loading" nbSpinnerStatus="danger" [disabled]="loading || !form.valid">
+            Submit
+          </button>
+        </div>
+      </div>
+
+      <!-- <br>
+        <div class="col-md-2">
+          <button  fullWidth nbButton type="submit" [status]="statuses[0]" (click)="onSubmit()" [shape]="shapes[1]">
+            Submit
+          </button>
+        </div> -->
+    </form>
+  </nb-card-body>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"
+      (edit)="onEditRowSelect($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

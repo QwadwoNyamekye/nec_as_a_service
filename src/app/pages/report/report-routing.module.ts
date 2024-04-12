@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { NecReportComponent } from "./nec-report/nec-report.component";
 import { UploadReportComponent } from "./upload-report/upload-report.component";
 import { AuditLogsComponent } from "./audit-logs/audit-logs.component";
+import { FeeReportComponent } from "./fee-report/fee-report.component";
 
 const routes: Routes = [
   {
@@ -15,8 +16,12 @@ const routes: Routes = [
   },
   {
     path: "audit-logs",
-    component: AuditLogsComponent
-  }
+    component: AuditLogsComponent,
+  },
+  {
+    path: "fee-logs",
+    component: FeeReportComponent,
+  },
 ];
 
 @NgModule({
@@ -24,3 +29,9 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class ReportRoutingModule {}
+export const routedComponents = [
+  NecReportComponent,
+  UploadReportComponent,
+  AuditLogsComponent,
+  FeeReportComponent,
+];

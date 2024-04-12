@@ -66,6 +66,11 @@ var audit_logs_path = {
   icon: "star",
   link: "/pages/audit-logs",
 };
+var fee_logs_path = {
+  title: "Fee Logs",
+  icon: "pantone-outline",
+  link: "/pages/fee-logs",
+};
 
 export function MENU_ITEMS() {
   var user = JSON.parse(sessionStorage.getItem("user"));
@@ -79,7 +84,8 @@ export function MENU_ITEMS() {
       institution_path,
       nec_report_path,
       upload_report_path,
-      audit_logs_path
+      audit_logs_path,
+      fee_logs_path
     );
   } else if (user_role == "2") {
     user_path["home"] = true;

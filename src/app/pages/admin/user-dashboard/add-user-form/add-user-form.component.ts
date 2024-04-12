@@ -89,12 +89,14 @@ import { NbToastrService } from "@nebular/theme";
       <br />
       <button
         nbButton
-        [disabled]="!form.valid"
+        [disabled]="!form.valid || loading"
         id="button"
         type="submit"
         class="button"
         [status]="statuses[0]"
         [shape]="shapes[2]"
+        [nbSpinner]="loading"
+        nbSpinnerStatus="danger"
       >
         Submit
       </button>
@@ -119,6 +121,7 @@ export class AddUserFormComponent implements OnInit {
   selectedItems: any;
   selectedRoles: any;
   response: any;
+  loading: boolean = false;
 
   source: LocalDataSource = new LocalDataSource();
   institutionCode: any;
@@ -174,6 +177,7 @@ export class AddUserFormComponent implements OnInit {
 
   // Define a method to handle the form submission
   onSubmit(): void {
+    this.loading = true;
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
       institutionCode: this.institutionCode ? this.institutionCode : this.form.value.institution,
@@ -190,6 +194,7 @@ export class AddUserFormComponent implements OnInit {
         this.response = data;
       },
       (error) => {
+        this.loading = false;
         console.error(error);
         this.toastrService.warning(
           "User Creation Failed: " + error.error.errorMessage,
@@ -202,6 +207,7 @@ export class AddUserFormComponent implements OnInit {
         );
       },
       () => {
+        this.loading = false;
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
             "User Creation Failed: " + this.response.errorMessage,

@@ -14,11 +14,11 @@ import autotable from "jspdf-autotable";
 import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 
 @Component({
-  selector: "ngx-nec-report",
-  templateUrl: "./nec-report.component.html",
-  styleUrls: ["./nec-report.component.scss"],
+  selector: "ngx-fee-report",
+  templateUrl: "./fee-report.component.html",
+  styleUrls: ["./fee-report.component.scss"],
 })
-export class NecReportComponent implements OnInit, OnDestroy {
+export class FeeReportComponent implements OnInit, OnDestroy {
   source: LocalDataSource = new LocalDataSource();
   users: any;
   stompClient: any;
@@ -26,7 +26,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
   listener: any;
   receivedData: any;
   form: FormGroup;
-  bankList: Object;
   max: Date;
   min: Date;
   institutions: Object;
@@ -68,56 +67,41 @@ export class NecReportComponent implements OnInit, OnDestroy {
       confirmDelete: true,
     },
     columns: {
-      sessionId: {
-        title: "Session ID",
-        type: "string",
-      },
-      narration: {
-        title: "Narration",
-        type: "string",
-      },
-      destInstitution: {
-        title: "Dest. Institution Code",
-        type: "string",
-      },
-      destInstitutionName: {
-        title: "Dest. Institution",
-        type: "string",
-      },
-      destAccountNumber: {
-        title: "Destination Account",
-        type: "string",
-      },
-      destAccountName: {
-        title: "Account Name",
-        type: "string",
-      },
-      srcInstitution: {
-        title: "Src. Institution Code",
-        type: "string",
-      },
-      srcInstitutionName: {
-        title: "Src. Institution",
-        type: "string",
-      },
-      actionCode: {
-        title: "Action Code",
-        type: "string",
-      },
-      accountStatus: {
-        title: "Account Status",
+      batchId: {
+        title: "Batch ID",
         type: "string",
       },
       createdBy: {
         title: "Created By",
         type: "string",
       },
-      createdAt: {
-        title: "Created At",
+      institutionCode: {
+        title: "Institution Code",
         type: "string",
-        valuePrepareFunction: (date) => {
-          return new DatePipe("en-US").transform(date, "YYYY-MM-dd HH:mm:ss");
-        },
+      },
+      institutionName: {
+        title: "Institution Name",
+        type: "string",
+      },
+      total: {
+        title: "Total Records",
+        type: "string",
+      },
+      success: {
+        title: "Success",
+        type: "string",
+      },
+      fail: {
+        title: "Fail",
+        type: "string",
+      },
+      perTxnFee: {
+        title: "Per Txn Fee",
+        type: "string",
+      },
+      totalFee: {
+        title: "Total Fee",
+        type: "string",
       },
     },
   };
@@ -148,47 +132,26 @@ export class NecReportComponent implements OnInit, OnDestroy {
     window.addEventListener("message", this.listener);
 
     this.form = new FormGroup({
-      type: new FormControl(""),
-      destBank: new FormControl(""),
       endDate: new FormControl("", Validators.required),
       startDate: new FormControl("", Validators.required),
-      code: new FormControl(""),
     });
-
-    /////GET BANKS///////////////
-    this.service.getBanks().subscribe(
-      (data) => {
-        this.bankList = data;
-      },
-      (error) => {},
-      () => {}
-    );
-
-    this.service.getInstitutions().subscribe(
-      (data) => {
-        this.institutions = data;
-      },
-      (error) => {},
-      () => {}
-    );
   }
 
   downloadAsPDF() {
+    console.log(this.response)
     autotable(this.doc, {
       head: [],
-      body: this.response,
+      body: this.response.data,
       columns: [
-        { header: "Session Id", dataKey: "sessionId" },
-        { header: "Narration", dataKey: "narration" },
-        { header: "Dest. Institution Code", dataKey: "destInstitution" },
-        { header: "Dest. Institution", dataKey: "destInstitutionName" },
-        { header: "Dest. Account", dataKey: "destAccountNumber" },
-        { header: "Account Name", dataKey: "destAccountName" },
-        { header: "Src. Institution Code", dataKey: "srcInstitution" },
-        { header: "Action Code", dataKey: "actionCode" },
-        { header: "Account Status", dataKey: "accountStatus" },
+        { header: "Batch ID", dataKey: "batchId" },
         { header: "Created By", dataKey: "createdBy" },
-        { header: "Created At", dataKey: "createdAt" },
+        { header: "Institution Code", dataKey: "institutionCode" },
+        { header: "Institution Name", dataKey: "institutionName" },
+        { header: "Total Records", dataKey: "total" },
+        { header: "Success", dataKey: "success" },
+        { header: "Fail", dataKey: "fail" },
+        { header: "Per Txn Fee", dataKey: "perTxnFee" },
+        { header: "Total Fee", dataKey: "totalFee" },
       ],
       columnStyles: {
         0: { cellWidth: "auto" },
@@ -200,13 +163,11 @@ export class NecReportComponent implements OnInit, OnDestroy {
         6: { cellWidth: "auto" },
         7: { cellWidth: "auto" },
         8: { cellWidth: "auto" },
-        9: { cellWidth: "auto" },
-        10: { cellWidth: "auto" },
       },
     });
     this.doc.save(
       this.service.user.institutionCode +
-        "_SINGLE_NEC_REPORT" +
+        "_SINGLE_FEE_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
         ".pdf"
     );
@@ -221,24 +182,21 @@ export class NecReportComponent implements OnInit, OnDestroy {
       // showTitle: true,
       // useBom: true,
       headers: [
-        "Account Status",
-        "Destination Institution",
-        "Destination Account Code",
-        "Source Institution Code",
-        "Account Name",
-        "Destination Account",
-        "Session ID",
-        "Action Code",
+        "Institution Name",
+        "Institution Code",
         "Batch ID",
-        "Narration",
-        "Created By",
-        "Created At",
+        "Total",
+        "Success",
+        "Fail",
+        "Per Txn Fee",
+        "Total Fee",
+        "Created By"
       ],
     };
     new Angular5Csv(
-      this.response,
+      this.response.data,
       this.service.user.institutionCode +
-        "_SINGLE_NEC_REPORT" +
+        "_SINGLE_FEE_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
     );
@@ -284,23 +242,19 @@ export class NecReportComponent implements OnInit, OnDestroy {
     this.form.value.endDate.setMinutes("59");
     this.form.value.endDate.setSeconds("59");
     this.form.value.endDate.setMilliseconds("999");
-    this.form.value.code = this.institutionCode
-      ? this.institutionCode
-      : this.form.value.code;
 
-    this.service.getNecReport(this.form.value).subscribe(
+    this.service.getFeeLogs(this.form.value).subscribe(
       (response) => {
         this.loading = false;
         this.response = response;
         this.source.load(this.response);
-        return response;
       },
       (error) => {
         this.loading = false;
         console.error(error);
         this.toastrService.warning(
-          "NEC Report Request Failed: " + error.error.errorMessage,
-          "NEC Report Request",
+          "Fee Report Request Failed: " + error.error.errorMessage,
+          "Fee Report Request",
           {
             status: "danger",
             destroyByClick: true,

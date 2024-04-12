@@ -4,8 +4,12 @@ import { HttpHeaders } from "@angular/common/http";
 import { NbAuthService } from "@nebular/auth";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 // import * as SockJS from "sockjs-client";
-import SockJS from 'sockjs-client'
-import { NbToastrService, NbGlobalPhysicalPosition, NbToastRef } from "@nebular/theme";
+import SockJS from "sockjs-client";
+import {
+  NbToastrService,
+  NbGlobalPhysicalPosition,
+  NbToastRef,
+} from "@nebular/theme";
 import { environment } from "../../../environments/environment.prod";
 import { Subject } from "rxjs/Subject";
 
@@ -31,18 +35,23 @@ export class NecService {
     this.initializeWebSocketConnection(this.errorToastr);
 
     // window.addEventListener('online', () => console.log('Became online'));
-    window.addEventListener('offline', () => {
-      console.log('Became offline');
-      if (!this.errorToastr && this.user) { // if there isn't a 'Connection Lost' toaster already and user is logged in
-        this.errorToastr = this.toastrService.danger('Connection Lost', 'Connection', {
-          position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
-          preventDuplicates: true,
-          destroyByClick: true,
-          duration: 0
-        });
+    window.addEventListener("offline", () => {
+      console.log("Became offline");
+      if (!this.errorToastr && this.user) {
+        // if there isn't a 'Connection Lost' toaster already and user is logged in
+        this.errorToastr = this.toastrService.danger(
+          "Connection Lost",
+          "Connection",
+          {
+            position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
+            preventDuplicates: true,
+            destroyByClick: true,
+            duration: 0,
+          }
+        );
         setTimeout(() => {
           this.initializeWebSocketConnection(this.errorToastr);
-        }, 5000)
+        }, 5000);
       }
     });
   }
@@ -59,77 +68,98 @@ export class NecService {
     var websocket = environment.websocket;
     const serverUrl = websocket;
     const ws = new SockJS(serverUrl);
-    this.stompClient = Stomp.over(() => { return ws });
+    this.stompClient = Stomp.over(() => {
+      return ws;
+    });
 
     // this.stompClient.reconnect_delay = 1000;
     // this.stompClient.reconnectDelay = 10000;
 
-    this.stompClient.connect({}, (frame) => {
-      if (errorToastr) {
-        errorToastr.close()
-        var value = this.toastrService.success('Connection Success', 'Connection', {
-          position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
-          preventDuplicates: true,
-          destroyByClick: true,
-          duration: 10000
-        });
+    this.stompClient.connect(
+      {},
+      (frame) => {
+        if (errorToastr) {
+          errorToastr.close();
+          var value = this.toastrService.success(
+            "Connection Success",
+            "Connection",
+            {
+              position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
+              preventDuplicates: true,
+              destroyByClick: true,
+              duration: 10000,
+            }
+          );
 
-        // show connection success toaster and redirection text in 5 seconds
-        var time = 5;
-        var intervalId = setInterval(
-          function () {
+          // show connection success toaster and redirection text in 5 seconds
+          var time = 5;
+          var intervalId = setInterval(function () {
             value.toastInstance.toast.message = "Reloading in  : " + time;
             if (time == 0) {
               window.location.reload();
-              window.clearInterval(intervalId)
+              window.clearInterval(intervalId);
             }
             time--;
-          },
-          1000
-        );
-      };
-      this.stompClient.subscribe("/realtime/alert", (message) => {
-        var websocketdata = message.body.split(":");
-        var websocketMessage = websocketdata[0];
-        if (
-          websocketMessage != "" &&
-          [websocketdata[1], websocketdata[2]].includes(String(this.user.id))
-        ) {
-          this.toastrService.success(websocketMessage, "Bulk File Processing", {
-            duration: 8000,
-            destroyByClick: true,
-            duplicatesBehaviour: "previous",
-            preventDuplicates: true,
-          });
-          this.compInstance.next();
+          }, 1000);
         }
-      });
-    }, (error) => {
-      if (!errorToastr && this.user) { // if there isn't a 'Connection Lost' toaster already and user is logged in
-        errorToastr = this.toastrService.danger('Connection Lost', 'Connection', {
-          position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
-          preventDuplicates: true,
-          destroyByClick: true,
-          duration: 0
+        this.stompClient.subscribe("/realtime/alert", (message) => {
+          var websocketdata = message.body.split(":");
+          var websocketMessage = websocketdata[0];
+          if (
+            websocketMessage != "" &&
+            [websocketdata[1], websocketdata[2]].includes(String(this.user.id))
+          ) {
+            this.toastrService.success(
+              websocketMessage,
+              "Bulk File Processing",
+              {
+                duration: 8000,
+                destroyByClick: true,
+                duplicatesBehaviour: "previous",
+                preventDuplicates: true,
+              }
+            );
+            this.compInstance.next();
+          }
         });
-      }
-      setTimeout(() => {
-        this.initializeWebSocketConnection(errorToastr);
-      }, 5000)
-    },
-      (frame) => {
-        if (!errorToastr && this.user) { // if there isn't a 'Connection Lost' toaster already and user is logged in
-          errorToastr = this.toastrService.danger('Connection Lost', 'Connection', {
-            position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
-            preventDuplicates: true,
-            destroyByClick: true,
-            duration: 0
-          });
+      },
+      (error) => {
+        if (!errorToastr && this.user) {
+          // if there isn't a 'Connection Lost' toaster already and user is logged in
+          errorToastr = this.toastrService.danger(
+            "Connection Lost",
+            "Connection",
+            {
+              position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
+              preventDuplicates: true,
+              destroyByClick: true,
+              duration: 0,
+            }
+          );
         }
         setTimeout(() => {
           this.initializeWebSocketConnection(errorToastr);
-        }, 5000)
-      });
+        }, 5000);
+      },
+      (frame) => {
+        if (!errorToastr && this.user) {
+          // if there isn't a 'Connection Lost' toaster already and user is logged in
+          errorToastr = this.toastrService.danger(
+            "Connection Lost",
+            "Connection",
+            {
+              position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
+              preventDuplicates: true,
+              destroyByClick: true,
+              duration: 0,
+            }
+          );
+        }
+        setTimeout(() => {
+          this.initializeWebSocketConnection(errorToastr);
+        }, 5000);
+      }
+    );
   }
 
   resetPassword(user) {
@@ -150,24 +180,12 @@ export class NecService {
 
   //-------------BULK--------------
 
-  getAuditLogs() {
-    return this.http
-      .get(
-        this.baseUrl +
-        "/api/v1/audit/get_all_audit_logs",
-        {
-          headers: this.headers,
-        }
-      )
-      .pipe((response) => response);
-  }
-
   getFileRecords(batch_id) {
     return this.http
       .get(
         this.baseUrl +
-        "/batch_details/api/v1/get_branch_details_by_batch_id/" +
-        batch_id,
+          "/batch_details/api/v1/get_branch_details_by_batch_id/" +
+          batch_id,
         {
           headers: this.headers,
         }
@@ -185,9 +203,16 @@ export class NecService {
 
   getUploadsByStatus(status) {
     return this.http
-      .get(this.reportingUrl + "/upload/api/v1/get_uploads_by_status/" + status + '/' + this.user.email, {
-        headers: this.headers,
-      })
+      .get(
+        this.reportingUrl +
+          "/upload/api/v1/get_uploads_by_status/" +
+          status +
+          "/" +
+          this.user.email,
+        {
+          headers: this.headers,
+        }
+      )
       .pipe((response) => response);
   }
 
@@ -195,7 +220,7 @@ export class NecService {
     return this.http
       .get(
         this.baseUrl +
-        `/upload/api/v1/submit_upload_for_processing/${batchId}/${submittedBy}`,
+          `/upload/api/v1/submit_upload_for_processing/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
       .pipe((response) => response);
@@ -214,7 +239,7 @@ export class NecService {
     return this.http
       .get(
         this.baseUrl +
-        `/upload/api/v1/decline_upload/${batchId}/${submittedBy}`,
+          `/upload/api/v1/decline_upload/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
       .pipe((response) => response);
@@ -224,7 +249,7 @@ export class NecService {
     return this.http
       .get(
         this.baseUrl +
-        `/upload/api/v1/submit_upload_for_authorization/${batchId}/${submittedBy}`,
+          `/upload/api/v1/submit_upload_for_authorization/${batchId}/${submittedBy}`,
         { headers: this.headers }
       )
       .pipe((response) => response);
@@ -234,12 +259,12 @@ export class NecService {
     return this.http
       .post(
         this.baseUrl +
-        "/upload/api/v1/create_upload/" +
-        description +
-        "/" +
-        createdBy +
-        "/" +
-        count,
+          "/upload/api/v1/create_upload/" +
+          description +
+          "/" +
+          createdBy +
+          "/" +
+          count,
         file,
         { headers: this.headers }
       )
@@ -376,6 +401,22 @@ export class NecService {
   }
 
   ///////////////////REPORTS API//////////////
+  getAuditLogs() {
+    return this.http
+      .get(this.baseUrl + "/api/v1/audit/get_all_audit_logs", {
+        headers: this.headers,
+      })
+      .pipe((response) => response);
+  }
+
+  getFeeLogs(dateRange) {
+    return this.http
+      .post(this.reportingUrl + "/nec-report/api/v1/nec_fee_report", dateRange, {
+        headers: this.headers,
+      })
+      .pipe((response) => response);
+  }
+
   getNecReport(data) {
     return this.http
       .post(this.reportingUrl + "/nec-report/api/v1/get_nec_report", data, {

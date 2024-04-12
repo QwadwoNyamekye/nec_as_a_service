@@ -52,12 +52,14 @@ import { NbToastrService } from "@nebular/theme";
       <br />
       <button
         nbButton
-        [disabled]="!form.valid"
+        [disabled]="!form.valid || loading"
         id="button"
         type="submit"
         class="button"
         [status]="statuses[0]"
         [shape]="shapes[2]"
+        [nbSpinner]="loading"
+        nbSpinnerStatus="danger"
       >
         Submit
       </button>
@@ -81,6 +83,7 @@ export class EditInstitutionFormComponent implements OnInit {
     { key: "DISABLE", value: false },
   ];
   response: any;
+  loading: boolean = false;
 
   constructor(
     public windowRef: NbWindowRef,
@@ -99,6 +102,7 @@ export class EditInstitutionFormComponent implements OnInit {
   }
 
   submitInstitutionEdit(): void {
+    this.loading = true;
     var object = {
       name: this.form.value.name,
       status: this.form.value.status,
@@ -112,6 +116,7 @@ export class EditInstitutionFormComponent implements OnInit {
         this.response = response;
       },
       (error) => {
+        this.loading = false;
         console.error(error);
         this.toastrService.warning(
           "Institution Edit Failed: " + error.error.errorMessage,
@@ -124,6 +129,7 @@ export class EditInstitutionFormComponent implements OnInit {
         );
       },
       () => {
+        this.loading = false;
         if (this.response.errorCode != "0") {
           this.toastrService.warning(
             "Institution Edit Failed: " + this.response.errorMessage,

@@ -22,10 +22,7 @@ import { NgxEchartsModule } from "ngx-echarts";
 import { ThemeModule } from "../../@theme/theme.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ReportRoutingModule } from "./report-routing.module";
-import { NecReportComponent } from "./nec-report/nec-report.component";
-import { UploadReportComponent } from "./upload-report/upload-report.component";
-import { AuditLogsComponent } from "./audit-logs/audit-logs.component";
-
+import { routedComponents } from "./report-routing.module";
 
 @NgModule({
   imports: [
@@ -50,12 +47,8 @@ import { AuditLogsComponent } from "./audit-logs/audit-logs.component";
     ReactiveFormsModule,
     ReportRoutingModule,
     NbToastrModule.forRoot(),
-    NbDatepickerModule
+    NbDatepickerModule,
   ],
-  declarations: [
-    NecReportComponent,
-    UploadReportComponent,
-    AuditLogsComponent
-  ],
+  declarations: [...routedComponents],
 })
 export class ReportModule {}

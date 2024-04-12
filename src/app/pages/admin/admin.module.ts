@@ -13,6 +13,7 @@ import {
   NbIconModule,
   NbInputModule,
   NbMenuModule,
+  NbSpinnerModule,
 } from "@nebular/theme";
 import { ThemeModule } from "../../@theme/theme.module";
 import { AdminDashboardComponent } from "./user-dashboard/user-dashboard.component";
@@ -31,6 +32,7 @@ import { DeleteUserComponent } from "./user-dashboard/delete-user/delete-user.co
 
 @NgModule({
   imports: [
+    NbSpinnerModule,
     NbInputModule,
     NbWindowModule,
     NbMenuModule,
@@ -61,7 +63,7 @@ import { DeleteUserComponent } from "./user-dashboard/delete-user/delete-user.co
     UnlockUserComponent,
     ChangeUserStatusComponent,
     ChangeInstitutionStatusComponent,
-    DeleteUserComponent
+    DeleteUserComponent,
   ],
 })
 export class AdminModule {}
