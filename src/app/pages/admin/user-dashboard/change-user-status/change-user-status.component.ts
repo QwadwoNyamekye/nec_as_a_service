@@ -64,7 +64,6 @@ export class ChangeUserStatusComponent implements OnInit {
           // window.parent.postMessage(this.service.getUsers());
         },
         (error) => {
-          console.error(error);
           this.toastrService.warning(
             "User Status Change Failed: " + error.error.errorMessage,
             "User Status Change",

@@ -38,7 +38,7 @@ export class BulkSingleRecordsComponent implements OnDestroy {
     pager: {
       perPage: 10,
     },
-    // hideSubHeader: true,
+    hideSubHeader: true,
     actions: {
       position: "right",
       add: false, //  if you want to remove add button

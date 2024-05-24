@@ -23,7 +23,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   source: LocalDataSource = new LocalDataSource();
   users: any;
   stompClient: any;
-  response: any;
+  response: any = [];
   listener: any;
   receivedData: any;
   form: FormGroup;
@@ -102,6 +102,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   bankList: Object;
   max: Date;
   min: Date;
+  startDate: Date;
   institutions: Object;
   colour: string;
   name: string;
@@ -164,10 +165,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   }
   setMin(event) {
     this.min = event;
-  }
-
-  setMax(event) {
-    this.max = event;
   }
 
   downloadAsPDF() {
@@ -294,10 +291,9 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       },
       (error) => {
         this.loading = false;
-        console.error(error);
         this.toastrService.warning(
-          "Upload Report Request Failed: " + error.error.errorMessage,
-          "Upload Report Request",
+          "Batch Report Request Failed: " + error.error.errorMessage,
+          "Batch Report Request",
           {
             status: "danger",
             destroyByClick: true,

@@ -206,10 +206,6 @@ export class FeeReportComponent implements OnInit, OnDestroy {
     this.min = event;
   }
 
-  setMax(event) {
-    this.max = event;
-  }
-
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
@@ -251,7 +247,6 @@ export class FeeReportComponent implements OnInit, OnDestroy {
       },
       (error) => {
         this.loading = false;
-        console.error(error);
         this.toastrService.warning(
           "Fee Report Request Failed: " + error.error.errorMessage,
           "Fee Report Request",

@@ -36,7 +36,6 @@ export class NecService {
 
     // window.addEventListener('online', () => console.log('Became online'));
     window.addEventListener("offline", () => {
-      console.log("Became offline");
       if (!this.errorToastr && this.user) {
         // if there isn't a 'Connection Lost' toaster already and user is logged in
         this.errorToastr = this.toastrService.danger(

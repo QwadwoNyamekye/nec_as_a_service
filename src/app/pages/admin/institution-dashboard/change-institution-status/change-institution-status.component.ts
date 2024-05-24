@@ -60,7 +60,6 @@ export class ChangeInstitutionStatusComponent implements OnInit {
           return response;
         },
         (error) => {
-          console.error(error);
           this.toastrService.warning(
             "Institution Status Change Failed: " + error.error.errorMessage,
             "Institution Status Change",

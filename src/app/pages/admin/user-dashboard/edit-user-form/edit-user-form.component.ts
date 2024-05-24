@@ -40,8 +40,8 @@ import { NbToastrService } from "@nebular/theme";
         formControlName="phone"
         id="text"
         type="tel"
-        pattern="[0-9]{10}" 
-        maxlength="10"
+        pattern="\d{1,12}$" 
+        maxlength="12"
         placeholder="Phone Number"
       />
 
@@ -160,7 +160,6 @@ export class EditUserFormComponent implements OnInit {
         // window.parent.postMessage(this.service.getUsers());
       },
       (error) => {
-        console.error(error);
         this.toastrService.warning(
           "User Edit Failed: " + error.error.errorMessage,
           "User Edit",

@@ -229,7 +229,6 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
         return response;
       },
       (error) => {
-        console.error(error);
         this.toastrService.warning(
           "Audit Log Request Failed: " + error.error.errorMessage,
           "Audit Log Request",

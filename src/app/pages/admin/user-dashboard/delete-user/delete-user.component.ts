@@ -51,7 +51,6 @@ export class DeleteUserComponent {
           this.response = response;
         },
         (error) => {
-          console.error(error);
           this.toastrService.warning(
             this.data.name + " Deletion Failed: " + error.error.errorMessage,
             "Delete User",

@@ -1,6 +1,6 @@
 <nb-card>
   <nb-card-header>
-    Upload Report
+    Batch Report
   </nb-card-header>
   <nb-card-body id="reportForm">
     <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -8,12 +8,12 @@
         <div class="col-md-3">
           <label for="subject">Start Date :</label><span style="color: red;">*</span><br>
           <input fullWidth nbInput formControlName="startDate" placeholder="Start Date" [nbDatepicker]="picker1">
-          <nb-datepicker #picker1 [max]="max" [min]="min" (dateChange)="setMin($event)"></nb-datepicker>
+          <nb-datepicker #picker1 [max]="max" (dateChange)="setMin($event)"></nb-datepicker>
         </div>
         <div class="col-md-3">
           <label for="subject">End Date :</label><span style="color: red;">*</span><br>
           <input fullWidth nbInput formControlName="endDate" placeholder="End Date" [nbDatepicker]="picker2">
-          <nb-datepicker #picker2 [max]="max" [min]="min" (dateChange)="setMax($event)"></nb-datepicker>
+          <nb-datepicker #picker2 [max]="max" [min]="min"></nb-datepicker>
         </div>
         <div *ngIf="this.showInstitution" class="col-md-3">
           <label class="text-label" for="text">Institutions :</label><br>
@@ -47,14 +47,14 @@
       <div class="row">
         <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button fullWidth nbButton type="button" [disabled]="!this.response" [status]="statuses[0]"
+          <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0 || this.response.length == 0" [status]="statuses[0]"
             [shape]="shapes[1]" (click)="downloadAsCSV()">
             Download CSV
           </button>
         </div>
         <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button fullWidth nbButton type="button" [disabled]="!this.response" [status]="statuses[0]"
+          <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0 || this.response.length == 0" [status]="statuses[0]"
             [shape]="shapes[1]" (click)="downloadAsPDF()">
             Download PDF
           </button>

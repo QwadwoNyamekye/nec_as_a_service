@@ -130,7 +130,6 @@ export class UploadFileComponent implements OnInit {
         },
         (error) => {
           this.loading = false;
-          console.error(error);
           this.toastrService.warning(
             "File Upload Failed: " + error.error.errorMessage,
             "Bulk File Upload",

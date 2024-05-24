@@ -57,7 +57,7 @@ var nec_report_path = {
   link: "/pages/nec-report",
 };
 var upload_report_path = {
-  title: "Upload Report",
+  title: "Batch Report",
   icon: "book",
   link: "/pages/upload-report",
 };

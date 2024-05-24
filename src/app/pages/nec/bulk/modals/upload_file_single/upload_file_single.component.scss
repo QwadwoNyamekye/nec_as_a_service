@@ -22,3 +22,11 @@
 :host ::ng-deep ng2-smart-table thead input-filter input {
   text-align: center;
 }
+
+/* Example SCSS */
+.scrollable-table-container {
+  max-height: 85vh; // Adjust the height as needed
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+

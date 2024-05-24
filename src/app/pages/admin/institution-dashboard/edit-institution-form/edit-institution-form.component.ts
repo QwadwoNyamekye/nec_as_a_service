@@ -37,8 +37,8 @@ import { NbToastrService } from "@nebular/theme";
         formControlName="phone"
         id="text"
         type="tel"
-        pattern="[0-9]{10}" 
-        maxlength="10"
+        pattern="\d{1,12}$" 
+        maxlength="12"
         placeholder="Phone Number"
       />
       <label class="text-label" for="subject">Fee:</label>
@@ -117,7 +117,6 @@ export class EditInstitutionFormComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        console.error(error);
         this.toastrService.warning(
           "Institution Edit Failed: " + error.error.errorMessage,
           "Institution Edit",

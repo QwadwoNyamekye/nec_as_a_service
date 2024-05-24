@@ -69,7 +69,7 @@ import { NbToastrService } from "@nebular/theme";
         fullWidth
         formControlName="emailAddress"
         id="text"
-        type="text"
+        type="email"
         placeholder="Email Address"
       />
       <br />
@@ -153,7 +153,6 @@ export class EditUserPropFormComponent implements OnInit {
         this.response = response;
       },
       (error) => {
-        console.error(error);
         this.toastrService.warning(
           "Institution Creation Failed: " + error.error.errorMessage,
           "Institution Creation",

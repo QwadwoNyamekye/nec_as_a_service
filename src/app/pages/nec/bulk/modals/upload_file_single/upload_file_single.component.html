@@ -1,36 +1,47 @@
-<nb-card-header>
-  <div class="text-left">{{ title }}</div>
-  <button
-    style="float: right; margin-right: 10px"
-    (click)="downloadAsCSV()"
-    nbButton
-  >
-    Download CSV
-  </button>
-  <button
-    style="float: right; margin-right: 10px"
-    (click)="downloadAsPDF()"
-    nbButton
-  >
-    Download PDF
-  </button>
-</nb-card-header>
-<ng2-smart-table
-  [settings]="settings"
-  [source]="source"
-  (deleteConfirm)="onDeleteConfirm($event)"
-  (edit)="onEditRowSelect($event)"
-  [nbSpinner]="loading"
-  nbSpinnerStatus="danger"
->
-</ng2-smart-table>
+<div class="scrollable-table-container">
+  <div class="container">
+    <div class="row">
+      <div class="col">{{ title }}</div>
+      <!-- <div class="row"> -->
+      <button
+        style="float: right; margin-right: 10px; margin-bottom: 15px"
+        [status]="statuses[0]"
+        [shape]="shapes[1]"
+        (click)="downloadAsCSV()"
+        nbButton
+      >
+        Download CSV
+      </button>
+      <button
+        style="float: right; margin-right: 10px; margin-bottom: 15px"
+        [status]="statuses[0]"
+        [shape]="shapes[1]"
+        (click)="downloadAsPDF()"
+        nbButton
+      >
+        Download PDF
+      </button>
+      <!-- </div> -->
+    </div>
+  </div>
 
-<button
-  style="float: right; margin-right: 10px"
-  [shape]="shapes[2]"
-  [status]="statuses[4]"
-  (click)="close()"
-  nbButton
->
-  Close
-</button>
+  <ng2-smart-table
+    [settings]="settings"
+    [source]="source"
+    (deleteConfirm)="onDeleteConfirm($event)"
+    (edit)="onEditRowSelect($event)"
+    [nbSpinner]="loading"
+    nbSpinnerStatus="danger"
+  >
+  </ng2-smart-table>
+
+  <button
+    style="float: right; margin-right: 10px"
+    [shape]="shapes[2]"
+    [status]="statuses[4]"
+    (click)="close()"
+    nbButton
+  >
+    Close
+  </button>
+</div>

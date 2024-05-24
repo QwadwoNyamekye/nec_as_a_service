@@ -72,8 +72,8 @@ import { NbToastrService } from "@nebular/theme";
         formControlName="phoneNumber"
         id="text"
         type="tel"
-        pattern="[0-9]{10}" 
-        maxlength="10"
+        pattern="[0-9]{1,12}" 
+        maxlength="12"
         placeholder="Phone Number"
       />
       </div>
@@ -83,7 +83,7 @@ import { NbToastrService } from "@nebular/theme";
         fullWidth
         formControlName="emailAddress"
         id="text"
-        type="text"
+        type="email"
         placeholder="Email Address"
       />
       <br />
@@ -195,7 +195,6 @@ export class AddUserFormComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        console.error(error);
         this.toastrService.warning(
           "User Creation Failed: " + error.error.errorMessage,
           "User Creation",

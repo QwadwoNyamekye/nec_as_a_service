@@ -232,10 +232,10 @@ export class BulkCompletedUploadComponent implements OnInit {
 
   openFileRecords(event) {
     const buttonsConfig: NbWindowControlButtonsConfig = {
-      minimize: true,
+      minimize: false,
       maximize: false,
       fullScreen: false,
-      close: true,
+      close: false,
     };
     this.windowService.open(BulkSingleRecordsComponent, {
       context: {

@@ -28,8 +28,8 @@ import { NbToastrService } from "@nebular/theme";
         formControlName="phone"
         id="subject"
         type="tel"
-        pattern="[0-9]{10}"
-        maxlength="10"
+        pattern="\d{1,12}"
+        maxlength="12"
       />
       <label class="text-label" for="subject">Fee:</label>
       <input
@@ -97,7 +97,6 @@ export class AddInstitutionFormComponent implements OnInit {
         return response;
       },
       (error) => {
-        console.error(error);
         this.toastrService.warning(
           "Institution Creation Failed: " + error.error.errorMessage,
           "Institution Creation",

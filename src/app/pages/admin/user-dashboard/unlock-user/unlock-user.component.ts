@@ -50,7 +50,6 @@ export class UnlockUserComponent implements OnInit {
           // window.parent.postMessage(this.service.getUsers());
         },
         (error) => {
-          console.error(error);
           this.toastrService.warning(
             "Unlock User Failed: " + error.error.errorMessage,
             "Unlock User",
