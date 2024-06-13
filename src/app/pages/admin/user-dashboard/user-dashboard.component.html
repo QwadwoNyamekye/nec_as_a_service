@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     Users
-    <button style="float: right;" (click)="addUser()" nbButton status="primary" outline>Add User</button>
+    <button style="float: right;" (click)="addUser()" nbButton status="success" outline>Add User</button>
   </nb-card-header>
   <nb-card-body>
     <ng2-smart-table class="order-table" [settings]="settings" [source]="source" (custom)="customFunction($event)">

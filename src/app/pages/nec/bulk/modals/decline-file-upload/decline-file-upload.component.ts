@@ -29,15 +29,15 @@ export class DeclineFileUploadComponent implements OnInit {
   response: any;
   constructor(
     protected ref: NbDialogRef<DeclineFileUploadComponent>,
-    public service: NecService,
+    public necService: NecService,
     private toastrService: NbToastrService
   ) {}
 
   ngOnInit() {}
-  
+
   submit() {
-    this.service
-      .declineUploadedFile(this.batchId, this.service.user.email)
+    this.necService
+      .declineUploadedFile(this.batchId, this.necService.user.email)
       .subscribe(
         (data) => {
           this.response = data;

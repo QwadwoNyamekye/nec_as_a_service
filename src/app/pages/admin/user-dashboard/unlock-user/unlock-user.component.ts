@@ -1,14 +1,15 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { NbDialogRef } from "@nebular/theme";
+import { NbDialogRef, NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
-import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-user-edit-modal`,
   template: `
     <nb-card>
       <nb-card-header
-        ><div class="text-center">{{ title }}</div></nb-card-header
+        ><div class="text-center">
+          {{ "Unlock User: " + currentValues.name }}
+        </div></nb-card-header
       >
       <nb-card-body>
         <button nbButton hero status="success" (click)="submit()">
@@ -23,26 +24,23 @@ import { NbToastrService } from "@nebular/theme";
   styleUrls: ["unlock-user.component.scss"],
 })
 export class UnlockUserComponent implements OnInit {
-  @Input() title: string;
-  @Input() email: string;
+  @Input() currentValues: any;
   response: any;
   constructor(
     protected ref: NbDialogRef<UnlockUserComponent>,
-    public service: NecService,
+    public necService: NecService,
     private toastrService: NbToastrService
   ) {}
-  ngOnInit(): void {
-    ;
-  }
+  ngOnInit(): void {}
   dismiss() {
     this.ref.close();
   }
 
   submit() {
-    this.response = this.service
+    this.response = this.necService
       .unlockUser({
-        email: this.email,
-        createdBy: this.service.user.email,
+        email: this.currentValues.email,
+        createdBy: this.necService.user.email,
       })
       .subscribe(
         (response) => {

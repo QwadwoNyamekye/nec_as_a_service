@@ -22,6 +22,15 @@ export class InstitutionDashboardComponent implements OnInit {
   institutions: any;
   row: any;
   customActions = this.setAccessibles();
+  label = this.getLabel();
+
+  getLabel() {
+    if (this.necService.user.type == "G") {
+      return "Bank";
+    } else if (this.necService.user.type == "B") {
+      return "Corporate";
+    }
+  }
 
   getHtmlForCell(value: string) {
     if (value) {
@@ -37,7 +46,7 @@ export class InstitutionDashboardComponent implements OnInit {
   }
 
   setAccessibles() {
-    if (this.service.user.roleId == "1") {
+    if (this.necService.user.roleId == "1") {
       return [
         {
           name: "edit",
@@ -61,11 +70,13 @@ export class InstitutionDashboardComponent implements OnInit {
       custom: [
         {
           name: "edit",
-          title: '<i class="nb-edit" data-toggle="tooltip" data-placement="top" title="Edit Institution"></i>',
+          title:
+            '<i class="nb-edit" data-toggle="tooltip" data-placement="top" title="Edit Institution"></i>',
         },
         {
           name: "unlock",
-          title: '<i class="nb-locked" data-toggle="tooltip" data-placement="top" title="Change Institution Status"></i>',
+          title:
+            '<i class="nb-locked" data-toggle="tooltip" data-placement="top" title="Change Institution Status"></i>',
         },
       ],
       add: false, //  if you want to remove add button
@@ -126,11 +137,10 @@ export class InstitutionDashboardComponent implements OnInit {
       this.source.load(this.receivedData?.data);
     };
     window.addEventListener("message", this.listener);
-    
   }
 
   constructor(
-    private service: NecService,
+    private necService: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
@@ -138,22 +148,26 @@ export class InstitutionDashboardComponent implements OnInit {
     this.getInstitutions();
   }
 
-  compare( a, b ) {
-    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+  compare(a, b) {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
 
   getInstitutions() {
-    this.service.getInstitutions().subscribe(
-      (data) => {
-        this.institutions = data;
-      },
-      (error) => {
-      },
-      () => {
-        this.institutions = this.institutions.sort(this.compare);
-        this.source.load(this.institutions);
-      }
-    );
+    this.necService
+      .getInstitutionsByBank(this.necService.user.institutionCode)
+      .subscribe(
+        (data) => {
+          this.institutions = data;
+          this.institutions = this.institutions.filter(
+            (bank) => !bank.code.includes("INS-NEC-0000")
+          );
+        },
+        (error) => {},
+        () => {
+          this.institutions = this.institutions.sort(this.compare);
+          this.source.load(this.institutions);
+        }
+      );
   }
 
   customFunction(event) {
@@ -173,11 +187,9 @@ export class InstitutionDashboardComponent implements OnInit {
           currentValues: event.data,
         },
       })
-      .onClose.subscribe(
-        () => {
-          this.getInstitutions();
-        }
-      );
+      .onClose.subscribe(() => {
+        this.getInstitutions();
+      });
   }
 
   changeInstitutionStatus(event): void {

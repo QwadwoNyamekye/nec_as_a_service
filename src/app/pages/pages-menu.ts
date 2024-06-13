@@ -3,12 +3,17 @@ import { NbMenuItem } from "@nebular/theme";
 var user_path = {
   title: "User",
   icon: "person",
-  link: "/pages/user-dashboard",
+  link: "/pages/admin/user-dashboard",
+};
+var institution_user_path = {
+  title: "Institution User",
+  icon: "people-outline",
+  link: "/pages/admin/institution-user-dashboard",
 };
 var institution_path = {
   title: "Institution",
   icon: "briefcase",
-  link: "/pages/institution-dashboard",
+  link: "/pages/admin/institution-dashboard",
 };
 var single_nec_path = {
   title: "Single NEC",
@@ -54,33 +59,42 @@ var bulk_nec_rejected = {
 var nec_report_path = {
   title: "NEC Report",
   icon: "bookmark",
-  link: "/pages/nec-report",
+  link: "/pages/report/nec",
 };
 var upload_report_path = {
   title: "Batch Report",
   icon: "book",
-  link: "/pages/upload-report",
+  link: "/pages/report/upload",
 };
 var audit_logs_path = {
   title: "Audit Logs",
   icon: "star",
-  link: "/pages/audit-logs",
+  link: "/pages/report/audit-logs",
 };
 var fee_logs_path = {
   title: "Fee Logs",
   icon: "pantone-outline",
-  link: "/pages/fee-logs",
+  link: "/pages/report/fee-logs",
 };
 
 export function MENU_ITEMS() {
   var user = JSON.parse(sessionStorage.getItem("user"));
+  if (user.type == "G") {
+    institution_user_path.title = "Bank User";
+    institution_path.title = "Bank";
+  } else if (user.type == "B") {
+    institution_user_path.title = "Corporate User";
+    institution_path.title = "Corporate";
+  }
   var user_role = user?.roleId;
   var menu_items = [];
+
   if (user_role == "1") {
     user_path["home"] = true;
     sessionStorage.setItem("homePath", user_path.link);
     menu_items.push(
       user_path,
+      institution_user_path,
       institution_path,
       nec_report_path,
       upload_report_path,
@@ -89,18 +103,24 @@ export function MENU_ITEMS() {
     );
   } else if (user_role == "2") {
     user_path["home"] = true;
-    menu_items.push(user_path, nec_report_path, upload_report_path);
+    menu_items.push(
+      user_path,
+      institution_user_path,
+      institution_path,
+      nec_report_path,
+      upload_report_path
+    );
     sessionStorage.setItem("homePath", user_path.link);
   } else if (["3", "4"].includes(user_role)) {
-    single_nec_path["home"] = true;
-    if (user_role == "3") {
+    bulk_nec_path["home"] = true;
+    if (user_role == "4") {
       bulk_nec_path.children = [
         bulk_nec_submitted,
         bulk_nec_processing,
         bulk_nec_rejected,
         bulk_nec_completed,
       ];
-    } else if (user_role == "4") {
+    } else if (user_role == "3") {
       bulk_nec_path.children = [
         bulk_nec_new,
         bulk_nec_submitted,
@@ -109,13 +129,13 @@ export function MENU_ITEMS() {
         bulk_nec_completed,
       ];
     }
-    menu_items.push(single_nec_path, bulk_nec_path);
-    sessionStorage.setItem("homePath", single_nec_path.link);
+    menu_items.push(bulk_nec_path);
+    sessionStorage.setItem("homePath", bulk_nec_path.link);
   } else if (user_role == "5") {
     nec_report_path["home"] = true;
     menu_items.push(nec_report_path, upload_report_path);
     sessionStorage.setItem("homePath", nec_report_path.link);
-  } else if (user_role == "6") {
+  } else if (["6", "8", "9"].includes(user_role)) {
     nec_report_path["home"] = true;
     menu_items.push(nec_report_path, upload_report_path);
     sessionStorage.setItem("homePath", nec_report_path.link);

@@ -13,7 +13,7 @@ export class AuthAuthGuard {
   constructor(
     private authService: NbAuthService,
     private router: Router,
-    private service: NecService
+    private necService: NecService
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -22,7 +22,7 @@ export class AuthAuthGuard {
       tap((authenticated) => {
         if (!authenticated) {
           this.router.navigate(["auth/login"]);
-        } else if (!this.service.user) {
+        } else if (!this.necService.user) {
           this.router.navigate(["pages/miscellaneous/404"]);
         }
       })

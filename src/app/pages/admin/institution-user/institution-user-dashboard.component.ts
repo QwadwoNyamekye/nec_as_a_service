@@ -1,37 +1,46 @@
 import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
 import { NbDialogService, NbWindowService } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
 import { NecService } from "../../../@core/mock/nec.service";
-import { AddUserFormComponent } from "./add-user-form/add-user-form.component";
-import { ChangeUserStatusComponent } from "./change-user-status/change-user-status.component";
-import { DeleteUserComponent } from "./delete-user/delete-user.component";
-import { EditUserFormComponent } from "./edit-user-form/edit-user-form.component";
-import { ResetUserPasswordComponent } from "./reset-user-password/reset-user-password.component";
-import { UnlockUserComponent } from "./unlock-user/unlock-user.component";
+import { AddInstutionUserFormComponent } from "./add-institution-user-form/add-institution-user-form.component";
+import { ChangeInstitutionUserStatusComponent } from "./change-institution-user-status/change-institution-user-status.component";
+import { DeleteInstitutionUserComponent } from "./delete-institution-user/delete-institution-user.component";
+import { EditInstitutionUserFormComponent } from "./edit-institution-user-form/edit-institution-user-form.component";
+import { ResetInstitutionUserPasswordComponent } from "./reset-institution-user-password/reset-institution-user-password.component";
+import { UnlockInstitutionUserComponent } from "./unlock-institution-user/unlock-institution-user.component";
 
 @Component({
-  selector: "ngx-admin-dashboard",
-  templateUrl: "./user-dashboard.component.html",
-  styleUrls: ["./user-dashboard.component.scss"],
+  selector: "ngx-admin-institution-user-dashboard",
+  templateUrl: "./institution-user-dashboard.component.html",
+  styleUrls: ["./institution-user-dashboard.component.scss"],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class AdminDashboardComponent implements OnInit {
+export class InstitutionUserDashboardComponent implements OnInit {
   colour: string;
   name: string;
   listener: any;
   receivedData: any;
   source: LocalDataSource = new LocalDataSource();
   users: any;
-  row: any;
+  form: FormGroup;
+  loading: boolean;
+  showInstitution: any;
+  bankList: any;
+  selected = "";
+  bankCode = this.necService.user.bankCode;
 
   ngOnInit(): void {
-    this.getUsers();
+    this.getBanksByInstitution();
     this.listener = (event: MessageEvent) => {
       this.receivedData = event.data;
       this.source.load(this.receivedData?.data);
     };
     window.addEventListener("message", this.listener);
+    this.form = new FormGroup({
+      bank: new FormControl(this.bankCode, Validators.required),
+    });
   }
 
   getHtmlForStatusCell(value: string) {
@@ -151,21 +160,25 @@ export class AdminDashboardComponent implements OnInit {
   };
 
   constructor(
-    private necService: NecService,
+    protected necService: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
   ) {}
+
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
 
-  getUsers(_code?, _type?) {
+  getUsers(code?, type?) {
+    console.log("++++++++++++++++");
+    console.log(this.form);
+    console.log(this.form.value.bank.type);
     this.necService
       .getUsersByInstitution(
         this.necService.user.email,
-        this.necService.user.institutionCode,
-        this.necService.user.type
+        code ? code : this.form.value.bank.code,
+        type ? type : this.form.value.bank.type
       )
       .subscribe(
         (data) => {
@@ -175,6 +188,25 @@ export class AdminDashboardComponent implements OnInit {
         () => {
           this.users = this.users.sort(this.compare);
           this.source.load(this.users);
+        }
+      );
+  }
+
+  getBanksByInstitution() {
+    this.necService
+      .getInstitutionsByBank(this.necService.user.institutionCode)
+      .subscribe(
+        (data) => {
+          this.bankList = data;
+          // if (this.necService.user.roleId == "1") {
+          this.bankList = this.bankList.filter(
+            (bank) => !bank.code.includes("INS-NEC-0000")
+          );
+          // }
+        },
+        (_error) => {},
+        () => {
+          this.bankList = this.bankList.sort(this.compare);
         }
       );
   }
@@ -195,19 +227,21 @@ export class AdminDashboardComponent implements OnInit {
 
   addUser() {
     this.windowService
-      .open(AddUserFormComponent, {
+      .open(AddInstutionUserFormComponent, {
         title: `Add User`,
         windowClass: `admin-form-window`,
       })
-      .onClose.subscribe(() => {
-        this.getUsers();
+      .onClose.subscribe((event) => {
+        if (event) {
+          this.selected = event;
+          this.getUsers(event);
+        }
       });
   }
 
   editUser(event): void {
-    this.row = event;
     this.windowService
-      .open(EditUserFormComponent, {
+      .open(EditInstitutionUserFormComponent, {
         title: `Edit User`,
         windowClass: `admin-form-window`,
         context: {
@@ -215,55 +249,60 @@ export class AdminDashboardComponent implements OnInit {
         },
       })
       .onClose.subscribe(() => {
-        this.getUsers();
+        this.getUsers(event.data.code, event.data.type);
       });
   }
 
   changeUserStatus(event): void {
     this.dialogService
-      .open(ChangeUserStatusComponent, {
+      .open(ChangeInstitutionUserStatusComponent, {
         context: {
-          currentValues: event.data,
+          title: "Change User Status: " + event.data.name,
+          email: event.data.email,
+          status: event.data.status,
         },
       })
       .onClose.subscribe(() => {
-        this.getUsers();
+        this.getUsers(event.data.code, event.data.type);
       });
   }
 
   unlockUser(event): void {
     this.dialogService
-      .open(UnlockUserComponent, {
+      .open(UnlockInstitutionUserComponent, {
         context: {
-          currentValues: event.data,
+          title: "Unlock User: " + event.data.name,
+          email: event.data.email,
         },
       })
       .onClose.subscribe(() => {
-        this.getUsers();
+        this.getUsers(event.data.code, event.data.type);
       });
   }
 
   resetUserPassword(event): void {
     this.dialogService
-      .open(ResetUserPasswordComponent, {
+      .open(ResetInstitutionUserPasswordComponent, {
         context: {
-          currentValues: event.data,
+          title: "Reset User Password for User: " + event.data.name,
+          email: event.data.email,
         },
       })
       .onClose.subscribe(() => {
-        this.getUsers();
+        this.getUsers(event.data.code, event.data.type);
       });
   }
 
   deleteUser(event): void {
     this.dialogService
-      .open(DeleteUserComponent, {
+      .open(DeleteInstitutionUserComponent, {
         context: {
-          currentValues: event.data,
+          title: "Delete User: " + event.data?.name,
+          data: event.data,
         },
       })
       .onClose.subscribe(() => {
-        this.getUsers();
+        this.getUsers(event.data.code, event.data.type);
       });
   }
 }

@@ -98,7 +98,7 @@ export class BulkSingleRecordsComponent implements OnDestroy {
     },
   };
 
-  constructor(private service: NecService, private windowRef: NbWindowRef) {}
+  constructor(private necService: NecService, private windowRef: NbWindowRef) {}
 
   ngOnInit() {
     this.getSingleNECRecordsRequest();
@@ -113,7 +113,7 @@ export class BulkSingleRecordsComponent implements OnDestroy {
   }
 
   getSingleNECRecordsRequest() {
-    this.service.getFileRecords(this.batchId).subscribe(
+    this.necService.getFileRecords(this.batchId).subscribe(
       (data: any) => {
         this.singleNECList = data.sort(this.compare);
       },
@@ -161,7 +161,7 @@ export class BulkSingleRecordsComponent implements OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_SINGLE_NEC_REQUESTS_" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
         ".pdf"
@@ -204,7 +204,7 @@ export class BulkSingleRecordsComponent implements OnDestroy {
     });
     new Angular5Csv(
       this.singleNECList,
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_SINGLE_NEC_REQUESTS_" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options

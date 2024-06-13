@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { NbToastrService, NbWindowRef } from "@nebular/theme";
-import { LocalDataSource } from "ng2-smart-table";
+import { Component, OnInit, Input } from "@angular/core";
+import { NbWindowRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { LocalDataSource } from "ng2-smart-table";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
   template: `
@@ -58,20 +59,22 @@ import { NecService } from "../../../../@core/mock/nec.service";
       <br />
       <button
         nbButton
-        [disabled]="!form.valid"
+        [disabled]="!form.valid || loading"
         id="button"
         type="submit"
         class="button"
         status="primary"
-        shape="round"
+        shape="semi-round"
+        [nbSpinner]="loading"
+        nbSpinnerStatus="danger"
       >
         Submit
       </button>
     </form>
   `,
-  styleUrls: ["edit-user-form.component.scss"],
+  styleUrls: ["edit-institution-user-form.component.scss"],
 })
-export class EditUserFormComponent implements OnInit {
+export class EditInstitutionUserFormComponent implements OnInit {
   @Input() currentValues: any;
   items: any;
   form: FormGroup;
@@ -83,6 +86,7 @@ export class EditUserFormComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   response: any;
   name: any;
+  loading: boolean = false;
 
   constructor(
     public windowRef: NbWindowRef,
@@ -92,17 +96,34 @@ export class EditUserFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.name = this.currentValues.name.split(" ");
-    this.necService.getInstitutions().subscribe(
-      (data) => {
-        this.institutions = data;
-      },
-      (error) => {}
-    );
+    this.necService
+      .getInstitutionsByBank(this.necService.user.institutionCode)
+      .subscribe(
+        (data) => {
+          this.institutions = data;
+          if (this.necService.user.roleId == "1") {
+            this.institutions = this.institutions.filter(
+              (institution) => !institution.code.includes("INS-NEC-0000")
+            );
+          }
+        },
+        () => {}
+      );
+
     this.necService.getRoles().subscribe(
       (data) => {
         this.roles = data;
+        if (this.necService.user.roleId == "1") {
+          this.roles = this.roles.filter((role) =>
+            role.name.includes("Bank Administrator")
+          );
+        } else if (this.necService.user.roleId == "2") {
+          this.roles = this.roles.filter((role) =>
+            role.name.includes("Corporate")
+          );
+        }
       },
-      (error) => {}
+      () => {}
     );
     this.form = new FormGroup({
       firstName: new FormControl(this.name[0], Validators.required),
@@ -117,43 +138,27 @@ export class EditUserFormComponent implements OnInit {
     });
     // this.currentRole = this.currentValues.roleName
   }
-  getType() {
-    var type = this.necService.user.type;
-    if (type == "G") {
-      return "B";
-    } else if (type == "B" || type == "C") {
-      return "C";
-    }
-  }
+
   // Define a method to handle the form submission
   onSubmit(): void {
+    this.loading = true;
     this.currentValues.name =
       this.form.value.firstName + " " + this.form.value.lastName;
     this.currentValues.institutionCode = this.form.value.institution;
     this.currentValues.roleId = this.form.value.role;
     this.currentValues.phone = this.form.value.phone;
     this.currentValues.createdBy = this.necService.user.email;
-    // Send a post request to the server endpoint with the FormData object
-    this.necService.editUser(this.currentValues).subscribe(
-      (response) => {
-        this.response = response;
-        // window.parent.postMessage(this.necService.getUsers());
-      },
-      (error) => {
-        this.toastrService.warning(
-          "User Edit Failed: " + error.error.errorMessage,
-          "User Edit",
-          {
-            status: "danger",
-            destroyByClick: true,
-            duration: 8000,
-          }
-        );
-      },
-      () => {
-        if (this.response.errorCode != "0") {
+    (this.currentValues.bankCode = this.necService.user.institutionCode),
+      // Send a post request to the server endpoint with the FormData object
+      this.necService.editUser(this.currentValues).subscribe(
+        (response) => {
+          this.response = response;
+          // window.parent.postMessage(this.necService.getUsers());
+        },
+        (error) => {
+          this.loading = false;
           this.toastrService.warning(
-            "User Edit Failed: " + this.response.errorMessage,
+            "User Edit Failed: " + error.error.errorMessage,
             "User Edit",
             {
               status: "danger",
@@ -161,16 +166,29 @@ export class EditUserFormComponent implements OnInit {
               duration: 8000,
             }
           );
-        } else {
-          this.toastrService.success("User Edit Success", "User Edit", {
-            status: "success",
-            destroyByClick: true,
-            duration: 8000,
-          });
-          this.windowRef.close();
+        },
+        () => {
+          this.loading = false;
+          if (this.response.errorCode != "0") {
+            this.toastrService.warning(
+              "User Edit Failed: " + this.response.errorMessage,
+              "User Edit",
+              {
+                status: "danger",
+                destroyByClick: true,
+                duration: 8000,
+              }
+            );
+          } else {
+            this.toastrService.success("User Edit Success", "User Edit", {
+              status: "success",
+              destroyByClick: true,
+              duration: 8000,
+            });
+            this.windowRef.close();
+          }
         }
-      }
-    );
+      );
   }
 
   close() {

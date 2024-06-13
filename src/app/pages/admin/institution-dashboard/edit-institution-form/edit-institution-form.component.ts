@@ -22,10 +22,7 @@ import { NbToastrService } from "@nebular/theme";
       />
       <label class="text-label" for="text">Status:</label>
       <nb-select fullWidth formControlName="status" placeholder="Status">
-        <nb-option
-          *ngFor="let i of this.institutionStatuses"
-          [value]="i.value"
-        >
+        <nb-option *ngFor="let i of this.institutionStatuses" [value]="i.value">
           {{ i.key }}
         </nb-option>
       </nb-select>
@@ -36,8 +33,7 @@ import { NbToastrService } from "@nebular/theme";
         fullWidth
         formControlName="phone"
         id="text"
-        type="tel"
-        pattern="\d{1,12}$" 
+        type="text"
         maxlength="12"
         placeholder="Phone Number"
       />
@@ -87,7 +83,7 @@ export class EditInstitutionFormComponent implements OnInit {
 
   constructor(
     public windowRef: NbWindowRef,
-    private service: NecService,
+    private necService: NecService,
     private toastrService: NbToastrService
   ) {}
 
@@ -95,10 +91,12 @@ export class EditInstitutionFormComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl(this.currentValues.name, Validators.required),
       status: new FormControl(this.currentValues.status, [Validators.required]),
-      phone: new FormControl(this.currentValues.phone, Validators.required),
+      phone: new FormControl(this.currentValues.phone, [
+        Validators.required,
+        Validators.pattern("[0-9]{1,12}"),
+      ]),
       fee: new FormControl(this.currentValues.fee, Validators.required),
     });
-    ;
   }
 
   submitInstitutionEdit(): void {
@@ -107,11 +105,13 @@ export class EditInstitutionFormComponent implements OnInit {
       name: this.form.value.name,
       status: this.form.value.status,
       phone: this.form.value.phone,
+      fee: this.form.value.fee,
       code: this.currentValues.code,
-      fee: this.form.value.fee
+      type: this.currentValues.type,
+      bank: this.currentValues.bankCode,
     };
     // Send a post request to the server endpoint with the FormData object
-    this.service.editInstitution(object).subscribe(
+    this.necService.editInstitution(object).subscribe(
       (response) => {
         this.response = response;
       },

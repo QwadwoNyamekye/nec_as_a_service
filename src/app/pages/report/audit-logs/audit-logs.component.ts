@@ -99,7 +99,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
   showInstitution: Boolean = true;
   institutionCode;
   constructor(
-    public service: NecService,
+    private necService: NecService,
     private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>
   ) {}
@@ -111,11 +111,11 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     };
 
     if (
-      this.service.user.roleId == "2" ||
-      this.service.user.roleId == "3" ||
-      this.service.user.roleId == "4"
+      this.necService.user.roleId == "2" ||
+      this.necService.user.roleId == "3" ||
+      this.necService.user.roleId == "4"
     ) {
-      this.institutionCode = this.service.user.institutionCode;
+      this.institutionCode = this.necService.user.institutionCode;
       this.showInstitution = false;
     }
 
@@ -157,7 +157,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_AUDIT_LOGS_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
         ".pdf"
@@ -184,7 +184,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     };
     new Angular5Csv(
       this.response,
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_AUDIT_LOGS_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
@@ -222,7 +222,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
   /////////////////FORM STUFF
 
   getAuditLogs() {
-    this.service.getAuditLogs().subscribe(
+    this.necService.getAuditLogs().subscribe(
       (response) => {
         this.response = response;
         this.source.load(this.response.sort(this.compare));

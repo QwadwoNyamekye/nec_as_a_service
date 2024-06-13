@@ -2,11 +2,16 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AdminDashboardComponent } from "./user-dashboard/user-dashboard.component";
 import { InstitutionDashboardComponent } from "./institution-dashboard/institution-dashboard.component";
+import { InstitutionUserDashboardComponent } from "./institution-user/institution-user-dashboard.component";
 
 const routes: Routes = [
   {
     path: "user-dashboard",
     component: AdminDashboardComponent,
+  },
+  {
+    path: "institution-user-dashboard",
+    component: InstitutionUserDashboardComponent,
   },
   {
     path: "institution-dashboard",

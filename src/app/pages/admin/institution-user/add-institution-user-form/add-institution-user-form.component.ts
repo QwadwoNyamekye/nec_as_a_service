@@ -30,27 +30,22 @@ import { NbToastrService } from "@nebular/theme";
       />
 
       <div class="row">
-        <!-- <div *ngIf="this.showInstitution" class="col">
-          <label class="text-label" for="text">Institution:</label>
+        <div class="col">
+          <label class="text-label" for="text">{{ this.label }}:</label>
           <nb-select
             fullWidth
             formControlName="institution"
             [(selected)]="selectedItems"
-            placeholder="Institution"
+            placeholder="{{ this.label }}"
           >
             <nb-option *ngFor="let i of this.institutions" [value]="i.code">
               {{ i.name }}
             </nb-option>
           </nb-select>
-        </div> -->
+        </div>
         <div class="col">
           <label class="text-label" for="text">Roles:</label>
-          <nb-select
-            fullWidth
-            formControlName="role"
-            [(selected)]="selectedRoles"
-            placeholder="Role"
-          >
+          <nb-select fullWidth formControlName="role" placeholder="Role">
             <nb-option *ngFor="let i of this.roles" [value]="i.id">
               {{ i.name }}
             </nb-option>
@@ -98,7 +93,7 @@ import { NbToastrService } from "@nebular/theme";
   `,
   styleUrls: ["add-user-form.component.scss"],
 })
-export class AddUserFormComponent implements OnInit {
+export class AddInstutionUserFormComponent implements OnInit {
   items: any;
   form: FormGroup;
   selectedOption: any;
@@ -112,7 +107,15 @@ export class AddUserFormComponent implements OnInit {
   institutionCode: any;
   bankCode: any;
   type: string = this.setType();
-  showInstitution: boolean = true;
+  label = this.getLabel();
+
+  getLabel() {
+    if (this.necService.user.type == "G") {
+      return "Bank";
+    } else if (this.necService.user.type == "B") {
+      return "Corporate";
+    }
+  }
 
   constructor(
     public windowRef: NbWindowRef,
@@ -136,26 +139,33 @@ export class AddUserFormComponent implements OnInit {
       this.necService.user.roleId == "4"
     ) {
       this.institutionCode = this.necService.user.institutionCode;
-      this.showInstitution = false;
     }
 
-    this.necService.getInstitutions().subscribe(
-      (data) => {
-        this.institutions = data;
-      },
-      (error) => {}
-    );
+    this.necService
+      .getInstitutionsByBank(this.necService.user.institutionCode)
+      .subscribe(
+        (data) => {
+          this.institutions = data;
+          if (this.necService.user.roleId == "1") {
+            this.institutions = this.institutions.filter(
+              (institution) => !institution.code.includes("INS-NEC-0000")
+            );
+          }
+        },
+        (error) => {}
+      );
 
     this.necService.getRoles().subscribe(
       (data) => {
         this.roles = data;
         if (this.necService.user.roleId == "1") {
-          this.roles = this.roles.filter(
-            (role) =>
-              !role.name.includes("Bank") && !role.name.includes("Corporate")
+          this.roles = this.roles.filter((role) =>
+            role.name.includes("Bank Administrator")
           );
         } else if (this.necService.user.roleId == "2") {
-          this.roles = this.roles.filter((role) => role.name.includes("Bank"));
+          this.roles = this.roles.filter((role) =>
+            role.name.includes("Corporate")
+          );
         }
       },
       (error) => {}
@@ -165,11 +175,8 @@ export class AddUserFormComponent implements OnInit {
     this.form = new FormGroup({
       firstName: new FormControl("", Validators.required),
       lastName: new FormControl("", Validators.required),
-      institution: new FormControl(
-        this.necService.user.bankCode,
-        Validators.required
-      ),
-      role: new FormControl("", Validators.required),
+      institution: new FormControl("", Validators.required),
+      role: new FormControl(this.roles[0], Validators.required),
       emailAddress: new FormControl("", [
         Validators.required,
         Validators.email,
@@ -189,16 +196,22 @@ export class AddUserFormComponent implements OnInit {
     }
   }
 
+  getType() {
+    var type = this.necService.user.type;
+    if (type == "G") {
+      return "B";
+    } else if (type == "B") {
+      return "C";
+    }
+  }
   // Define a method to handle the form submission
   onSubmit(): void {
     this.loading = true;
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
-      institutionCode: this.institutionCode
-        ? this.institutionCode
-        : this.form.value.institution,
-      bankCode: this.necService.user.bankCode,
-      type: "G",
+      institutionCode: this.form.value.institution,
+      bankCode: this.necService.user.institutionCode,
+      type: this.getType(),
       roleId: this.form.value.role,
       email: this.form.value.emailAddress,
       phone: this.form.value.phoneNumber,
@@ -248,6 +261,6 @@ export class AddUserFormComponent implements OnInit {
   }
 
   close() {
-    this.windowRef.close();
+    this.windowRef.close(this.form.value.institution);
   }
 }

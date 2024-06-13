@@ -1,19 +1,18 @@
-import { Component, Input } from "@angular/core";
-import { NbDialogRef, NbToastrService } from "@nebular/theme";
+import { Component, Input, OnInit } from "@angular/core";
+import { NbDialogRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
+import { NbToastrService } from "@nebular/theme";
 
 @Component({
-  selector: `ngx-user-edit-modal`,
+  selector: `ngx-institution-user-edit-modal`,
   template: `
     <nb-card>
       <nb-card-header
-        ><div class="text-center">
-          {{ "Delete User: " + currentValues?.name }}
-        </div></nb-card-header
+        ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
         <button nbButton hero status="success" (click)="submit()">
-          Delete
+          {{ this.getOption() }}
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
           Dismiss
@@ -21,36 +20,51 @@ import { NecService } from "../../../../@core/mock/nec.service";
       </nb-card-body>
     </nb-card>
   `,
-  styleUrls: ["delete-user.component.scss"],
+  styleUrls: ["change-institution-user-status.component.scss"],
 })
-export class DeleteUserComponent {
-  @Input() currentValues: any;
+export class ChangeInstitutionUserStatusComponent implements OnInit {
+  @Input() title: string;
+  @Input() batchId: string;
+  @Input() submittedBy: string;
+  @Input() email: string;
+  @Input() status: boolean;
   response: any;
 
   constructor(
-    protected ref: NbDialogRef<DeleteUserComponent>,
+    protected ref: NbDialogRef<ChangeInstitutionUserStatusComponent>,
     public necService: NecService,
     private toastrService: NbToastrService
   ) {}
+
+  ngOnInit(): void {}
 
   dismiss() {
     this.ref.close();
   }
 
+  getOption() {
+    if (this.status) {
+      return "Disable";
+    }
+    return "Enable";
+  }
+
   submit() {
     this.response = this.necService
-      .deleteUser({
-        email: this.currentValues.email,
+      .changeUserStatus({
+        email: this.email,
         createdBy: this.necService.user.email,
+        status: !this.status,
       })
       .subscribe(
         (response) => {
           this.response = response;
+          // window.parent.postMessage(this.service.getUsers());
         },
         (error) => {
           this.toastrService.warning(
-            this.currentValues.name + " Deletion Failed: " + error.error.errorMessage,
-            "Delete User",
+            "User Status Change Failed: " + error.error.errorMessage,
+            "User Status Change",
             {
               status: "danger",
               destroyByClick: true,
@@ -61,10 +75,8 @@ export class DeleteUserComponent {
         () => {
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
-              this.currentValues.name +
-                " Deletion Failed: " +
-                this.response.errorMessage,
-              "Delete User",
+              "User Status Change Failed: " + this.response.errorMessage,
+              "User Status Change",
               {
                 status: "danger",
                 destroyByClick: true,
@@ -73,11 +85,11 @@ export class DeleteUserComponent {
             );
           } else {
             this.toastrService.success(
-              this.currentValues.name + " Successfully Deleted",
-              "Delete User",
+              "User Status Change Success",
+              "User Status Change",
               { status: "success", destroyByClick: true, duration: 8000 }
             );
-            this.dismiss();
+            this.ref.close();
           }
         }
       );

@@ -311,6 +311,23 @@ export class NecService {
       .pipe((response) => response);
   }
 
+  getUsersByInstitution(email, institutionCode, type) {
+    return this.http
+      .get(
+        this.baseUrl +
+          "/user/api/v1/get_users/" +
+          email +
+          "/" +
+          institutionCode +
+          "/" +
+          type,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe((response) => response);
+  }
+
   getRoles() {
     return this.http
       .get(this.baseUrl + "/user/api/v1/get_roles", { headers: this.headers })
@@ -367,6 +384,20 @@ export class NecService {
       .pipe((response) => response);
   }
 
+  getInstitutionsByBank(bankId) {
+    return this.http
+      .get(
+        this.baseUrl +
+          "/institution/api/v1/get_institutions_by_bank" +
+          "/" +
+          bankId,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe((response) => response);
+  }
+
   addInstitution(data) {
     return this.http
       .post(this.baseUrl + "/institution/api/v1/create_institution", data, {
@@ -410,9 +441,13 @@ export class NecService {
 
   getFeeLogs(dateRange) {
     return this.http
-      .post(this.reportingUrl + "/nec-report/api/v1/nec_fee_report", dateRange, {
-        headers: this.headers,
-      })
+      .post(
+        this.reportingUrl + "/nec-report/api/v1/nec_fee_report",
+        dateRange,
+        {
+          headers: this.headers,
+        }
+      )
       .pipe((response) => response);
   }
 

@@ -107,7 +107,7 @@ export class FeeReportComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    public service: NecService,
+    private necService: NecService,
     private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>
   ) {}
@@ -119,11 +119,11 @@ export class FeeReportComponent implements OnInit, OnDestroy {
     };
 
     if (
-      this.service.user.roleId == "2" ||
-      this.service.user.roleId == "3" ||
-      this.service.user.roleId == "4"
+      this.necService.user.roleId == "2" ||
+      this.necService.user.roleId == "3" ||
+      this.necService.user.roleId == "4"
     ) {
-      this.institutionCode = this.service.user.institutionCode;
+      this.institutionCode = this.necService.user.institutionCode;
       this.showInstitution = false;
     }
 
@@ -138,7 +138,7 @@ export class FeeReportComponent implements OnInit, OnDestroy {
   }
 
   downloadAsPDF() {
-    console.log(this.response)
+    console.log(this.response);
     autotable(this.doc, {
       head: [],
       body: this.response.data,
@@ -166,7 +166,7 @@ export class FeeReportComponent implements OnInit, OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_SINGLE_FEE_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
         ".pdf"
@@ -190,12 +190,12 @@ export class FeeReportComponent implements OnInit, OnDestroy {
         "Fail",
         "Per Txn Fee",
         "Total Fee",
-        "Created By"
+        "Created By",
       ],
     };
     new Angular5Csv(
       this.response.data,
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_SINGLE_FEE_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
@@ -239,7 +239,7 @@ export class FeeReportComponent implements OnInit, OnDestroy {
     this.form.value.endDate.setSeconds("59");
     this.form.value.endDate.setMilliseconds("999");
 
-    this.service.getFeeLogs(this.form.value).subscribe(
+    this.necService.getFeeLogs(this.form.value).subscribe(
       (response) => {
         this.loading = false;
         this.response = response;

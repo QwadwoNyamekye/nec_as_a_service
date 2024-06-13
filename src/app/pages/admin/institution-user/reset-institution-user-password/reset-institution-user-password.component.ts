@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef } from "@nebular/theme";
-import { NecService } from "../../../../../@core/mock/nec.service";
+import { NecService } from "../../../../@core/mock/nec.service";
 import { NbToastrService } from "@nebular/theme";
 
 @Component({
@@ -11,15 +11,7 @@ import { NbToastrService } from "@nebular/theme";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button
-          nbButton
-          hero
-          status="success"
-          (click)="submit()"
-          [nbSpinner]="loading"
-          nbSpinnerStatus="danger"
-          [disabled]="loading"
-        >
+        <button nbButton hero status="success" (click)="submit()">
           Accept
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
@@ -28,39 +20,49 @@ import { NbToastrService } from "@nebular/theme";
       </nb-card-body>
     </nb-card>
   `,
-  styleUrls: ["submit-for-authorization.component.scss"],
+  styleUrls: ["reset-institution-user-password.component.scss"],
 })
-export class SubmitForAuthorizationComponent implements OnInit {
+export class ResetInstitutionUserPasswordComponent implements OnInit {
   @Input() title: string;
   @Input() batchId: string;
   @Input() submittedBy: string;
+  @Input() email: string;
   response: any;
-  loading: boolean = false;
   constructor(
-    protected ref: NbDialogRef<SubmitForAuthorizationComponent>,
+    protected ref: NbDialogRef<ResetInstitutionUserPasswordComponent>,
     public necService: NecService,
     private toastrService: NbToastrService
   ) {}
-
-  ngOnInit() {}
-
+  ngOnInit(): void {}
+  dismiss() {
+    this.ref.close();
+  }
   submit() {
-    this.loading = true;
-    this.necService
-      .submitForAuthorization(this.batchId, this.necService.user.email)
+    this.response = this.necService
+      .resetUserPassword({
+        email: this.email,
+        createdBy: this.necService.user.email,
+      })
       .subscribe(
-        (data) => {
-          this.response = data;
+        (response) => {
+          this.response = response;
         },
         (error) => {
-          this.loading = false;
+          this.toastrService.warning(
+            "User Password Reset Failed: " + error.error.errorMessage,
+            "User Password Reset",
+            {
+              status: "danger",
+              destroyByClick: true,
+              duration: 8000,
+            }
+          );
         },
         () => {
-          this.loading = false;
           if (this.response.errorCode != "0") {
             this.toastrService.warning(
-              "File Authorization Failed: " + this.response.errorMessage,
-              "Bulk File Authorization",
+              "User Password Reset Failed: " + this.response.errorMessage,
+              "User Password Reset",
               {
                 status: "danger",
                 destroyByClick: true,
@@ -69,16 +71,13 @@ export class SubmitForAuthorizationComponent implements OnInit {
             );
           } else {
             this.toastrService.success(
-              "File Authorization Success",
-              "File Authorization",
+              "User Password Reset Success",
+              "User Password Reset",
               { status: "success", destroyByClick: true, duration: 8000 }
             );
             this.ref.close();
           }
         }
       );
-  }
-  dismiss() {
-    this.ref.close();
   }
 }

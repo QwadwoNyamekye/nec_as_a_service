@@ -3,11 +3,6 @@ import { NbWindowRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 import { FormGroup, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
-import {
-  NbComponentShape,
-  NbComponentSize,
-  NbComponentStatus,
-} from "@nebular/theme";
 import { NbToastrService } from "@nebular/theme";
 
 @Component({
@@ -27,8 +22,7 @@ import { NbToastrService } from "@nebular/theme";
         fullWidth
         formControlName="phone"
         id="subject"
-        type="tel"
-        pattern="\d{1,12}"
+        type="text"
         maxlength="12"
       />
       <label class="text-label" for="subject">Fee:</label>
@@ -39,14 +33,24 @@ import { NbToastrService } from "@nebular/theme";
         id="subject"
         type="number"
       />
+      <div *ngIf="this.necService.user.type == 'G'">
+        <label class="text-label" for="subject">{{ this.label }} Code:</label>
+        <input
+          nbInput
+          fullWidth
+          formControlName="code"
+          id="subject"
+          type="text"
+        />
+      </div>
       <br />
       <button
         nbButton
         [disabled]="!form.valid"
         id="button"
         type="submit"
-        [status]="statuses[0]"
-        [shape]="shapes[2]"
+        status="primary"
+        shape="semi-round"
       >
         Submit
       </button>
@@ -55,22 +59,27 @@ import { NbToastrService } from "@nebular/theme";
   styleUrls: ["add-institution-form.component.scss"],
 })
 export class AddInstitutionFormComponent implements OnInit {
-  statuses: NbComponentStatus[] = [
-    "primary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ];
-  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   institution_data: any;
   items: any;
   form: FormGroup;
   object: any;
   response: any;
+  label = this.getLabel();
+  code: any;
+
+  getLabel() {
+    if (this.necService.user.type == "G") {
+      this.code = "";
+      return "Bank";
+    } else if (this.necService.user.type == "B") {
+      this.code = " ";
+      return "Corporate";
+    }
+  }
+
   constructor(
     public windowRef: NbWindowRef,
-    private service: NecService,
+    protected necService: NecService,
     private toastrService: NbToastrService
   ) {}
 
@@ -78,19 +87,35 @@ export class AddInstitutionFormComponent implements OnInit {
     // Initialize the form model with three form controls
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
-      phone: new FormControl("", Validators.required),
+      phone: new FormControl("", [
+        Validators.required,
+        Validators.pattern("[0-9]{1,12}"),
+      ]),
       fee: new FormControl(0, Validators.required),
+      code: new FormControl(this.code, Validators.required),
     });
+  }
+
+  getType() {
+    var type = this.necService.user.type;
+    if (type == "G") {
+      return "B";
+    } else if (type == "B" || type == "C") {
+      return "C";
+    }
   }
 
   onSubmit(): void {
     this.object = {
       name: this.form.value.name,
       phone: this.form.value.phone,
-      createdBy: this.service.user.email,
+      createdBy: this.necService.user.email,
       fee: this.form.value.fee,
+      type: this.getType(),
+      bank: this.necService.user.institutionCode,
+      code: this.form.value.code,
     };
-    this.service.addInstitution(this.object).subscribe(
+    this.necService.addInstitution(this.object).subscribe(
       (response) => {
         this.response = response;
         // window.parent.postMessage(this.service.getInstitutions());

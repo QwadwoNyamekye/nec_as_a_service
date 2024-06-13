@@ -27,7 +27,7 @@ import { PagesAuthGuard } from "./pages-auth-guard.service";
     NbTableModule,
     AdminModule,
     NECModule,
-    ReportModule
+    ReportModule,
   ],
   declarations: [PagesComponent],
   bootstrap: [PagesComponent],

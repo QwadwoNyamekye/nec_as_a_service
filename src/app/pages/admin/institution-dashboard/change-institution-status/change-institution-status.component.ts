@@ -33,12 +33,11 @@ export class ChangeInstitutionStatusComponent implements OnInit {
 
   constructor(
     protected ref: NbDialogRef<ChangeInstitutionStatusComponent>,
-    public service: NecService,
+    public necService: NecService,
     private toastrService: NbToastrService
   ) {}
 
   ngOnInit(): void {
-    
     if (this.status) {
       this.action = "Disable";
     } else {
@@ -47,11 +46,11 @@ export class ChangeInstitutionStatusComponent implements OnInit {
   }
 
   submit(event) {
-    this.response = this.service
+    this.response = this.necService
       .changeInstitutionStatus({
         code: this.code,
         status: !this.status,
-        createdBy: this.service.user.email,
+        createdBy: this.necService.user.email,
       })
       .subscribe(
         (response) => {

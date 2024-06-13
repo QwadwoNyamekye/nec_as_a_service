@@ -76,7 +76,7 @@ export class UploadFileComponent implements OnInit {
 
   constructor(
     public windowRef: NbWindowRef,
-    private service: NecService,
+    private necService: NecService,
     private toastrService: NbToastrService
   ) {}
 
@@ -87,7 +87,6 @@ export class UploadFileComponent implements OnInit {
       description: new FormControl("", Validators.required),
       count: new FormControl("", Validators.required),
     });
-    ;
   }
 
   onFileSelected(event: FileList) {
@@ -117,11 +116,11 @@ export class UploadFileComponent implements OnInit {
     this.filesToUpload.forEach((file) => {
       formData.append("files", file);
     });
-    this.response = this.service
+    this.response = this.necService
       .uploadFile(
         formData,
         this.form.value.description,
-        this.service.user.email,
+        this.necService.user.email,
         this.form.value.count
       )
       .subscribe(

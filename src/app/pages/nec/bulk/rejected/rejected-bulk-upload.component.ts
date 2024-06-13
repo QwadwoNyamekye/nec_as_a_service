@@ -73,7 +73,7 @@ export class BulkRejectedUploadComponent implements OnInit {
     // hideSubHeader: true,
     actions: {
       position: "right",
-      custom: this.customActions(this.service.user.roleId),
+      custom: this.customActions(this.necService.user.roleId),
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -131,7 +131,7 @@ export class BulkRejectedUploadComponent implements OnInit {
   };
 
   constructor(
-    public service: NecService,
+    public necService: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
@@ -139,7 +139,6 @@ export class BulkRejectedUploadComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSubmittedUploadedFiles();
-    
   }
 
   customFunction(event) {
@@ -150,9 +149,9 @@ export class BulkRejectedUploadComponent implements OnInit {
     } else if (event.action == "expand") {
       this.openFileRecords(event);
     } else if (event.action == "reject") {
-      if (this.service.user.roleId == "3") {
+      if (this.necService.user.roleId == "3") {
         this.declineFileUpload(event);
-      } else if (this.service.user.roleId == "4") {
+      } else if (this.necService.user.roleId == "4") {
         this.rejectFileUpload(event);
       }
     }
@@ -161,7 +160,7 @@ export class BulkRejectedUploadComponent implements OnInit {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
   getSubmittedUploadedFiles() {
-    this.service.getUploadsByStatus("REJECTED").subscribe(
+    this.necService.getUploadsByStatus("REJECTED").subscribe(
       (data) => {
         this.files = data;
       },
@@ -184,7 +183,7 @@ export class BulkRejectedUploadComponent implements OnInit {
         context: {
           title: `Do you want to submit ${event.data.fileName} for authorization?`,
           batchId: event.data.batchId,
-          submittedBy: this.service.user.email,
+          submittedBy: this.necService.user.email,
         },
       })
       .onClose.subscribe(() => {
@@ -198,13 +197,13 @@ export class BulkRejectedUploadComponent implements OnInit {
         context: {
           title: `Do you want to submit ${event.data.fileName} for processing?`,
           batchId: event.data.batchId,
-          submittedBy: this.service.user.email,
+          submittedBy: this.necService.user.email,
         },
       })
       .onClose.pipe((response) => response)
       .subscribe(() => {
         this.getSubmittedUploadedFiles();
-        this.service.comp$
+        this.necService.comp$
           .pipe((response) => response)
           .subscribe(() => this.getSubmittedUploadedFiles());
       });
@@ -216,7 +215,7 @@ export class BulkRejectedUploadComponent implements OnInit {
         context: {
           title: `Do you want to reject ${event.data.fileName} ?`,
           batchId: event.data.batchId,
-          submittedBy: this.service.user.email,
+          submittedBy: this.necService.user.email,
         },
       })
       .onClose.pipe((response) => response)
@@ -231,7 +230,7 @@ export class BulkRejectedUploadComponent implements OnInit {
         context: {
           title: `Do you want to decline ${event.data.fileName} ?`,
           batchId: event.data.batchId,
-          submittedBy: this.service.user.email,
+          submittedBy: this.necService.user.email,
         },
       })
       .onClose.pipe((response) => response)

@@ -31,7 +31,8 @@ import { NbToastrService } from "@nebular/theme";
         [status]="statuses[0]"
         (click)="onSubmit()"
         [shape]="shapes[2]"
-        [nbSpinner]="loading" nbSpinnerStatus="danger"
+        [nbSpinner]="loading"
+        nbSpinnerStatus="danger"
         [disabled]="loading"
       >
         Submit
@@ -60,8 +61,8 @@ export class SingleNECRequestComponent {
   constructor(
     public windowRef: NbWindowRef,
     private toastrService: NbToastrService,
-    private service: NecService
-  ) { }
+    private necService: NecService
+  ) {}
 
   ngOnInit(): void {
     // Initialize the form model with three form controls
@@ -69,16 +70,13 @@ export class SingleNECRequestComponent {
       destAccount: new FormControl("", Validators.required),
       destBank: new FormControl("", Validators.required),
     });
-    this.service.getBanks().subscribe(
+    this.necService.getBanks().subscribe(
       (data) => {
         this.bankList = data;
       },
-      (error) => {
-      },
-      () => {
-      }
+      (error) => {},
+      () => {}
     );
-    ;
   }
 
   onSubmit(): void {
@@ -86,9 +84,9 @@ export class SingleNECRequestComponent {
     this.object = {
       destAccount: this.form.value.destAccount,
       destBank: this.form.value.destBank,
-      createdBy: this.service.user.email,
+      createdBy: this.necService.user.email,
     };
-    this.service.makeSingleNECRequest(this.object).subscribe(
+    this.necService.makeSingleNECRequest(this.object).subscribe(
       (response: any) => {
         if (response.errorCode == "0") {
           this.response = response;
@@ -128,7 +126,7 @@ export class SingleNECRequestComponent {
         );
       },
       () => {
-        this.loading = false
+        this.loading = false;
         this.windowRef.close();
       }
     );

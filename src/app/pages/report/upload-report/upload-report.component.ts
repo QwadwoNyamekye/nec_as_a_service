@@ -112,7 +112,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   uploadStatus: Object;
 
   constructor(
-    public service: NecService,
+    private necService: NecService,
     private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>
   ) {}
@@ -124,11 +124,11 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     };
 
     if (
-      this.service.user.roleId == "2" ||
-      this.service.user.roleId == "3" ||
-      this.service.user.roleId == "4"
+      this.necService.user.roleId == "2" ||
+      this.necService.user.roleId == "3" ||
+      this.necService.user.roleId == "4"
     ) {
-      this.institutionCode = this.service.user.institutionCode;
+      this.institutionCode = this.necService.user.institutionCode;
       this.showInstitution = false;
     }
 
@@ -143,7 +143,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       code: new FormControl(""),
     });
 
-    this.service.getInstitutions().subscribe(
+    this.necService.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
       },
@@ -151,7 +151,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       () => {}
     );
 
-    this.service.getUploadStatus().subscribe(
+    this.necService.getUploadStatus().subscribe(
       (data) => {
         this.uploadStatus = data;
       },
@@ -210,7 +210,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_BULK_UPLOAD_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
         ".pdf"
@@ -243,7 +243,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     };
     new Angular5Csv(
       this.response,
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_BULK_UPLOAD_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
@@ -282,7 +282,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       ? this.institutionCode
       : this.form.value.code;
 
-    this.service.getUploadReport(this.form.value).subscribe(
+    this.necService.getUploadReport(this.form.value).subscribe(
       (response) => {
         this.response = response;
         this.source.load(this.response);

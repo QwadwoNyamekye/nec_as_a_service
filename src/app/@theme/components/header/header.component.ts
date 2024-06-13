@@ -56,14 +56,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private router: Router,
     private authService: NbAuthService,
-    public service: NecService
+    public necService: NecService
   ) {
-    this.authService
-      .authenticate("email")
-      .subscribe((data: any) => { this.user = { "name": this.service.user?.name, picture: 'assets/images/default.jpg' } });
+    this.authService.authenticate("email").subscribe((data: any) => {
+      this.user = {
+        name: this.necService.user?.name,
+        picture: "assets/images/default.jpg",
+      };
+    });
     this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
       // if (token.isValid()) {
-      this.user = { "name": this.service.user?.name, "picture": 'assets/images/default.jpg', "roleName": this.service.user?.roleName }
+      this.user = {
+        name: this.necService.user?.name,
+        picture: "assets/images/default.jpg",
+        roleName: this.necService.user?.roleName,
+      };
       // this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
       // }
     });
@@ -98,8 +105,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.menuService.onItemClick().subscribe((event) => {
       if (event.item.title === "Log out") {
-        sessionStorage.clear()
-        localStorage.clear()
+        sessionStorage.clear();
+        localStorage.clear();
         this.router.navigate(["auth/login"]);
       }
     });

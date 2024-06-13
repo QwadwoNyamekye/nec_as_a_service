@@ -123,7 +123,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    public service: NecService,
+    private necService: NecService,
     private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>
   ) {}
@@ -135,11 +135,11 @@ export class NecReportComponent implements OnInit, OnDestroy {
     };
 
     if (
-      this.service.user.roleId == "2" ||
-      this.service.user.roleId == "3" ||
-      this.service.user.roleId == "4"
+      this.necService.user.roleId == "2" ||
+      this.necService.user.roleId == "3" ||
+      this.necService.user.roleId == "4"
     ) {
-      this.institutionCode = this.service.user.institutionCode;
+      this.institutionCode = this.necService.user.institutionCode;
       this.showInstitution = false;
     }
 
@@ -156,7 +156,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
     });
 
     /////GET BANKS///////////////
-    this.service.getBanks().subscribe(
+    this.necService.getBanks().subscribe(
       (data) => {
         this.bankList = data;
       },
@@ -164,7 +164,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
       () => {}
     );
 
-    this.service.getInstitutions().subscribe(
+    this.necService.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
       },
@@ -205,7 +205,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_SINGLE_NEC_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
         ".pdf"
@@ -237,7 +237,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
     };
     new Angular5Csv(
       this.response,
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_SINGLE_NEC_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
@@ -284,7 +284,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
       ? this.institutionCode
       : this.form.value.code;
 
-    this.service.getNecReport(this.form.value).subscribe(
+    this.necService.getNecReport(this.form.value).subscribe(
       (response) => {
         this.loading = false;
         this.response = response;

@@ -27,7 +27,7 @@ export class NbAuthComponent implements OnDestroy, OnInit {
   constructor(
     protected auth: NbAuthService,
     protected location: Location,
-    private service: NecService
+    private necService: NecService
   ) {
     this.subscription = auth
       .onAuthenticationChange()
@@ -36,9 +36,7 @@ export class NbAuthComponent implements OnDestroy, OnInit {
         this.authenticated = authenticated;
       });
   }
-  ngOnInit(): void {
-    ;
-  }
+  ngOnInit(): void {}
 
   back() {
     this.location.back();

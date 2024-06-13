@@ -13,7 +13,7 @@ export class AuthGuard {
   constructor(
     private authService: NbAuthService,
     private router: Router,
-    private service: NecService
+    private necService: NecService
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -21,9 +21,9 @@ export class AuthGuard {
       tap((authenticated) => {
         if (!authenticated) {
           this.router.navigate(["auth/login"]);
-        } else if (!this.service.user) {
+        } else if (!this.necService.user) {
           this.router.navigate(["auth/login"]);
-        } else if (this.service.user.firstLogin) {
+        } else if (this.necService.user.firstLogin) {
           this.router.navigate(["auth/reset-password"]);
         }
       })

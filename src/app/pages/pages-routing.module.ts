@@ -2,8 +2,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { PagesComponent } from "./pages.component";
 import { NotFoundComponent } from "./miscellaneous/not-found/not-found.component";
-import { AdminDashboardComponent } from "./admin/user-dashboard/user-dashboard.component";
-import { InstitutionDashboardComponent } from "./admin/institution-dashboard/institution-dashboard.component";
 import { PagesAuthGuard } from "./pages-auth-guard.service";
 
 const routes: Routes = [
@@ -12,14 +10,9 @@ const routes: Routes = [
     component: PagesComponent,
     children: [
       {
-        path: "user-dashboard",
-        component: AdminDashboardComponent,
-        canActivate: [PagesAuthGuard],
-        data: { allowedRoles: ["1", "2"] },
-      },
-      {
-        path: "institution-dashboard",
-        component: InstitutionDashboardComponent,
+        path: "admin",
+        loadChildren: () =>
+          import("./admin/admin.module").then((m) => m.AdminModule),
         canActivate: [PagesAuthGuard],
         data: { allowedRoles: ["1", "2"] },
       },
@@ -30,11 +23,11 @@ const routes: Routes = [
         data: { allowedRoles: ["3", "4"] },
       },
       {
-        path: "",
+        path: "report",
         loadChildren: () =>
           import("./report/report.module").then((m) => m.ReportModule),
         canActivate: [PagesAuthGuard],
-        data: { allowedRoles: ["1", "2", "5", "6"] },
+        data: { allowedRoles: ["1", "2", "5", "6", "8", "9"] },
       },
       {
         path: "miscellaneous",
@@ -42,11 +35,6 @@ const routes: Routes = [
           import("./miscellaneous/miscellaneous.module").then(
             (m) => m.MiscellaneousModule
           ),
-      },
-      {
-        path: "",
-        redirectTo: "dashboard",
-        pathMatch: "full",
       },
       {
         path: "**",

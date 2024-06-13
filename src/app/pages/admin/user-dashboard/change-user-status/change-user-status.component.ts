@@ -8,7 +8,9 @@ import { NbToastrService } from "@nebular/theme";
   template: `
     <nb-card>
       <nb-card-header
-        ><div class="text-center">{{ title }}</div></nb-card-header
+        ><div class="text-center">
+          {{ "Change User Status: " + currentValues.title }}
+        </div></nb-card-header
       >
       <nb-card-body>
         <button nbButton hero status="success" (click)="submit()">
@@ -23,40 +25,34 @@ import { NbToastrService } from "@nebular/theme";
   styleUrls: ["change-user-status.component.scss"],
 })
 export class ChangeUserStatusComponent implements OnInit {
-  @Input() title: string;
-  @Input() batchId: string;
-  @Input() submittedBy: string;
-  @Input() email: string;
-  @Input() status: boolean;
+  @Input() currentValues: any;
   response: any;
 
   constructor(
     protected ref: NbDialogRef<ChangeUserStatusComponent>,
-    public service: NecService,
+    public necService: NecService,
     private toastrService: NbToastrService
   ) {}
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   dismiss() {
     this.ref.close();
   }
 
   getOption() {
-    if (this.status) {
+    if (this.currentValues.status) {
       return "Disable";
     }
     return "Enable";
   }
 
   submit() {
-    this.response = this.service
+    this.response = this.necService
       .changeUserStatus({
-        email: this.email,
-        createdBy: this.service.user.email,
-        status: !this.status,
+        email: this.currentValues.email,
+        createdBy: this.necService.user.email,
+        status: !this.currentValues.status,
       })
       .subscribe(
         (response) => {

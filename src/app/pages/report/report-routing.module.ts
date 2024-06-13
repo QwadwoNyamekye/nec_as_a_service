@@ -7,11 +7,11 @@ import { FeeReportComponent } from "./fee-report/fee-report.component";
 
 const routes: Routes = [
   {
-    path: "nec-report",
+    path: "nec",
     component: NecReportComponent,
   },
   {
-    path: "upload-report",
+    path: "upload",
     component: UploadReportComponent,
   },
   {

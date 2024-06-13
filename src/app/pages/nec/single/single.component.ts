@@ -110,14 +110,14 @@ export class SingleNECComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    protected service: NecService,
+    public necService: NecService,
     private windowService: NbWindowService
   ) {}
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
   getSingleNECRecordsRequest() {
-    this.service.getSingleNECList().subscribe(
+    this.necService.getSingleNECList().subscribe(
       (response: any) => {
         this.singleNECList = response.data;
       },
@@ -199,7 +199,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
       },
     });
     this.doc.save(
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_SINGLE_NEC_REQUESTS_" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss") +
         ".pdf"
@@ -242,7 +242,7 @@ export class SingleNECComponent implements OnInit, OnDestroy {
     });
     new Angular5Csv(
       this.singleNECList,
-      this.service.user.institutionCode +
+      this.necService.user.institutionCode +
         "_SINGLE_NEC_REQUESTS_" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options

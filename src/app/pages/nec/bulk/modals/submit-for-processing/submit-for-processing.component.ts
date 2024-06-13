@@ -38,16 +38,16 @@ export class SubmitForProcessingComponent implements OnInit {
   loading: boolean = false;
   constructor(
     protected ref: NbDialogRef<SubmitForProcessingComponent>,
-    public service: NecService,
+    public necService: NecService,
     private toastrService: NbToastrService
   ) {}
 
   ngOnInit() {}
-  
+
   submit() {
     this.loading = true;
-    this.service
-      .submitForProcessing(this.batchId, this.service.user.email)
+    this.necService
+      .submitForProcessing(this.batchId, this.necService.user.email)
       .subscribe(
         (data) => {
           this.loading = true;

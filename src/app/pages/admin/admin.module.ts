@@ -23,15 +23,23 @@ import { AddInstitutionFormComponent } from "./institution-dashboard/add-institu
 import { EditInstitutionFormComponent } from "./institution-dashboard/edit-institution-form/edit-institution-form.component";
 import { InstitutionDashboardComponent } from "./institution-dashboard/institution-dashboard.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { EditUserPropFormComponent } from "./user-dashboard/edit-user-prop-form/edit-user-prop-form.component";
 import { ResetUserPasswordComponent } from "./user-dashboard/reset-user-password/reset-user-password.component";
 import { UnlockUserComponent } from "./user-dashboard/unlock-user/unlock-user.component";
 import { ChangeUserStatusComponent } from "./user-dashboard/change-user-status/change-user-status.component";
 import { ChangeInstitutionStatusComponent } from "./institution-dashboard/change-institution-status/change-institution-status.component";
 import { DeleteUserComponent } from "./user-dashboard/delete-user/delete-user.component";
+import { UnlockInstitutionUserComponent } from "./institution-user/unlock-institution-user/unlock-institution-user.component";
+import { ResetInstitutionUserPasswordComponent } from "./institution-user/reset-institution-user-password/reset-institution-user-password.component";
+import { DeleteInstitutionUserComponent } from "./institution-user/delete-institution-user/delete-institution-user.component";
+import { InstitutionUserDashboardComponent } from "./institution-user/institution-user-dashboard.component";
+import { ChangeInstitutionUserStatusComponent } from "./institution-user/change-institution-user-status/change-institution-user-status.component";
+import { AddInstutionUserFormComponent } from "./institution-user/add-institution-user-form/add-institution-user-form.component";
+import { EditInstitutionUserFormComponent } from "./institution-user/edit-institution-user-form/edit-institution-user-form.component";
+import { AdminRoutingModule } from "./admin-routing.module";
 
 @NgModule({
   imports: [
+    AdminRoutingModule,
     NbSpinnerModule,
     NbInputModule,
     NbWindowModule,
@@ -58,12 +66,18 @@ import { DeleteUserComponent } from "./user-dashboard/delete-user/delete-user.co
     EditUserFormComponent,
     EditInstitutionFormComponent,
     AddInstitutionFormComponent,
-    EditUserPropFormComponent,
     ResetUserPasswordComponent,
     UnlockUserComponent,
     ChangeUserStatusComponent,
     ChangeInstitutionStatusComponent,
     DeleteUserComponent,
+    UnlockInstitutionUserComponent,
+    InstitutionUserDashboardComponent,
+    ResetInstitutionUserPasswordComponent,
+    DeleteInstitutionUserComponent,
+    ChangeInstitutionUserStatusComponent,
+    AddInstutionUserFormComponent,
+    EditInstitutionUserFormComponent,
   ],
 })
 export class AdminModule {}

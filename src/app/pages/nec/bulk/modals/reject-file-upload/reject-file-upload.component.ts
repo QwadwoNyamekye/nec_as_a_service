@@ -29,15 +29,15 @@ export class RejectFileUploadComponent implements OnInit {
   response: any;
   constructor(
     protected ref: NbDialogRef<RejectFileUploadComponent>,
-    public service: NecService,
+    public necService: NecService,
     private toastrService: NbToastrService
   ) {}
 
   ngOnInit() {}
-  
+
   submit() {
-    this.service
-      .rejectUploadedFile(this.batchId, this.service.user.email)
+    this.necService
+      .rejectUploadedFile(this.batchId, this.necService.user.email)
       .subscribe(
         (data) => {
           this.response = data;
