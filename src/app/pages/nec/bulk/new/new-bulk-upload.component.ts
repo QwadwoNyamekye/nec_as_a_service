@@ -1,18 +1,17 @@
+import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { LocalDataSource, ViewCell } from "ng2-smart-table";
-import { NbDialogService } from "@nebular/theme";
-import { NbWindowService, NbWindowControlButtonsConfig } from "@nebular/theme";
-import { UploadFileComponent } from "./bulk-nec-request/bulk-nec-request.component";
-import { NecService } from "../../../../@core/mock/nec.service";
-import { SubmitForProcessingComponent } from "../modals/submit-for-processing/submit-for-processing.component";
 import { DomSanitizer } from "@angular/platform-browser";
+import { NbDialogService, NbWindowControlButtonsConfig, NbWindowService } from "@nebular/theme";
+import { LocalDataSource } from "ng2-smart-table";
 import { DataSource } from "ng2-smart-table/lib/lib/data-source/data-source";
 import { Deferred } from "ng2-smart-table/lib/lib/helpers";
-import { DatePipe } from "@angular/common";
-import { SubmitForAuthorizationComponent } from "../modals/submit-for-authorization/submit-for-authorization.component";
-import { BulkSingleRecordsComponent } from "../modals/upload_file_single/upload_file_single.component";
-import { RejectFileUploadComponent } from "../modals/reject-file-upload/reject-file-upload.component";
+import { NecService } from "../../../../@core/mock/nec.service";
 import { DeclineFileUploadComponent } from "../modals/decline-file-upload/decline-file-upload.component";
+import { RejectFileUploadComponent } from "../modals/reject-file-upload/reject-file-upload.component";
+import { SubmitForAuthorizationComponent } from "../modals/submit-for-authorization/submit-for-authorization.component";
+import { SubmitForProcessingComponent } from "../modals/submit-for-processing/submit-for-processing.component";
+import { BulkSingleRecordsComponent } from "../modals/upload_file_single/upload_file_single.component";
+import { UploadFileComponent } from "./bulk-nec-request/bulk-nec-request.component";
 
 @Component({
   selector: "ngx-bulk",
@@ -65,9 +64,9 @@ export class BulkNewUploadComponent implements OnInit {
 
   customActions(roleId: string) {
     var custom = [];
-    if (roleId == "3") {
+    if (roleId == "4") {
       custom.push(this.process, this.reject, this.expand);
-    } else if (roleId == "4") {
+    } else if (roleId == "3") {
       custom.push(this.authorize, this.reject, this.expand);
     }
     return custom;

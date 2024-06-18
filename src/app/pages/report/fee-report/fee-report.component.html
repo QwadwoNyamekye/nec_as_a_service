@@ -20,21 +20,21 @@
       <div class="row">
         <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0" [status]="statuses[0]"
-            [shape]="shapes[1]" (click)="downloadAsCSV()">
+          <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0"
+            status="primary" shape="semi-round" (click)="downloadAsCSV()">
             Download CSV
           </button>
         </div>
         <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0" [status]="statuses[0]"
-            [shape]="shapes[1]" (click)="downloadAsPDF()">
+          <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0"
+            status="primary" shape="semi-round" (click)="downloadAsPDF()">
             Download PDF
           </button>
         </div>
         <div class="col-md-2" style="margin-left: auto;">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button fullWidth nbButton status="primary" outline type="submit" [status]="statuses[0]" [shape]="shapes[2]"
+          <button fullWidth nbButton status="primary" outline type="submit" status="primary" shape="round"
             [nbSpinner]="loading" nbSpinnerStatus="danger" [disabled]="loading || !form.valid">
             Submit
           </button>
@@ -43,7 +43,7 @@
 
       <!-- <br>
         <div class="col-md-2">
-          <button  fullWidth nbButton type="submit" [status]="statuses[0]" (click)="onSubmit()" [shape]="shapes[1]">
+          <button  fullWidth nbButton type="submit" status="primary" (click)="onSubmit()" shape="semi-round">
             Submit
           </button>
         </div> -->

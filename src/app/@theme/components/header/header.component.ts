@@ -1,18 +1,16 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 import {
   NbMediaBreakpointsService,
   NbMenuService,
   NbSidebarService,
   NbThemeService,
 } from "@nebular/theme";
-import { Router } from "@angular/router";
-import { UserData } from "../../../@core/data/users";
-import { LayoutService } from "../../../@core/utils";
-import { map, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { NbAuthService } from "@nebular/auth";
-import { NbAuthJWTToken } from "@nebular/auth";
+import { map, takeUntil } from "rxjs/operators";
 import { NecService } from "../../../@core/mock/nec.service";
+import { LayoutService } from "../../../@core/utils";
 
 @Component({
   selector: "ngx-header",
@@ -51,7 +49,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private themeService: NbThemeService,
-    private userService: UserData,
     private layoutService: LayoutService,
     private breakpointService: NbMediaBreakpointsService,
     private router: Router,

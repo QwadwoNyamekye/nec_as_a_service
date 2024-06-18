@@ -91,7 +91,7 @@ import { NbToastrService } from "@nebular/theme";
       </button>
     </form>
   `,
-  styleUrls: ["add-user-form.component.scss"],
+  styleUrls: ["add-institution-user-form.component.scss"],
 })
 export class AddInstutionUserFormComponent implements OnInit {
   items: any;
@@ -108,6 +108,7 @@ export class AddInstutionUserFormComponent implements OnInit {
   bankCode: any;
   type: string = this.setType();
   label = this.getLabel();
+  object: any;
 
   getLabel() {
     if (this.necService.user.type == "G") {
@@ -207,7 +208,7 @@ export class AddInstutionUserFormComponent implements OnInit {
   // Define a method to handle the form submission
   onSubmit(): void {
     this.loading = true;
-    var object = {
+    this.object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
       institutionCode: this.form.value.institution,
       bankCode: this.necService.user.institutionCode,
@@ -219,7 +220,7 @@ export class AddInstutionUserFormComponent implements OnInit {
     };
 
     // Send a post request to the server endpoint with the FormData object
-    this.necService.postUsers(object).subscribe(
+    this.necService.postUsers(this.object).subscribe(
       (data) => {
         // window.parent.postMessage(this.necService.getUsers());
         this.response = data;
@@ -261,6 +262,6 @@ export class AddInstutionUserFormComponent implements OnInit {
   }
 
   close() {
-    this.windowRef.close(this.form.value.institution);
+    this.windowRef.close(this.object);
   }
 }

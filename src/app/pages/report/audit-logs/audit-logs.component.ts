@@ -1,18 +1,15 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { LocalDataSource } from "ng2-smart-table";
-import { NbWindowService } from "@nebular/theme";
-import { NecService } from "../../../@core/mock/nec.service";
 import { DatePipe } from "@angular/common";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import {
-  NbToastrService,
-  NbComponentShape,
-  NbComponentStatus,
   NbDateService,
+  NbToastrService
 } from "@nebular/theme"; //NbWindowRef
+import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
-import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
+import { LocalDataSource } from "ng2-smart-table";
+import { NecService } from "../../../@core/mock/nec.service";
 
 @Component({
   selector: "ngx-audit-logs",
@@ -27,14 +24,6 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
   listener: any;
   receivedData: any;
   form: FormGroup;
-  statuses: NbComponentStatus[] = [
-    "primary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ];
-  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   doc = new jsPDF("landscape");
   settings = {
     pager: {

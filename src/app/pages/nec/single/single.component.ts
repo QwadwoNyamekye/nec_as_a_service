@@ -1,19 +1,13 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { LocalDataSource } from "ng2-smart-table";
-import { NbWindowService } from "@nebular/theme";
-import { NecService } from "../../../@core/mock/nec.service";
-import { SingleNECRequestComponent } from "./single-nec-request/single-nec-request.component";
 import { DatePipe } from "@angular/common";
-import {
-  NbToastrService,
-  NbComponentShape,
-  NbComponentStatus,
-  NbDateService,
-} from "@nebular/theme"; //NbWindowRef
-import { map } from "rxjs/operators";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { NbWindowService } from "@nebular/theme";
 import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
+import { LocalDataSource } from "ng2-smart-table";
+import { map } from "rxjs/operators";
+import { NecService } from "../../../@core/mock/nec.service";
+import { SingleNECRequestComponent } from "./single-nec-request/single-nec-request.component";
 
 @Component({
   selector: "ngx-single",
@@ -28,15 +22,6 @@ export class SingleNECComponent implements OnInit, OnDestroy {
   listener: any;
   receivedData: any;
   doc = new jsPDF("landscape");
-
-  statuses: NbComponentStatus[] = [
-    "primary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ];
-  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   settings = {
     pager: {
       perPage: 13,

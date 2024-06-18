@@ -1,17 +1,16 @@
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { HttpHeaders } from "@angular/common/http";
-import { NbAuthService } from "@nebular/auth";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 // import * as SockJS from "sockjs-client";
-import SockJS from "sockjs-client";
+import { Router } from "@angular/router";
 import {
-  NbToastrService,
   NbGlobalPhysicalPosition,
   NbToastRef,
+  NbToastrService,
 } from "@nebular/theme";
-import { environment } from "../../../environments/environment.prod";
 import { Subject } from "rxjs/Subject";
+import SockJS from "sockjs-client";
+import { environment } from "../../../environments/environment.prod";
 
 @Injectable({ providedIn: "root" })
 export class NecService {
@@ -28,7 +27,7 @@ export class NecService {
 
   constructor(
     private http: HttpClient,
-    private authService: NbAuthService,
+    private router: Router,
     private toastrService: NbToastrService
   ) {
     this.initializeVars();
@@ -161,6 +160,38 @@ export class NecService {
     );
   }
 
+  checkJWTValid() {
+    const jwtPayload = JSON.parse(
+      window.atob(sessionStorage.getItem("token").split(".")[1])
+    );
+    var expTime = jwtPayload.exp * 1000;
+    if (Date.now() >= expTime) {
+      var toaster = this.toastrService.danger(
+        "Session Expired: Please Login Again",
+        "Session",
+        {
+          position: NbGlobalPhysicalPosition.BOTTOM_LEFT,
+          preventDuplicates: true,
+          destroyByClick: true,
+          duration: 0,
+        }
+      );
+      var time = 5;
+      var intervalId = setInterval(
+        (router) => {
+          toaster.toastInstance.toast.message = "Redirecting in  : " + time;
+          if (time == 0) {
+            router.navigate(["auth/login"]);
+            window.clearInterval(intervalId);
+          }
+          time--;
+        },
+        1000,
+        this.router
+      );
+    }
+  }
+
   resetPassword(user) {
     return this.http
       .post(this.baseUrl + "/user/api/v1/reset_password", user, {
@@ -180,6 +211,7 @@ export class NecService {
   //-------------BULK--------------
 
   getFileRecords(batch_id) {
+    this.checkJWTValid();
     return this.http
       .get(
         this.baseUrl +
@@ -193,6 +225,7 @@ export class NecService {
   }
 
   getUploads(email) {
+    this.checkJWTValid();
     return this.http
       .get(this.baseUrl + "/upload/api/v1/get_uploads/" + email, {
         headers: this.headers,
@@ -201,6 +234,7 @@ export class NecService {
   }
 
   getUploadsByStatus(status) {
+    this.checkJWTValid();
     return this.http
       .get(
         this.reportingUrl +
@@ -215,7 +249,60 @@ export class NecService {
       .pipe((response) => response);
   }
 
+  getUploadStatusInstitution(status, email, institution) {
+    this.checkJWTValid();
+    return this.http
+      .get(
+        this.baseUrl +
+          "/upload/api/v1/get_uploads_by_status_institution/" +
+          status +
+          "/" +
+          email +
+          "/" +
+          institution,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe((response) => response);
+  }
+
+  getUploadStatusBank(status, email, bank) {
+    this.checkJWTValid();
+    return this.http
+      .get(
+        this.baseUrl +
+          "/upload/api/v1/get_uploads_by_status_bank/" +
+          status +
+          "/" +
+          email +
+          "/" +
+          bank,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe((response) => response);
+  }
+
+  getUploadByStatus(status, email) {
+    this.checkJWTValid();
+    return this.http
+      .get(
+        this.baseUrl +
+          "/upload/api/v1/get_uploads_by_status_bank/" +
+          status +
+          "/" +
+          email,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe((response) => response);
+  }
+
   submitForProcessing(batchId, submittedBy) {
+    this.checkJWTValid();
     return this.http
       .get(
         this.baseUrl +
@@ -226,6 +313,7 @@ export class NecService {
   }
 
   rejectUploadedFile(batchId, submittedBy) {
+    this.checkJWTValid();
     return this.http
       .get(
         this.baseUrl + `/upload/api/v1/reject_upload/${batchId}/${submittedBy}`,
@@ -235,6 +323,7 @@ export class NecService {
   }
 
   declineUploadedFile(batchId, submittedBy) {
+    this.checkJWTValid();
     return this.http
       .get(
         this.baseUrl +
@@ -245,6 +334,7 @@ export class NecService {
   }
 
   submitForAuthorization(batchId, submittedBy) {
+    this.checkJWTValid();
     return this.http
       .get(
         this.baseUrl +
@@ -255,6 +345,7 @@ export class NecService {
   }
 
   uploadFile(file, description, createdBy, count) {
+    this.checkJWTValid();
     return this.http
       .post(
         this.baseUrl +
@@ -272,12 +363,14 @@ export class NecService {
 
   //-------------------BANKS------------------
   getBanks() {
+    this.checkJWTValid();
     return this.http
       .get(this.bankUrl + "/blaster/api/v1/banks", { headers: this.headers })
       .pipe((response) => response);
   }
 
   getUploadStatus() {
+    this.checkJWTValid();
     return this.http
       .get(this.baseUrl + "/upload/api/v1/get_uploads_status", {
         headers: this.headers,
@@ -286,6 +379,7 @@ export class NecService {
   }
 
   getSingleNECList() {
+    this.checkJWTValid();
     return this.http
       .get(this.baseUrl + "/single/api/v1/nec_list/" + this.user.email, {
         headers: this.headers,
@@ -294,6 +388,7 @@ export class NecService {
   }
 
   makeSingleNECRequest(data) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/single/api/v1/nec", data, {
         headers: this.headers,
@@ -304,6 +399,7 @@ export class NecService {
   //-------------- USERS APIS------------------
 
   getUsers(email) {
+    this.checkJWTValid();
     return this.http
       .get(this.baseUrl + "/user/api/v1/get_users/" + email, {
         headers: this.headers,
@@ -312,6 +408,7 @@ export class NecService {
   }
 
   getUsersByInstitution(email, institutionCode, type) {
+    this.checkJWTValid();
     return this.http
       .get(
         this.baseUrl +
@@ -329,12 +426,14 @@ export class NecService {
   }
 
   getRoles() {
+    this.checkJWTValid();
     return this.http
       .get(this.baseUrl + "/user/api/v1/get_roles", { headers: this.headers })
       .pipe((response) => response);
   }
 
   postUsers(user) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/user/api/v1/create_user", user, {
         headers: this.headers,
@@ -343,6 +442,7 @@ export class NecService {
   }
 
   unlockUser(user) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/user/api/v1/unlock_user", user, {
         headers: this.headers,
@@ -351,6 +451,7 @@ export class NecService {
   }
 
   changeUserStatus(user) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/user/api/v1/change_status", user, {
         headers: this.headers,
@@ -359,6 +460,7 @@ export class NecService {
   }
 
   resetUserPassword(user) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/user/api/v1/reset_password", user, {
         headers: this.headers,
@@ -367,6 +469,7 @@ export class NecService {
   }
 
   deleteUser(user) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/user/api/v1/delete_user", user, {
         headers: this.headers,
@@ -377,6 +480,7 @@ export class NecService {
   //---------------INSTITUTION APIS-----------------
 
   getInstitutions() {
+    this.checkJWTValid();
     return this.http
       .get(this.baseUrl + "/institution/api/v1/get_institutions", {
         headers: this.headers,
@@ -385,6 +489,7 @@ export class NecService {
   }
 
   getInstitutionsByBank(bankId) {
+    this.checkJWTValid();
     return this.http
       .get(
         this.baseUrl +
@@ -399,6 +504,7 @@ export class NecService {
   }
 
   addInstitution(data) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/institution/api/v1/create_institution", data, {
         headers: this.headers,
@@ -407,6 +513,7 @@ export class NecService {
   }
 
   editInstitution(data) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/institution/api/v1/update_institution", data, {
         headers: this.headers,
@@ -415,6 +522,7 @@ export class NecService {
   }
 
   changeInstitutionStatus(data) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/institution/api/v1/change_status", data, {
         headers: this.headers,
@@ -423,6 +531,7 @@ export class NecService {
   }
 
   editUser(user) {
+    this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/user/api/v1/update_user", user, {
         headers: this.headers,
@@ -432,6 +541,7 @@ export class NecService {
 
   ///////////////////REPORTS API//////////////
   getAuditLogs() {
+    this.checkJWTValid();
     return this.http
       .get(this.baseUrl + "/api/v1/audit/get_all_audit_logs", {
         headers: this.headers,
@@ -440,6 +550,7 @@ export class NecService {
   }
 
   getFeeLogs(dateRange) {
+    this.checkJWTValid();
     return this.http
       .post(
         this.reportingUrl + "/nec-report/api/v1/nec_fee_report",
@@ -452,6 +563,7 @@ export class NecService {
   }
 
   getNecReport(data) {
+    this.checkJWTValid();
     return this.http
       .post(this.reportingUrl + "/nec-report/api/v1/get_nec_report", data, {
         headers: this.headers,
@@ -460,6 +572,7 @@ export class NecService {
   }
 
   getUploadReport(data) {
+    this.checkJWTValid();
     return this.http
       .post(this.reportingUrl + "/upload/api/v1/get_uploads_report", data, {
         headers: this.headers,

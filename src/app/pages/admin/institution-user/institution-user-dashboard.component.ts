@@ -28,7 +28,7 @@ export class InstitutionUserDashboardComponent implements OnInit {
   loading: boolean;
   showInstitution: any;
   bankList: any;
-  selected = "";
+  // selected = "";
   bankCode = this.necService.user.bankCode;
 
   ngOnInit(): void {
@@ -171,9 +171,6 @@ export class InstitutionUserDashboardComponent implements OnInit {
   }
 
   getUsers(code?, type?) {
-    console.log("++++++++++++++++");
-    console.log(this.form);
-    console.log(this.form.value.bank.type);
     this.necService
       .getUsersByInstitution(
         this.necService.user.email,
@@ -233,8 +230,7 @@ export class InstitutionUserDashboardComponent implements OnInit {
       })
       .onClose.subscribe((event) => {
         if (event) {
-          this.selected = event;
-          this.getUsers(event);
+          this.getUsers(event.institutionCode, event.type);
         }
       });
   }

@@ -1,11 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { NbWindowRef } from "@nebular/theme";
-import { NecService } from "../../../../../@core/mock/nec.service";
-import { FormGroup, FormControl } from "@angular/forms";
-import { Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NbToastrService, NbWindowRef } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
-import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
-import { NbToastrService } from "@nebular/theme";
+import { NecService } from "../../../../../@core/mock/nec.service";
 
 @Component({
   template: `
@@ -42,8 +39,8 @@ import { NbToastrService } from "@nebular/theme";
         nbButton
         type="submit"
         (click)="onSaveFile()"
-        [status]="statuses[0]"
-        [shape]="shapes[2]"
+        status="primary"
+        shape="round"
         [nbSpinner]="loading"
         nbSpinnerStatus="danger"
         [disabled]="loading || !fileType || !form.valid"
@@ -61,14 +58,6 @@ export class UploadFileComponent implements OnInit {
   institutions: any = [];
   roles: any = [];
   filesToUpload: File[] | null = [];
-  statuses: NbComponentStatus[] = [
-    "primary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ];
-  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   source: LocalDataSource = new LocalDataSource();
   response: any;
   loading: boolean = false;

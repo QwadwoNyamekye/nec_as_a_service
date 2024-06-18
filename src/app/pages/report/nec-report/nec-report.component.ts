@@ -1,17 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { LocalDataSource } from "ng2-smart-table";
-import { NecService } from "../../../@core/mock/nec.service";
 import { DatePipe } from "@angular/common";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import {
-  NbToastrService,
-  NbComponentShape,
-  NbComponentStatus,
-  NbDateService,
-} from "@nebular/theme";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NbDateService, NbToastrService } from "@nebular/theme";
+import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
-import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
+import { LocalDataSource } from "ng2-smart-table";
+import { NecService } from "../../../@core/mock/nec.service";
 
 @Component({
   selector: "ngx-nec-report",
@@ -26,21 +21,14 @@ export class NecReportComponent implements OnInit, OnDestroy {
   listener: any;
   receivedData: any;
   form: FormGroup;
-  bankList: Object;
+  bankList: any;
   max: Date;
   min: Date;
-  institutions: Object;
-  showInstitution: Boolean = true;
-  institutionCode;
-  loading: boolean = false;
-  statuses: NbComponentStatus[] = [
-    "primary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ];
-  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
+  institutions: any;
+  showInstitution = false;
+  showBank = false;
+  institutionCode = this.necService.user.institutionCode;
+  loading = false;
   doc = new jsPDF("landscape");
   settings = {
     pager: {
@@ -134,43 +122,80 @@ export class NecReportComponent implements OnInit, OnDestroy {
       this.source.load(this.receivedData);
     };
 
-    if (
-      this.necService.user.roleId == "2" ||
-      this.necService.user.roleId == "3" ||
-      this.necService.user.roleId == "4"
-    ) {
-      this.institutionCode = this.necService.user.institutionCode;
-      this.showInstitution = false;
-    }
-
     this.max = this.dateService.addDay(this.dateService.today(), 0);
 
     window.addEventListener("message", this.listener);
 
     this.form = new FormGroup({
-      type: new FormControl(""),
-      destBank: new FormControl(""),
-      endDate: new FormControl("", Validators.required),
       startDate: new FormControl("", Validators.required),
+      endDate: new FormControl("", Validators.required),
+      destBank: new FormControl(""),
+      bankCode: new FormControl(""),
       code: new FormControl(""),
     });
 
-    /////GET BANKS///////////////
-    this.necService.getBanks().subscribe(
-      (data) => {
-        this.bankList = data;
-      },
-      (error) => {},
-      () => {}
-    );
+    if (["1", "5", "6"].includes(this.necService.user.roleId)) {
+      // this.showInstitution = true;
+      this.showBank = true;
+    } else if (["2", "8"].includes(this.necService.user.roleId)) {
+      this.showInstitution = true;
+      this.showBank = false;
+      this.getInstitutions(this.necService.user.institutionCode);
+      this.form
+        .get("bankCode")
+        .patchValue(this.necService.user.institutionCode);
+    } else if (["3", "4", "9"].includes(this.necService.user.roleId)) {
+      // this.showInstitution = false;
+      this.showBank = false;
+      this.form.get("code").patchValue(this.necService.user.institutionCode);
+      this.form.get("bankCode").patchValue(this.necService.user.bankCode);
+      console.log(this.necService.user.bankCode);
+    }
 
-    this.necService.getInstitutions().subscribe(
+    /////GET BANKS///////////////
+    this.necService
+      .getInstitutionsByBank(this.necService.user.institutionCode)
+      .subscribe(
+        (data) => {
+          this.bankList = data;
+          // if (this.necService.user.roleId == "1") {
+          this.bankList = this.bankList.filter(
+            (bank) => !bank.code.includes("INS-NEC-0000")
+          );
+          // }
+        },
+        (_error) => {},
+        () => {
+          this.bankList = this.bankList.sort(this.compare);
+        }
+      );
+  }
+
+  getInstitutions(bank) {
+    this.necService.getInstitutionsByBank(bank).subscribe(
       (data) => {
         this.institutions = data;
+        if (this.institutions.length) {
+          this.showInstitution = true;
+          // if (this.necService.user.roleId == "1") {
+          this.institutions = this.institutions.filter(
+            (bank) => !bank.code.includes("INS-NEC-0000")
+          );
+          // }
+        } else {
+          this.showInstitution = false;
+        }
       },
-      (error) => {},
-      () => {}
+      (_error) => {},
+      () => {
+        this.institutions = this.institutions.sort(this.compare);
+      }
     );
+  }
+
+  selectBank(event) {
+    this.form.get("code").patchValue("");
+    this.getInstitutions(event);
   }
 
   downloadAsPDF() {
@@ -272,24 +297,19 @@ export class NecReportComponent implements OnInit, OnDestroy {
     }
   }
 
-  /////////////////FORM STUFF
-
   onSubmit(): void {
     this.loading = true;
+    // this.form.get("destBank").patchValue(this.form.value.bankCode);
     this.form.value.endDate.setHours("23");
     this.form.value.endDate.setMinutes("59");
     this.form.value.endDate.setSeconds("59");
     this.form.value.endDate.setMilliseconds("999");
-    this.form.value.code = this.institutionCode
-      ? this.institutionCode
-      : this.form.value.code;
 
     this.necService.getNecReport(this.form.value).subscribe(
       (response) => {
         this.loading = false;
         this.response = response;
         this.source.load(this.response);
-        return response;
       },
       (error) => {
         this.loading = false;
@@ -305,9 +325,5 @@ export class NecReportComponent implements OnInit, OnDestroy {
       },
       () => {}
     );
-    //this.close();
-  }
-  close() {
-    //this.windowRef.close();
   }
 }

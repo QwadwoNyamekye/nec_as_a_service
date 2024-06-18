@@ -1,12 +1,11 @@
-import { Component, OnDestroy, Input } from "@angular/core";
-import { LocalDataSource } from "ng2-smart-table";
-import { NbWindowRef } from "@nebular/theme";
-import { NecService } from "../../../../../@core/mock/nec.service";
 import { DatePipe } from "@angular/common";
+import { Component, Input, OnDestroy } from "@angular/core";
+import { NbWindowRef } from "@nebular/theme";
 import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
-import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
+import { LocalDataSource } from "ng2-smart-table";
+import { NecService } from "../../../../../@core/mock/nec.service";
 
 @Component({
   selector: "ngx-single",
@@ -25,15 +24,6 @@ export class BulkSingleRecordsComponent implements OnDestroy {
   receivedData: any;
   loading: boolean = true;
   doc = new jsPDF("landscape");
-  statuses: NbComponentStatus[] = [
-    "primary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ];
-  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
-
   settings = {
     pager: {
       perPage: 10,

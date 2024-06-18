@@ -1,11 +1,7 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { NbWindowRef } from "@nebular/theme";
-import { FormBuilder } from "@angular/forms";
-import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
-import { Validators } from "@angular/forms";
-import { FormGroup, FormControl } from "@angular/forms";
+import { Component, Input, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NbToastrService, NbWindowRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
-import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-user-edit-modal`,
@@ -52,8 +48,8 @@ import { NbToastrService } from "@nebular/theme";
         id="button"
         type="submit"
         class="button"
-        [status]="statuses[0]"
-        [shape]="shapes[2]"
+        status="primary"
+        shape="round"
         [nbSpinner]="loading"
         nbSpinnerStatus="danger"
       >
@@ -66,14 +62,6 @@ import { NbToastrService } from "@nebular/theme";
 export class EditInstitutionFormComponent implements OnInit {
   @Input() currentValues: any;
   form: FormGroup;
-  statuses: NbComponentStatus[] = [
-    "primary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ];
-  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   institutionStatuses: any = [
     { key: "ENABLE", value: true },
     { key: "DISABLE", value: false },

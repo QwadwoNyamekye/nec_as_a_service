@@ -1,18 +1,13 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { LocalDataSource } from "ng2-smart-table";
-import { NbWindowService } from "@nebular/theme";
-import { NecService } from "../../../@core/mock/nec.service";
 import { DatePipe } from "@angular/common";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import {
-  NbToastrService,
-  NbComponentShape,
-  NbComponentStatus,
-  NbDateService,
-} from "@nebular/theme"; //NbWindowRef
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { DomSanitizer } from "@angular/platform-browser";
+import { NbDateService, NbToastrService } from "@nebular/theme"; //NbWindowRef
+import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
-import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
+import { LocalDataSource } from "ng2-smart-table";
+import { NecService } from "../../../@core/mock/nec.service";
 
 @Component({
   selector: "ngx-upload-report",
@@ -29,14 +24,6 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   form: FormGroup;
   doc = new jsPDF("landscape");
   loading: boolean = false;
-  statuses: NbComponentStatus[] = [
-    "primary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ];
-  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   settings = {
     pager: {
       perPage: 13,
@@ -99,57 +86,77 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       },
     },
   };
-  bankList: Object;
+  bankList: any;
   max: Date;
   min: Date;
   startDate: Date;
-  institutions: Object;
+  institutions: any;
   colour: string;
   name: string;
-  domSanitizer: any;
   institutionCode: any;
-  showInstitution: boolean = true;
+  showInstitution = false;
+  showBank = false;
   uploadStatus: Object;
 
   constructor(
     private necService: NecService,
     private toastrService: NbToastrService,
-    protected dateService: NbDateService<Date>
+    protected dateService: NbDateService<Date>,
+    private domSanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
+    this.necService.checkJWTValid();
     this.listener = (event: MessageEvent) => {
       this.receivedData = event.data;
       this.source.load(this.receivedData);
     };
-
-    if (
-      this.necService.user.roleId == "2" ||
-      this.necService.user.roleId == "3" ||
-      this.necService.user.roleId == "4"
-    ) {
-      this.institutionCode = this.necService.user.institutionCode;
-      this.showInstitution = false;
-    }
 
     this.max = this.dateService.addDay(this.dateService.today(), 0);
 
     window.addEventListener("message", this.listener);
 
     this.form = new FormGroup({
-      status: new FormControl(""),
-      endDate: new FormControl("", Validators.required),
       startDate: new FormControl("", Validators.required),
+      endDate: new FormControl("", Validators.required),
       code: new FormControl(""),
+      status: new FormControl(""),
+      bankCode: new FormControl(""),
     });
 
-    this.necService.getInstitutions().subscribe(
-      (data) => {
-        this.institutions = data;
-      },
-      (error) => {},
-      () => {}
-    );
+    if (["1", "5", "6"].includes(this.necService.user.roleId)) {
+      // this.showInstitution = true;
+      this.showBank = true;
+    } else if (["2", "8"].includes(this.necService.user.roleId)) {
+      this.showInstitution = true;
+      this.showBank = false;
+      this.getInstitutions(this.necService.user.institutionCode);
+      this.form
+        .get("bankCode")
+        .patchValue(this.necService.user.institutionCode);
+    } else if (["3", "4", "9"].includes(this.necService.user.roleId)) {
+      // this.showInstitution = false;
+      this.showBank = false;
+      this.form.get("code").patchValue(this.necService.user.institutionCode);
+      this.form.get("bankCode").patchValue(this.necService.user.bankCode);
+    }
+
+    this.necService
+      .getInstitutionsByBank(this.necService.user.institutionCode)
+      .subscribe(
+        (data) => {
+          this.bankList = data;
+          // if (this.necService.user.roleId == "1") {
+          this.bankList = this.bankList.filter(
+            (bank) => !bank.code.includes("INS-NEC-0000")
+          );
+          // }
+        },
+        (_error) => {},
+        () => {
+          this.bankList = this.bankList.sort(this.compare);
+        }
+      );
 
     this.necService.getUploadStatus().subscribe(
       (data) => {
@@ -160,9 +167,37 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     );
   }
 
+  getInstitutions(bank) {
+    this.necService.getInstitutionsByBank(bank).subscribe(
+      (data) => {
+        this.institutions = data;
+        if (this.institutions.length) {
+          this.showInstitution = true;
+          // if (this.necService.user.roleId == "1") {
+          this.institutions = this.institutions.filter(
+            (bank) => !bank.code.includes("INS-NEC-0000")
+          );
+          // }
+        } else {
+          this.showInstitution = false;
+        }
+      },
+      (_error) => {},
+      () => {
+        this.institutions = this.institutions.sort(this.compare);
+      }
+    );
+  }
+
+  selectBank(event) {
+    this.form.get("code").patchValue("");
+    this.getInstitutions(event);
+  }
+
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }
+
   setMin(event) {
     this.min = event;
   }
@@ -270,24 +305,21 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     }
   }
 
-  /////////////////FORM STUFF
-
   onSubmit(): void {
     this.loading = true;
     this.form.value.endDate.setHours("23");
     this.form.value.endDate.setMinutes("59");
     this.form.value.endDate.setSeconds("59");
     this.form.value.endDate.setMilliseconds("999");
-    this.form.value.code = this.institutionCode
-      ? this.institutionCode
-      : this.form.value.code;
+    // this.form.value.code = this.institutionCode
+    //   ? this.institutionCode
+    //   : this.form.value.code;
 
     this.necService.getUploadReport(this.form.value).subscribe(
       (response) => {
+        this.loading = false;
         this.response = response;
         this.source.load(this.response);
-        this.loading = false;
-        return response;
       },
       (error) => {
         this.loading = false;
@@ -303,13 +335,12 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       },
       () => {}
     );
-    //this.close();
-  }
-  close() {
-    //this.windowRef.close();
   }
 
   getHtmlForCell(value: string) {
+    console.log("))))))))))))))))");
+    console.log(value);
+    console.log(typeof value);
     if (value === "0") {
       this.colour = "lightcoral";
       this.name = "UPLOADING";
@@ -322,9 +353,12 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     } else if (value === "3") {
       this.colour = "yellow";
       this.name = "PROCESSING";
-    } else {
+    } else if (value === "4") {
       this.colour = "#55DD33";
       this.name = "COMPLETED";
     }
+    return this.domSanitizer.bypassSecurityTrustHtml(
+      `<nb-card-body style="background-color: ${this.colour}; border-radius: 12px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
+    );
   }
 }

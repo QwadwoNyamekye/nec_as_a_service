@@ -3,45 +3,23 @@
     <div class="row">
       <div class="col">{{ title }}</div>
       <!-- <div class="row"> -->
-      <button
-        style="float: right; margin-right: 10px; margin-bottom: 15px"
-        [status]="statuses[0]"
-        [shape]="shapes[1]"
-        (click)="downloadAsCSV()"
-        nbButton
-      >
+      <button style="float: right; margin-right: 10px; margin-bottom: 15px" status="primary" shape="semi-round"
+        (click)="downloadAsCSV()" nbButton>
         Download CSV
       </button>
-      <button
-        style="float: right; margin-right: 10px; margin-bottom: 15px"
-        [status]="statuses[0]"
-        [shape]="shapes[1]"
-        (click)="downloadAsPDF()"
-        nbButton
-      >
+      <button style="float: right; margin-right: 10px; margin-bottom: 15px" status="primary" shape="semi-round"
+        (click)="downloadAsPDF()" nbButton>
         Download PDF
       </button>
       <!-- </div> -->
     </div>
   </div>
 
-  <ng2-smart-table
-    [settings]="settings"
-    [source]="source"
-    (deleteConfirm)="onDeleteConfirm($event)"
-    (edit)="onEditRowSelect($event)"
-    [nbSpinner]="loading"
-    nbSpinnerStatus="danger"
-  >
+  <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"
+    (edit)="onEditRowSelect($event)" [nbSpinner]="loading" nbSpinnerStatus="danger">
   </ng2-smart-table>
 
-  <button
-    style="float: right; margin-right: 10px"
-    [shape]="shapes[2]"
-    [status]="statuses[4]"
-    (click)="close()"
-    nbButton
-  >
+  <button style="float: right; margin-right: 10px" shape="round" status="danger" (click)="close()" nbButton>
     Close
   </button>
 </div>

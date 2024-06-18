@@ -1,11 +1,7 @@
-import { Component, Output } from "@angular/core";
-import { NbWindowRef } from "@nebular/theme";
+import { Component, EventEmitter, Output } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NbToastrService, NbWindowRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
-import { FormGroup, FormControl } from "@angular/forms";
-import { Validators } from "@angular/forms";
-import { EventEmitter } from "@angular/core";
-import { NbComponentShape, NbComponentStatus } from "@nebular/theme";
-import { NbToastrService } from "@nebular/theme";
 
 @Component({
   template: `
@@ -28,9 +24,9 @@ import { NbToastrService } from "@nebular/theme";
       <button
         nbButton
         type="submit"
-        [status]="statuses[0]"
+        status="primary"
         (click)="onSubmit()"
-        [shape]="shapes[2]"
+        shape="round"
         [nbSpinner]="loading"
         nbSpinnerStatus="danger"
         [disabled]="loading"
@@ -43,14 +39,6 @@ import { NbToastrService } from "@nebular/theme";
 })
 export class SingleNECRequestComponent {
   @Output() newItemEvent = new EventEmitter<any>();
-  statuses: NbComponentStatus[] = [
-    "primary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ];
-  shapes: NbComponentShape[] = ["rectangle", "semi-round", "round"];
   institution_data: any;
   items: any;
   form: FormGroup;

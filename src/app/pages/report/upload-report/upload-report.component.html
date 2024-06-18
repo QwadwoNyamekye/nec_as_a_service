@@ -5,29 +5,38 @@
   <nb-card-body id="reportForm">
     <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="row">
-        <div class="col-md-3">
-          <label for="subject">Start Date :</label><span style="color: red;">*</span><br>
-          <input fullWidth nbInput formControlName="startDate" placeholder="Start Date" [nbDatepicker]="picker1">
-          <nb-datepicker #picker1 [max]="max" (dateChange)="setMin($event)"></nb-datepicker>
+        <div class="row col-md-3">
+          <div class="col">
+            <label for="subject">Start Date :</label><span style="color: red;">*</span><br>
+            <input fullWidth nbInput formControlName="startDate" placeholder="Start Date" [nbDatepicker]="picker1">
+            <nb-datepicker #picker1 [max]="max" (dateChange)="setMin($event)"></nb-datepicker>
+          </div>
+          <div class="col">
+            <label for="subject">End Date :</label><span style="color: red;">*</span><br>
+            <input fullWidth nbInput formControlName="endDate" placeholder="End Date" [nbDatepicker]="picker2">
+            <nb-datepicker #picker2 [max]="max" [min]="min"></nb-datepicker>
+          </div>
         </div>
-        <div class="col-md-3">
-          <label for="subject">End Date :</label><span style="color: red;">*</span><br>
-          <input fullWidth nbInput formControlName="endDate" placeholder="End Date" [nbDatepicker]="picker2">
-          <nb-datepicker #picker2 [max]="max" [min]="min"></nb-datepicker>
+        <div *ngIf="this.showBank" class="col-md-3">
+          <label class="text-label" for="text">Bank:</label><br>
+          <nb-select fullWidth formControlName="bankCode" placeholder="Select Bank"
+            (selectedChange)="selectBank($event)">
+            <nb-option *ngFor="let i of this.bankList" [value]="i.code">
+              {{ i.name }}
+            </nb-option>
+          </nb-select>
         </div>
         <div *ngIf="this.showInstitution" class="col-md-3">
-          <label class="text-label" for="text">Institutions :</label><br>
-          <nb-select fullWidth formControlName="code" placeholder="Institutions">
-            <nb-option value="">Select Institution</nb-option>
+          <label class="text-label" for="text">Institutions:</label><br>
+          <nb-select fullWidth formControlName="code" placeholder="Select Institution">
             <nb-option *ngFor="let i of this.institutions" [value]="i.code">
               {{ i.name }}
             </nb-option>
           </nb-select>
         </div>
-        <div class="col-md-3">
-          <label class="text-label" for="text">Status :</label><br>
-          <nb-select fullWidth formControlName="status" placeholder="Status">
-            <nb-option value="">Select Status</nb-option>
+        <div class="col-md-1.5">
+          <label class="text-label" for="text">Status:</label><br>
+          <nb-select fullWidth formControlName="status" placeholder="Select Status">
             <nb-option *ngFor="let i of this.uploadStatus" [value]="i.id">
               {{ i.name }}
             </nb-option>
@@ -35,7 +44,7 @@
         </div>
         <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button fullWidth nbButton status="primary" outline type="submit" [status]="statuses[0]" [shape]="shapes[2]"
+          <button fullWidth nbButton status="primary" outline type="submit" status="primary" shape="round"
             [nbSpinner]="loading" nbSpinnerStatus="danger" [disabled]="loading || !form.valid">
             Submit
           </button>
@@ -47,22 +56,24 @@
       <div class="row">
         <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0 || this.response.length == 0" [status]="statuses[0]"
-            [shape]="shapes[1]" (click)="downloadAsCSV()">
+          <button fullWidth nbButton type="button"
+            [disabled]="!this.response || this.response.length == 0 || this.response.length == 0" status="primary"
+            shape="semi-round" (click)="downloadAsCSV()">
             Download CSV
           </button>
         </div>
         <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
-          <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0 || this.response.length == 0" [status]="statuses[0]"
-            [shape]="shapes[1]" (click)="downloadAsPDF()">
+          <button fullWidth nbButton type="button"
+            [disabled]="!this.response || this.response.length == 0 || this.response.length == 0" status="primary"
+            shape="semi-round" (click)="downloadAsPDF()">
             Download PDF
           </button>
         </div>
       </div>
       <!-- <br>
         <div class="col-md-2">
-          <button  fullWidth nbButton type="submit" [status]="statuses[0]" (click)="onSubmit()" [shape]="shapes[1]">
+          <button  fullWidth nbButton type="submit" status="primary" (click)="onSubmit()" shape="semi-round">
             Submit
           </button>
         </div> -->

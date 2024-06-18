@@ -1,17 +1,16 @@
+import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { LocalDataSource } from "ng2-smart-table";
-import { NbDialogService } from "@nebular/theme";
-import { NbWindowService, NbWindowControlButtonsConfig } from "@nebular/theme";
-import { NecService } from "../../../../@core/mock/nec.service";
-import { SubmitForProcessingComponent } from "../modals/submit-for-processing/submit-for-processing.component";
 import { DomSanitizer } from "@angular/platform-browser";
+import { NbDialogService, NbWindowControlButtonsConfig, NbWindowService } from "@nebular/theme";
+import { LocalDataSource } from "ng2-smart-table";
 import { DataSource } from "ng2-smart-table/lib/lib/data-source/data-source";
 import { Deferred } from "ng2-smart-table/lib/lib/helpers";
-import { DatePipe } from "@angular/common";
-import { SubmitForAuthorizationComponent } from "../modals/submit-for-authorization/submit-for-authorization.component";
-import { BulkSingleRecordsComponent } from "../modals/upload_file_single/upload_file_single.component";
-import { RejectFileUploadComponent } from "../modals/reject-file-upload/reject-file-upload.component";
+import { NecService } from "../../../../@core/mock/nec.service";
 import { DeclineFileUploadComponent } from "../modals/decline-file-upload/decline-file-upload.component";
+import { RejectFileUploadComponent } from "../modals/reject-file-upload/reject-file-upload.component";
+import { SubmitForAuthorizationComponent } from "../modals/submit-for-authorization/submit-for-authorization.component";
+import { SubmitForProcessingComponent } from "../modals/submit-for-processing/submit-for-processing.component";
+import { BulkSingleRecordsComponent } from "../modals/upload_file_single/upload_file_single.component";
 
 @Component({
   selector: "ngx-bulk",
@@ -140,9 +139,9 @@ export class BulkDeclinedUploadComponent implements OnInit {
     } else if (event.action == "expand") {
       this.openFileRecords(event);
     } else if (event.action == "reject") {
-      if (this.necService.user.roleId == "3") {
+      if (this.necService.user.roleId == "4") {
         this.declineFileUpload(event);
-      } else if (this.necService.user.roleId == "4") {
+      } else if (this.necService.user.roleId == "3") {
         this.rejectFileUpload(event);
       }
     }
