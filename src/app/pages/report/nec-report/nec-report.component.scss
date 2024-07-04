@@ -1,4 +1,4 @@
-@import '../../../@theme/styles/themes';
+@import "../../../@theme/styles/themes";
 
 @include nb-install-component() {
   nb-card {
@@ -7,15 +7,20 @@
   }
 }
 
+nb-card-body {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
 .full-screen {
-  width: 100%
+  width: 100%;
 }
 
 :host ::ng-deep ng2-smart-table thead th {
   text-align: center;
 }
 
-:host ::ng-deep ng2-smart-table tbody>tr>td {
+:host ::ng-deep ng2-smart-table tbody > tr > td {
   text-align: center;
 }
 
@@ -23,10 +28,11 @@
   text-align: center;
 }
 
-#reportForm{
+#reportForm {
   flex: none;
+  margin-left: 0px;
 }
 
-label{
+label {
   padding-top: 5px;
 }

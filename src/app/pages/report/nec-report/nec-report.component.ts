@@ -149,7 +149,6 @@ export class NecReportComponent implements OnInit, OnDestroy {
       this.showBank = false;
       this.form.get("code").patchValue(this.necService.user.institutionCode);
       this.form.get("bankCode").patchValue(this.necService.user.bankCode);
-      console.log(this.necService.user.bankCode);
     }
 
     /////GET BANKS///////////////
@@ -313,7 +312,7 @@ export class NecReportComponent implements OnInit, OnDestroy {
       },
       (error) => {
         this.loading = false;
-        this.toastrService.warning(
+        this.toastrService.danger(
           "NEC Report Request Failed: " + error.error.errorMessage,
           "NEC Report Request",
           {

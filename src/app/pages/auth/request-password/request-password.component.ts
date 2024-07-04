@@ -5,16 +5,9 @@
  */
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
+  Component
 } from "@angular/core";
-import { Router } from "@angular/router";
-import { NB_AUTH_OPTIONS } from "@nebular/auth";
-import { getDeepFromObject } from "@nebular/auth";
-import { NbRequestPasswordComponent } from "@nebular/auth";
-import { NbAuthService } from "@nebular/auth";
-import { NbAuthResult } from "@nebular/auth";
+import { NbAuthResult, NbRequestPasswordComponent, getDeepFromObject } from "@nebular/auth";
 
 @Component({
   selector: "nb-request-password-page",

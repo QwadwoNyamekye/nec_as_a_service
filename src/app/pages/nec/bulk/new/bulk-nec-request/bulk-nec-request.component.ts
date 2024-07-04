@@ -84,7 +84,7 @@ export class UploadFileComponent implements OnInit {
         this.fileType = true;
         this.filesToUpload.push(event.item(index));
       } else {
-        this.toastrService.warning(
+        this.toastrService.danger(
           "Invalid File Type: ." +
             event.item(index).name.split(".").pop() +
             " Only *.CSV* files accepted.",
@@ -118,7 +118,7 @@ export class UploadFileComponent implements OnInit {
         },
         (error) => {
           this.loading = false;
-          this.toastrService.warning(
+          this.toastrService.danger(
             "File Upload Failed: " + error.error.errorMessage,
             "Bulk File Upload",
             {
@@ -131,7 +131,7 @@ export class UploadFileComponent implements OnInit {
         () => {
           this.loading = false;
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "File Upload Failed: " + this.response.errorMessage,
               "Bulk File Upload",
               {

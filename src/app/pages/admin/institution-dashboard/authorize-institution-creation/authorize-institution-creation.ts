@@ -3,15 +3,15 @@ import { NbDialogRef, NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
-  selector: `ngx-institution-user-edit-modal`,
+  selector: `ngx-user-edit-modal`,
   template: `
     <nb-card>
       <nb-card-header
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()">
-          {{ this.getOption() }}
+        <button nbButton hero status="success" (click)="submit($event)">
+          {{ action }}
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
           Dismiss
@@ -19,51 +19,52 @@ import { NecService } from "../../../../@core/mock/nec.service";
       </nb-card-body>
     </nb-card>
   `,
-  styleUrls: ["change-institution-user-status.component.scss"],
+  styleUrls: ["authorize-institution-creation.scss"],
 })
-export class ChangeInstitutionUserStatusComponent implements OnInit {
+export class AuthorizeInstutionCreationComponent implements OnInit {
   @Input() title: string;
-  @Input() batchId: string;
-  @Input() submittedBy: string;
-  @Input() email: string;
-  @Input() status: boolean;
+  @Input() authorized: boolean;
+  @Input() code: string;
+  action: any;
   response: any;
 
   constructor(
-    protected ref: NbDialogRef<ChangeInstitutionUserStatusComponent>,
+    protected ref: NbDialogRef<AuthorizeInstutionCreationComponent>,
     public necService: NecService,
     private toastrService: NbToastrService
   ) {}
 
-  ngOnInit(): void {}
-
-  dismiss() {
-    this.ref.close();
-  }
-
-  getOption() {
-    if (this.status) {
-      return "Disable";
+  ngOnInit(): void {
+    if (this.authorized) {
+      // this.action = "Reject";
+      this.ref.close();
+      this.toastrService.success(
+        "Institution Already Authorized",
+        "Institution Creation",
+        { status: "success", destroyByClick: true, duration: 8000 }
+      );
+    } else {
+      this.action = "Authorize";
     }
-    return "Enable";
   }
 
-  submit() {
+  submit(event) {
     this.response = this.necService
-      .changeUserStatus({
-        email: this.email,
+      .authorizeInstitution({
+        code: this.code,
+        authorized: !this.authorized,
         createdBy: this.necService.user.email,
-        status: !this.status,
       })
       .subscribe(
         (response) => {
           this.response = response;
-          // window.parent.postMessage(this.service.getUsers());
+          // window.parent.postMessage(this.service.getInstitutions());
+          return response;
         },
         (error) => {
           this.toastrService.danger(
-            "User Status Change Failed: " + error.error.errorMessage,
-            "User Status Change",
+            "Institution Creation Failed: " + error.error.errorMessage,
+            "Institution Creation",
             {
               status: "danger",
               destroyByClick: true,
@@ -74,8 +75,8 @@ export class ChangeInstitutionUserStatusComponent implements OnInit {
         () => {
           if (this.response.errorCode != "0") {
             this.toastrService.danger(
-              "User Status Change Failed: " + this.response.errorMessage,
-              "User Status Change",
+              "Institution Creation Failed: " + this.response.errorMessage,
+              "Institution Creation",
               {
                 status: "danger",
                 destroyByClick: true,
@@ -84,13 +85,17 @@ export class ChangeInstitutionUserStatusComponent implements OnInit {
             );
           } else {
             this.toastrService.success(
-              "User Status Change Success",
-              "User Status Change",
+              "Institution Creation Success",
+              "Institution Creation",
               { status: "success", destroyByClick: true, duration: 8000 }
             );
             this.ref.close();
           }
         }
       );
+  }
+
+  dismiss() {
+    this.ref.close();
   }
 }

@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
-import { NbLogoutComponent } from "@nebular/auth";
-import { NbAuthResult } from "@nebular/auth";
+import { NbAuthResult, NbLogoutComponent } from "@nebular/auth";
 import { NecService } from "../../../@core/mock/nec.service";
 import { AppInjector } from "../auth.module";
 

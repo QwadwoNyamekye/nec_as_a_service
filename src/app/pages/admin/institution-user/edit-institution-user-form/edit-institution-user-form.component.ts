@@ -1,9 +1,8 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { NbWindowRef } from "@nebular/theme";
-import { NecService } from "../../../../@core/mock/nec.service";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Component, Input, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NbToastrService, NbWindowRef } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
-import { NbToastrService } from "@nebular/theme";
+import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
   template: `
@@ -133,7 +132,7 @@ export class EditInstitutionUserFormComponent implements OnInit {
         Validators.required
       ),
       role: new FormControl(this.currentValues.roleId, Validators.required),
-      phone: new FormControl(this.currentValues.phone, Validators.required),
+      phone: new FormControl(this.currentValues.phone),
       // emailAddress: new FormControl("", Validators.required),
     });
     // this.currentRole = this.currentValues.roleName
@@ -157,7 +156,7 @@ export class EditInstitutionUserFormComponent implements OnInit {
         },
         (error) => {
           this.loading = false;
-          this.toastrService.warning(
+          this.toastrService.danger(
             "User Edit Failed: " + error.error.errorMessage,
             "User Edit",
             {
@@ -170,7 +169,7 @@ export class EditInstitutionUserFormComponent implements OnInit {
         () => {
           this.loading = false;
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "User Edit Failed: " + this.response.errorMessage,
               "User Edit",
               {

@@ -1,10 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { NbWindowRef } from "@nebular/theme";
-import { NecService } from "../../../../@core/mock/nec.service";
-import { FormGroup, FormControl } from "@angular/forms";
-import { Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NbToastrService, NbWindowRef } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
-import { NbToastrService } from "@nebular/theme";
+import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
   template: `
@@ -182,7 +180,7 @@ export class AddInstutionUserFormComponent implements OnInit {
         Validators.required,
         Validators.email,
       ]),
-      phoneNumber: new FormControl("", Validators.required),
+      phoneNumber: new FormControl(""),
     });
 
     if (
@@ -227,7 +225,7 @@ export class AddInstutionUserFormComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        this.toastrService.warning(
+        this.toastrService.danger(
           "User Creation Failed: " + error.error.errorMessage,
           "User Creation",
           {
@@ -240,7 +238,7 @@ export class AddInstutionUserFormComponent implements OnInit {
       () => {
         this.loading = false;
         if (this.response.errorCode != "0") {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "User Creation Failed: " + this.response.errorMessage,
             "User Creation",
             {

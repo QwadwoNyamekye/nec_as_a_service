@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { NbDialogRef } from "@nebular/theme";
-import { NbToastrService } from "@nebular/theme";
+import { NbDialogRef, NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
@@ -59,7 +58,7 @@ export class ChangeInstitutionStatusComponent implements OnInit {
           return response;
         },
         (error) => {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "Institution Status Change Failed: " + error.error.errorMessage,
             "Institution Status Change",
             {
@@ -71,7 +70,7 @@ export class ChangeInstitutionStatusComponent implements OnInit {
         },
         () => {
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "Institution Status Change Failed: " + this.response.errorMessage,
               "Institution Status Change",
               {

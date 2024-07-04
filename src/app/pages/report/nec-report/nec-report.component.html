@@ -58,13 +58,13 @@
             Download CSV
           </button>
         </div>
-        <div class="col-md-2">
+        <!-- <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
           <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0"
             status="primary" shape="semi-round" (click)="downloadAsPDF()">
             Download PDF
           </button>
-        </div>
+        </div> -->
       </div>
       <!-- <br>
         <div class="col-md-2">
@@ -75,8 +75,10 @@
     </form>
   </nb-card-body>
   <nb-card-body>
-    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"
-      (edit)="onEditRowSelect($event)">
-    </ng2-smart-table>
+    <div>
+      <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"
+        (edit)="onEditRowSelect($event)" style="margin-left: 20px !important">
+      </ng2-smart-table>
+    </div>
   </nb-card-body>
 </nb-card>

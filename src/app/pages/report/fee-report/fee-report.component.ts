@@ -1,15 +1,13 @@
 import { DatePipe } from "@angular/common";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import {
-  NbDateService,
-  NbToastrService
-} from "@nebular/theme";
+import { NbDateService, NbToastrService } from "@nebular/theme";
 import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
 import { LocalDataSource } from "ng2-smart-table";
 import { NecService } from "../../../@core/mock/nec.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "ngx-fee-report",
@@ -26,10 +24,12 @@ export class FeeReportComponent implements OnInit, OnDestroy {
   form: FormGroup;
   max: Date;
   min: Date;
-  institutions: Object;
-  showInstitution: Boolean = true;
+  institutions: any;
+  showInstitution = false;
   institutionCode;
   loading: boolean = false;
+  showBank = true;
+  bankList: any;
   doc = new jsPDF("landscape");
   settings = {
     pager: {
@@ -108,14 +108,14 @@ export class FeeReportComponent implements OnInit, OnDestroy {
       this.source.load(this.receivedData);
     };
 
-    if (
-      this.necService.user.roleId == "2" ||
-      this.necService.user.roleId == "3" ||
-      this.necService.user.roleId == "4"
-    ) {
-      this.institutionCode = this.necService.user.institutionCode;
-      this.showInstitution = false;
-    }
+    // if (
+    //   this.necService.user.roleId == "2" ||
+    //   this.necService.user.roleId == "3" ||
+    //   this.necService.user.roleId == "4"
+    // ) {
+    //   this.institutionCode = this.necService.user.institutionCode;
+    //   this.showInstitution = false;
+    // }
 
     this.max = this.dateService.addDay(this.dateService.today(), 0);
 
@@ -124,11 +124,56 @@ export class FeeReportComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       endDate: new FormControl("", Validators.required),
       startDate: new FormControl("", Validators.required),
+      code: new FormControl(""),
+      destBank: new FormControl(""),
     });
+
+    this.necService
+      .getInstitutionsByBank(this.necService.user.institutionCode)
+      .subscribe(
+        (data) => {
+          this.bankList = data;
+          // if (this.necService.user.roleId == "1") {
+          this.bankList = this.bankList.filter(
+            (bank) => !bank.code.includes("INS-NEC-0000")
+          );
+          // }
+        },
+        (_error) => {},
+        () => {
+          this.bankList = this.bankList.sort(this.compare);
+        }
+      );
+  }
+
+  getInstitutions(bank) {
+    this.necService.getInstitutionsByBank(bank).subscribe(
+      (data) => {
+        this.institutions = data;
+        if (this.institutions.length) {
+          this.showInstitution = true;
+          // if (this.necService.user.roleId == "1") {
+          this.institutions = this.institutions.filter(
+            (bank) => !bank.code.includes("INS-NEC-0000")
+          );
+          // }
+        } else {
+          this.showInstitution = false;
+        }
+      },
+      (_error) => {},
+      () => {
+        this.institutions = this.institutions.sort(this.compare);
+      }
+    );
+  }
+
+  selectBank(event) {
+    this.form.get("code").patchValue("");
+    this.getInstitutions(event);
   }
 
   downloadAsPDF() {
-    console.log(this.response);
     autotable(this.doc, {
       head: [],
       body: this.response.data,
@@ -184,7 +229,7 @@ export class FeeReportComponent implements OnInit, OnDestroy {
       ],
     };
     new Angular5Csv(
-      this.response.data,
+      this.response,
       this.necService.user.institutionCode +
         "_SINGLE_FEE_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
@@ -229,7 +274,28 @@ export class FeeReportComponent implements OnInit, OnDestroy {
     this.form.value.endDate.setSeconds("59");
     this.form.value.endDate.setMilliseconds("999");
 
-    this.necService.getFeeLogs(this.form.value).subscribe(
+    var object = {
+      startDate: this.form.value.startDate,
+      endDate: this.form.value.endDate,
+    };
+
+    var feeRequest: Observable<object>;
+
+    if (this.form.value.destBank === "" && this.form.value.code === "") {
+      feeRequest = this.necService.getFeeLogs(object);
+    } else if (this.form.value.code != "") {
+      feeRequest = this.necService.getFeeLogsByInstitution(
+        object,
+        this.form.value.code
+      );
+    } else if (this.form.value.destBank != "") {
+      feeRequest = this.necService.getFeeLogsByBank(
+        object,
+        this.form.value.destBank
+      );
+    }
+
+    feeRequest.subscribe(
       (response) => {
         this.loading = false;
         this.response = response;
@@ -237,7 +303,7 @@ export class FeeReportComponent implements OnInit, OnDestroy {
       },
       (error) => {
         this.loading = false;
-        this.toastrService.warning(
+        this.toastrService.danger(
           "Fee Report Request Failed: " + error.error.errorMessage,
           "Fee Report Request",
           {
@@ -249,9 +315,5 @@ export class FeeReportComponent implements OnInit, OnDestroy {
       },
       () => {}
     );
-    //this.close();
-  }
-  close() {
-    //this.windowRef.close();
   }
 }

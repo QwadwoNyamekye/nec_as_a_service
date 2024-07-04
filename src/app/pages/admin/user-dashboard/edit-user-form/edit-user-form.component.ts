@@ -98,12 +98,22 @@ export class EditUserFormComponent implements OnInit {
       },
       (error) => {}
     );
+
     this.necService.getRoles().subscribe(
       (data) => {
         this.roles = data;
+        if (this.necService.user.roleId == "1") {
+          this.roles = this.roles.filter(
+            (role) =>
+              !role.name.includes("Bank") && !role.name.includes("Corporate")
+          );
+        } else if (this.necService.user.roleId == "2") {
+          this.roles = this.roles.filter((role) => role.name.includes("Bank"));
+        }
       },
       (error) => {}
     );
+    
     this.form = new FormGroup({
       firstName: new FormControl(this.name[0], Validators.required),
       lastName: new FormControl(this.name[1], Validators.required),
@@ -112,7 +122,7 @@ export class EditUserFormComponent implements OnInit {
         Validators.required
       ),
       role: new FormControl(this.currentValues.roleId, Validators.required),
-      phone: new FormControl(this.currentValues.phone, Validators.required),
+      phone: new FormControl(this.currentValues.phone),
       // emailAddress: new FormControl("", Validators.required),
     });
     // this.currentRole = this.currentValues.roleName
@@ -140,7 +150,7 @@ export class EditUserFormComponent implements OnInit {
         // window.parent.postMessage(this.necService.getUsers());
       },
       (error) => {
-        this.toastrService.warning(
+        this.toastrService.danger(
           "User Edit Failed: " + error.error.errorMessage,
           "User Edit",
           {
@@ -152,7 +162,7 @@ export class EditUserFormComponent implements OnInit {
       },
       () => {
         if (this.response.errorCode != "0") {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "User Edit Failed: " + this.response.errorMessage,
             "User Edit",
             {

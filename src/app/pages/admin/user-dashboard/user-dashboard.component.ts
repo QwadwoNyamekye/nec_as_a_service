@@ -22,7 +22,7 @@ export class AdminDashboardComponent implements OnInit {
   listener: any;
   receivedData: any;
   source: LocalDataSource = new LocalDataSource();
-  users: any;
+  users: any = [];
   row: any;
 
   ngOnInit(): void {

@@ -17,7 +17,7 @@ export class BulkSingleRecordsComponent implements OnDestroy {
   @Input() batchId: any;
 
   source: LocalDataSource = new LocalDataSource();
-  singleNECList: any;
+  singleNECList: any = [];
   stompClient: any;
   response: any;
   listener: any;

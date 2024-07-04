@@ -79,10 +79,10 @@ export class EditInstitutionFormComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl(this.currentValues.name, Validators.required),
       status: new FormControl(this.currentValues.status, [Validators.required]),
-      phone: new FormControl(this.currentValues.phone, [
-        Validators.required,
-        Validators.pattern("[0-9]{1,12}"),
-      ]),
+      phone: new FormControl(
+        this.currentValues.phone,
+        Validators.pattern("[0-9]{1,12}")
+      ),
       fee: new FormControl(this.currentValues.fee, Validators.required),
     });
   }
@@ -105,7 +105,7 @@ export class EditInstitutionFormComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        this.toastrService.warning(
+        this.toastrService.danger(
           "Institution Edit Failed: " + error.error.errorMessage,
           "Institution Edit",
           {
@@ -118,7 +118,7 @@ export class EditInstitutionFormComponent implements OnInit {
       () => {
         this.loading = false;
         if (this.response.errorCode != "0") {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "Institution Edit Failed: " + this.response.errorMessage,
             "Institution Edit",
             {

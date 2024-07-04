@@ -1,9 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { NbWindowRef } from "@nebular/theme";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NbToastrService, NbWindowRef } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
-import { FormGroup, FormControl } from "@angular/forms";
-import { Validators } from "@angular/forms";
-import { NbToastrService } from "@nebular/theme";
 
 @Component({
   template: `
@@ -87,10 +85,7 @@ export class AddInstitutionFormComponent implements OnInit {
     // Initialize the form model with three form controls
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
-      phone: new FormControl("", [
-        Validators.required,
-        Validators.pattern("[0-9]{1,12}"),
-      ]),
+      phone: new FormControl("", Validators.pattern("[0-9]{1,12}")),
       fee: new FormControl(0, Validators.required),
       code: new FormControl(this.code, Validators.required),
     });
@@ -122,7 +117,7 @@ export class AddInstitutionFormComponent implements OnInit {
         return response;
       },
       (error) => {
-        this.toastrService.warning(
+        this.toastrService.danger(
           "Institution Creation Failed: " + error.error.errorMessage,
           "Institution Creation",
           {
@@ -134,7 +129,7 @@ export class AddInstitutionFormComponent implements OnInit {
       },
       () => {
         if (this.response.errorCode != "0") {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "Institution Creation Failed: " + this.response.errorMessage,
             "Institution Creation",
             {

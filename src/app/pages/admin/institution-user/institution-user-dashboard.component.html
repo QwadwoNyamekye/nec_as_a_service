@@ -1,21 +1,21 @@
 <nb-card>
   <nb-card-header>
     <form class="form" [formGroup]="form" (ngSubmit)="getUsers()">
-      <div class="row">
-        <div class="col-md-3">
+      <div class="row col-12">
+        <div class="col-3">
           <nb-select fullWidth formControlName="bank">
             <nb-option *ngFor="let i of this.bankList" [value]="i">
               {{ i.name }}
             </nb-option>
           </nb-select>
         </div>
-        <div class="col-md-1">
+        <div class="col-1">
           <button fullWidth nbButton outline status="primary" type="submit" shape="semi-round" size="small"
             [nbSpinner]="loading" nbSpinnerStatus="danger" [disabled]="loading || !form.valid">
             Submit
           </button>
         </div>
-        <div class="offset-md-7 col-md-1">
+        <div class="offset-7 col-1">
           <button (click)="addUser()" nbButton status="success" type="button" outline>
             Add User
           </button>

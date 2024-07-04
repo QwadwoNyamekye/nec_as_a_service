@@ -52,7 +52,7 @@ export class SubmitForProcessingComponent implements OnInit {
           this.loading = true;
           this.response = data;
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "File Processing Failed: " + this.response.errorMessage,
               "Bulk File Processing",
               {

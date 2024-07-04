@@ -88,7 +88,7 @@ export class SingleNECRequestComponent {
             }
           );
         } else {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "Single NEC Request Failed: " + response.errorMessage,
             "Single NEC Request",
             {
@@ -103,7 +103,7 @@ export class SingleNECRequestComponent {
       },
       (error) => {
         this.loading = false;
-        this.toastrService.warning(
+        this.toastrService.danger(
           "Single NEC Request Failed: " + error.error.errorMessage,
           "Single NEC Request",
           {

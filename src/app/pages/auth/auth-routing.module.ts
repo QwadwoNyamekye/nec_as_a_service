@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { NbAuthComponent } from "./auth.component";
-import { LoginComponent } from "./login/login.component";
-import { ChangePassword } from "./change-password/change-password.component";
-import { RequestPasswordComponent } from "./request-password/request-password.component";
 import { AuthAuthGuard } from "./auth-auth-guard.service";
+import { NbAuthComponent } from "./auth.component";
+import { ChangePassword } from "./change-password/change-password.component";
+import { LoginComponent } from "./login/login.component";
+import { RequestPasswordComponent } from "./request-password/request-password.component";
 
 export const routes: Routes = [
   {

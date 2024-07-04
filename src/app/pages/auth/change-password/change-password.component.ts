@@ -6,9 +6,7 @@ import {
   OnInit,
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { NB_AUTH_OPTIONS } from "@nebular/auth";
-import { getDeepFromObject } from "@nebular/auth";
-import { NbAuthService } from "@nebular/auth";
+import { NB_AUTH_OPTIONS, NbAuthService, getDeepFromObject } from "@nebular/auth";
 import { NecService } from "../../../@core/mock/nec.service";
 
 @Component({

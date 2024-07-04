@@ -1,10 +1,7 @@
 import { DatePipe } from "@angular/common";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import {
-  NbDateService,
-  NbToastrService
-} from "@nebular/theme"; //NbWindowRef
+import { NbDateService, NbToastrService } from "@nebular/theme"; //NbWindowRef
 import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
@@ -218,7 +215,7 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
         return response;
       },
       (error) => {
-        this.toastrService.warning(
+        this.toastrService.danger(
           "Audit Log Request Failed: " + error.error.errorMessage,
           "Audit Log Request",
           {
@@ -230,9 +227,5 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
       },
       () => {}
     );
-  }
-
-  close() {
-    //this.windowRef.close();
   }
 }

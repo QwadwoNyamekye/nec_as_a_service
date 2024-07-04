@@ -4,7 +4,7 @@
     <button *ngIf="this.necService.user.roleId == '4'" style="float: right; margin-left: 10px;"
       (click)="makeNECRequest()" nbButton status="primary" outline>Make NEC Request</button>
     <button style="float: right; margin-right: 10px" (click)="downloadAsCSV()" nbButton>Download CSV</button>
-    <button style="float: right; margin-right: 10px" (click)="downloadAsPDF()" nbButton>Download PDF</button>
+    <!-- <button style="float: right; margin-right: 10px" (click)="downloadAsPDF()" nbButton>Download PDF</button> -->
   </nb-card-header>
   <nb-card-body>
     <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"

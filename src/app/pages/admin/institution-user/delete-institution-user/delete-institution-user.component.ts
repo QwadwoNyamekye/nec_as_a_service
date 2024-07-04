@@ -1,7 +1,6 @@
 import { Component, Input } from "@angular/core";
-import { NbDialogRef } from "@nebular/theme";
+import { NbDialogRef, NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
-import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-institution-user-delete-modal`,
@@ -51,7 +50,7 @@ export class DeleteInstitutionUserComponent {
           this.response = response;
         },
         (error) => {
-          this.toastrService.warning(
+          this.toastrService.danger(
             this.data.name + " Deletion Failed: " + error.error.errorMessage,
             "Delete User",
             {
@@ -63,7 +62,7 @@ export class DeleteInstitutionUserComponent {
         },
         () => {
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               this.data.name +
                 " Deletion Failed: " +
                 this.response.errorMessage,

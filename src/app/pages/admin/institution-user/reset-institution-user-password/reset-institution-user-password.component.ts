@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { NbDialogRef } from "@nebular/theme";
+import { NbDialogRef, NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
-import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-user-edit-modal`,
@@ -48,7 +47,7 @@ export class ResetInstitutionUserPasswordComponent implements OnInit {
           this.response = response;
         },
         (error) => {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "User Password Reset Failed: " + error.error.errorMessage,
             "User Password Reset",
             {
@@ -60,7 +59,7 @@ export class ResetInstitutionUserPasswordComponent implements OnInit {
         },
         () => {
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "User Password Reset Failed: " + this.response.errorMessage,
               "User Password Reset",
               {

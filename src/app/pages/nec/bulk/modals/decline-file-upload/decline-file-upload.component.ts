@@ -42,7 +42,7 @@ export class DeclineFileUploadComponent implements OnInit {
         (data) => {
           this.response = data;
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "Uploaded File Status Change: DENY Failed: " +
                 this.response.errorMessage,
               "Bulk File Processing",

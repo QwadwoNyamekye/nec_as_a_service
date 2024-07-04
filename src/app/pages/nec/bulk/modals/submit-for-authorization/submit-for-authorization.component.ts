@@ -58,7 +58,7 @@ export class SubmitForAuthorizationComponent implements OnInit {
         () => {
           this.loading = false;
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "File Authorization Failed: " + this.response.errorMessage,
               "Bulk File Authorization",
               {

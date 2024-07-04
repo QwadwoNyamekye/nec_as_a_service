@@ -23,12 +23,11 @@ export class InstitutionUserDashboardComponent implements OnInit {
   listener: any;
   receivedData: any;
   source: LocalDataSource = new LocalDataSource();
-  users: any;
+  users: any = [];
   form: FormGroup;
   loading: boolean;
   showInstitution: any;
   bankList: any;
-  // selected = "";
   bankCode = this.necService.user.bankCode;
 
   ngOnInit(): void {

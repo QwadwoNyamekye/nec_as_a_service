@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import {
-  Router,
   ActivatedRouteSnapshot,
+  Router,
   RouterStateSnapshot,
 } from "@angular/router";
 import { NbAuthService } from "@nebular/auth";

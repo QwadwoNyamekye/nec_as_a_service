@@ -1,12 +1,13 @@
+import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
+import { DomSanitizer } from "@angular/platform-browser";
+import { NbDialogService, NbWindowService } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
-import { NbWindowService, NbDialogService } from "@nebular/theme";
 import { NecService } from "../../../@core/mock/nec.service";
 import { AddInstitutionFormComponent } from "./add-institution-form/add-institution-form.component";
-import { DomSanitizer } from "@angular/platform-browser";
-import { EditInstitutionFormComponent } from "./edit-institution-form/edit-institution-form.component";
+import { AuthorizeInstutionCreationComponent } from "./authorize-institution-creation/authorize-institution-creation";
 import { ChangeInstitutionStatusComponent } from "./change-institution-status/change-institution-status.component";
-import { DatePipe } from "@angular/common";
+import { EditInstitutionFormComponent } from "./edit-institution-form/edit-institution-form.component";
 
 @Component({
   selector: "ngx-admin-institution-dashboard",
@@ -19,9 +20,8 @@ export class InstitutionDashboardComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   listener: any;
   receivedData: any;
-  institutions: any;
+  institutions: any = [];
   row: any;
-  customActions = this.setAccessibles();
   label = this.getLabel();
 
   getLabel() {
@@ -45,21 +45,6 @@ export class InstitutionDashboardComponent implements OnInit {
     );
   }
 
-  setAccessibles() {
-    if (this.necService.user.roleId == "1") {
-      return [
-        {
-          name: "edit",
-          title: '<i class="nb-edit"></i>',
-        },
-        {
-          name: "unlock",
-          title: '<i class="nb-locked"></i>',
-        },
-      ];
-    }
-  }
-
   settings = {
     pager: {
       perPage: 13,
@@ -68,6 +53,11 @@ export class InstitutionDashboardComponent implements OnInit {
     actions: {
       position: "right",
       custom: [
+        {
+          name: "authorize",
+          title:
+            '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Authorize Institution"></i>',
+        },
         {
           name: "edit",
           title:
@@ -133,10 +123,13 @@ export class InstitutionDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.listener = (event: MessageEvent) => {
-      this.receivedData = event.data.data;
-      this.source.load(this.receivedData?.data);
+      console.log("!!!!!!!!!!!!!!!!");
+      console.log(event);
+      // this.receivedData = event.data.data;
+      // this.source.load(this.receivedData.data);
     };
-    window.addEventListener("message", this.listener);
+    // window.addEventListener("message", this.listener);
+    this.getInstitutions();
   }
 
   constructor(
@@ -144,9 +137,7 @@ export class InstitutionDashboardComponent implements OnInit {
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
-  ) {
-    this.getInstitutions();
-  }
+  ) {}
 
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
@@ -171,7 +162,9 @@ export class InstitutionDashboardComponent implements OnInit {
   }
 
   customFunction(event) {
-    if (event.action == "edit") {
+    if (event.action == "authorize") {
+      this.authorizeInstitution(event);
+    } else if (event.action == "edit") {
       this.editInstitution(event);
     } else if (event.action == "unlock") {
       this.changeInstitutionStatus(event);
@@ -185,6 +178,19 @@ export class InstitutionDashboardComponent implements OnInit {
         windowClass: `admin-form-window`,
         context: {
           currentValues: event.data,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getInstitutions();
+      });
+  }
+  authorizeInstitution(event): void {
+    this.dialogService
+      .open(AuthorizeInstutionCreationComponent, {
+        context: {
+          title: "Authorize Institution Creation: " + event.data.name,
+          authorized: event.data.authorized,
+          code: event.data.code,
         },
       })
       .onClose.subscribe(() => {

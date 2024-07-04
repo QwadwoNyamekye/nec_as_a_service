@@ -15,6 +15,24 @@
           <input fullWidth nbInput formControlName="endDate" placeholder="End Date" [nbDatepicker]="picker2">
           <nb-datepicker #picker2 [max]="max" [min]="min"></nb-datepicker>
         </div>
+        <div *ngIf="this.showBank" class="col-md-3">
+          <label class="text-label" for="text">Bank:</label><br>
+          <nb-select fullWidth formControlName="destBank" placeholder="Select Bank"
+            (selectedChange)="selectBank($event)">
+            <nb-option *ngFor="let i of this.bankList" [value]="i.code">
+              {{ i.name }}
+            </nb-option>
+          </nb-select>
+        </div>
+        <br>
+        <div *ngIf="this.showInstitution" class="col-md-3">
+          <label class="text-label" for="text">Corporate:</label><br>
+          <nb-select fullWidth formControlName="code" placeholder="Select Corporate">
+            <nb-option *ngFor="let i of this.institutions" [value]="i.code">
+              {{ i.name }}
+            </nb-option>
+          </nb-select>
+        </div>
       </div> <!--ROW END-->
 
       <div class="row">
@@ -25,13 +43,13 @@
             Download CSV
           </button>
         </div>
-        <div class="col-md-2">
+        <!-- <div class="col-md-2">
           <label class="text-label" for="text">&nbsp;</label><br>
           <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0"
             status="primary" shape="semi-round" (click)="downloadAsPDF()">
             Download PDF
           </button>
-        </div>
+        </div> -->
         <div class="col-md-2" style="margin-left: auto;">
           <label class="text-label" for="text">&nbsp;</label><br>
           <button fullWidth nbButton status="primary" outline type="submit" status="primary" shape="round"

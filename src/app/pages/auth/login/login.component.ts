@@ -1,9 +1,8 @@
 import { Component } from "@angular/core";
-import { NbLoginComponent } from "@nebular/auth";
-import { NbAuthResult } from "@nebular/auth";
+import { NbAuthResult, NbLoginComponent } from "@nebular/auth";
 import { NecService } from "../../../@core/mock/nec.service";
-import { AppInjector } from "../auth.module";
 import { MENU_ITEMS } from "../../pages-menu";
+import { AppInjector } from "../auth.module";
 
 @Component({
   selector: "ngx-login",

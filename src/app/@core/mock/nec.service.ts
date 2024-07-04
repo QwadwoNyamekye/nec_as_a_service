@@ -62,7 +62,7 @@ export class NecService {
     this.user = JSON.parse(sessionStorage.getItem("user")); // here we receive a payload from the token and assigns it to our `user` variable
   }
 
-  initializeWebSocketConnection(errorToastr: NbToastRef) {
+  initializeWebSocketConnection(errorToastr) {
     var websocket = environment.websocket;
     const serverUrl = websocket;
     const ws = new SockJS(serverUrl);
@@ -70,12 +70,11 @@ export class NecService {
       return ws;
     });
 
-    // this.stompClient.reconnect_delay = 1000;
-    // this.stompClient.reconnectDelay = 10000;
-
     this.stompClient.connect(
       {},
       (frame) => {
+        console.log("+++++++++++++++++++++++++++");
+        console.log(this.errorToastr);
         if (errorToastr) {
           errorToastr.close();
           var value = this.toastrService.success(
@@ -88,7 +87,6 @@ export class NecService {
               duration: 10000,
             }
           );
-
           // show connection success toaster and redirection text in 5 seconds
           var time = 5;
           var intervalId = setInterval(function () {
@@ -521,6 +519,15 @@ export class NecService {
       .pipe((response) => response);
   }
 
+  authorizeInstitution(data) {
+    this.checkJWTValid();
+    return this.http
+      .post(this.baseUrl + "/institution/api/v1/authorize", data, {
+        headers: this.headers,
+      })
+      .pipe((response) => response);
+  }
+
   changeInstitutionStatus(data) {
     this.checkJWTValid();
     return this.http
@@ -554,6 +561,36 @@ export class NecService {
     return this.http
       .post(
         this.reportingUrl + "/nec-report/api/v1/nec_fee_report",
+        dateRange,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe((response) => response);
+  }
+
+  getFeeLogsByInstitution(dateRange, institutionCode) {
+    this.checkJWTValid();
+    return this.http
+      .post(
+        this.reportingUrl +
+          "/nec-report/api/v1/nec_fee_report_for_institution/" +
+          institutionCode,
+        dateRange,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe((response) => response);
+  }
+
+  getFeeLogsByBank(dateRange, bankCode) {
+    this.checkJWTValid();
+    return this.http
+      .post(
+        this.reportingUrl +
+          "/nec-report/api/v1/nec_fee_report_by_bank/" +
+          bankCode,
         dateRange,
         {
           headers: this.headers,

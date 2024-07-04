@@ -49,7 +49,7 @@ export class ResetUserPasswordComponent implements OnInit {
           // window.parent.postMessage(this.service.getUsers());
         },
         (error) => {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "User Password Reset Failed: " + error.error.errorMessage,
             "User Password Reset",
             {
@@ -61,7 +61,7 @@ export class ResetUserPasswordComponent implements OnInit {
         },
         () => {
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "User Password Reset Failed: " + this.response.errorMessage,
               "User Password Reset",
               {

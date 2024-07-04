@@ -1,7 +1,11 @@
 import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { NbDialogService, NbWindowControlButtonsConfig, NbWindowService } from "@nebular/theme";
+import {
+  NbDialogService,
+  NbWindowControlButtonsConfig,
+  NbWindowService,
+} from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
 import { DataSource } from "ng2-smart-table/lib/lib/data-source/data-source";
 import { Deferred } from "ng2-smart-table/lib/lib/helpers";
@@ -21,7 +25,7 @@ export class BulkCompletedUploadComponent implements OnInit {
   colour: string;
   name: string;
   source: LocalDataSource = new LocalDataSource();
-  files: any;
+  files: any = [];
   selectedRow: any;
   renderValue: string;
   listener: any;
@@ -55,6 +59,7 @@ export class BulkCompletedUploadComponent implements OnInit {
     title:
       '<i class="nb-list" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
   };
+  
   settings = {
     mode: "external",
     pager: {

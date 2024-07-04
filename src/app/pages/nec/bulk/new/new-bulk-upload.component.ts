@@ -1,7 +1,11 @@
 import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { NbDialogService, NbWindowControlButtonsConfig, NbWindowService } from "@nebular/theme";
+import {
+  NbDialogService,
+  NbWindowControlButtonsConfig,
+  NbWindowService,
+} from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
 import { DataSource } from "ng2-smart-table/lib/lib/data-source/data-source";
 import { Deferred } from "ng2-smart-table/lib/lib/helpers";
@@ -22,7 +26,7 @@ export class BulkNewUploadComponent implements OnInit {
   colour: string;
   name: string;
   source: LocalDataSource = new LocalDataSource();
-  files: any;
+  files: any = [];
   selectedRow: any;
   renderValue: string;
   listener: any;
@@ -42,14 +46,14 @@ export class BulkNewUploadComponent implements OnInit {
   }
 
   process = {
-    name: "edit",
+    name: "process",
     title:
       '<i class="nb-paper-plane" data-toggle="tooltip" data-placement="top" title="Process File"></i>',
   };
-  authorize = {
-    name: "authorize",
+  submit = {
+    name: "submit",
     title:
-      '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Authorize File"></i>',
+      '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Submit File"></i>',
   };
   reject = {
     name: "reject",
@@ -67,7 +71,7 @@ export class BulkNewUploadComponent implements OnInit {
     if (roleId == "4") {
       custom.push(this.process, this.reject, this.expand);
     } else if (roleId == "3") {
-      custom.push(this.authorize, this.reject, this.expand);
+      custom.push(this.submit, this.reject, this.expand);
     }
     return custom;
   }
@@ -148,9 +152,9 @@ export class BulkNewUploadComponent implements OnInit {
   }
 
   customFunction(event) {
-    if (event.action == "edit") {
+    if (event.action == "process") {
       this.submitForProcessing(event);
-    } else if (event.action == "authorize") {
+    } else if (event.action == "submit") {
       this.submitForAuthorization(event);
     } else if (event.action == "expand") {
       this.openFileRecords(event);

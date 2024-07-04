@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { NbDialogRef } from "@nebular/theme";
+import { NbDialogRef, NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
-import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-institution-user-unlock-modal`,
@@ -48,7 +47,7 @@ export class UnlockInstitutionUserComponent implements OnInit {
           // window.parent.postMessage(this.service.getUsers());
         },
         (error) => {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "Unlock User Failed: " + error.error.errorMessage,
             "Unlock User",
             {
@@ -60,7 +59,7 @@ export class UnlockInstitutionUserComponent implements OnInit {
         },
         () => {
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "Unlock User Failed: " + this.response.errorMessage,
               "Unlock User",
               {

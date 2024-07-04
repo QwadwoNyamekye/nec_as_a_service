@@ -55,15 +55,17 @@ export class BulkProcessingUploadComponent implements OnInit {
     title:
       '<i class="nb-list" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
   };
+
   customActions(roleId: string) {
-    var custom = [];
-    if (roleId == "4") {
-      custom.push(this.process, this.reject, this.expand);
-    } else if (roleId == "3") {
-      custom.push(this.authorize, this.reject, this.expand);
-    }
+    var custom = [this.expand];
+    // if (roleId == "4") {
+    //   custom.push(this.process, this.reject, this.expand);
+    // } else if (roleId == "3") {
+    //   custom.push(this.authorize, this.reject, this.expand);
+    // }
     return custom;
   }
+
   settings = {
     mode: "external",
     pager: {

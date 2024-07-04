@@ -48,8 +48,10 @@ export class DeleteUserComponent {
           this.response = response;
         },
         (error) => {
-          this.toastrService.warning(
-            this.currentValues.name + " Deletion Failed: " + error.error.errorMessage,
+          this.toastrService.danger(
+            this.currentValues.name +
+              " Deletion Failed: " +
+              error.error.errorMessage,
             "Delete User",
             {
               status: "danger",
@@ -60,7 +62,7 @@ export class DeleteUserComponent {
         },
         () => {
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               this.currentValues.name +
                 " Deletion Failed: " +
                 this.response.errorMessage,

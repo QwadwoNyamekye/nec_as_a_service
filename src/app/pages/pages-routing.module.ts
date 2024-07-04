@@ -1,8 +1,8 @@
-import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
-import { PagesComponent } from "./pages.component";
+import { RouterModule, Routes } from "@angular/router";
 import { NotFoundComponent } from "./miscellaneous/not-found/not-found.component";
 import { PagesAuthGuard } from "./pages-auth-guard.service";
+import { PagesComponent } from "./pages.component";
 
 const routes: Routes = [
   {

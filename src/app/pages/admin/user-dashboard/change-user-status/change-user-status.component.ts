@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { NbDialogRef } from "@nebular/theme";
+import { NbDialogRef, NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
-import { NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: `ngx-user-edit-modal`,
@@ -60,7 +59,7 @@ export class ChangeUserStatusComponent implements OnInit {
           // window.parent.postMessage(this.service.getUsers());
         },
         (error) => {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "User Status Change Failed: " + error.error.errorMessage,
             "User Status Change",
             {
@@ -72,7 +71,7 @@ export class ChangeUserStatusComponent implements OnInit {
         },
         () => {
           if (this.response.errorCode != "0") {
-            this.toastrService.warning(
+            this.toastrService.danger(
               "User Status Change Failed: " + this.response.errorMessage,
               "User Status Change",
               {

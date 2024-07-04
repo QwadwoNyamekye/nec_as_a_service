@@ -1,10 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { NbWindowRef } from "@nebular/theme";
-import { NecService } from "../../../../@core/mock/nec.service";
-import { FormGroup, FormControl } from "@angular/forms";
-import { Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NbToastrService, NbWindowRef } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
-import { NbToastrService } from "@nebular/theme";
+import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
   template: `
@@ -130,15 +128,6 @@ export class AddUserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (
-      this.necService.user.roleId == "2" ||
-      this.necService.user.roleId == "3" ||
-      this.necService.user.roleId == "4"
-    ) {
-      this.institutionCode = this.necService.user.institutionCode;
-      this.showInstitution = false;
-    }
-
     this.necService.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
@@ -174,7 +163,7 @@ export class AddUserFormComponent implements OnInit {
         Validators.required,
         Validators.email,
       ]),
-      phoneNumber: new FormControl("", Validators.required),
+      phoneNumber: new FormControl(""),
     });
 
     if (
@@ -198,7 +187,7 @@ export class AddUserFormComponent implements OnInit {
         ? this.institutionCode
         : this.form.value.institution,
       bankCode: this.necService.user.bankCode,
-      type: "G",
+      type: this.necService.user.type,
       roleId: this.form.value.role,
       email: this.form.value.emailAddress,
       phone: this.form.value.phoneNumber,
@@ -213,7 +202,7 @@ export class AddUserFormComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        this.toastrService.warning(
+        this.toastrService.danger(
           "User Creation Failed: " + error.error.errorMessage,
           "User Creation",
           {
@@ -226,7 +215,7 @@ export class AddUserFormComponent implements OnInit {
       () => {
         this.loading = false;
         if (this.response.errorCode != "0") {
-          this.toastrService.warning(
+          this.toastrService.danger(
             "User Creation Failed: " + this.response.errorMessage,
             "User Creation",
             {

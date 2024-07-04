@@ -1,13 +1,19 @@
 import { DatePipe } from "@angular/common";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, TemplateRef } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
-import { NbDateService, NbToastrService } from "@nebular/theme"; //NbWindowRef
+import {
+  NbDateService,
+  NbToastrService,
+  NbWindowControlButtonsConfig,
+  NbWindowService,
+} from "@nebular/theme"; //NbWindowRef
 import { Angular5Csv } from "angular5-csv/dist/Angular5-csv";
 import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
 import { LocalDataSource } from "ng2-smart-table";
 import { NecService } from "../../../@core/mock/nec.service";
+import { BulkSingleRecordsComponent } from "../../nec/bulk/modals/upload_file_single/upload_file_single.component";
 
 @Component({
   selector: "ngx-upload-report",
@@ -20,17 +26,26 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   stompClient: any;
   response: any = [];
   listener: any;
-  receivedData: any;
+  receivedData: any = [];
   form: FormGroup;
   doc = new jsPDF("landscape");
   loading: boolean = false;
+
+  expand = {
+    name: "expand",
+    title:
+      '<i class="nb-list" data-toggle="tooltip" data-placement="top" title="Expand File"></i>',
+  };
+
   settings = {
+    mode: "external",
     pager: {
       perPage: 13,
     },
     // hideSubHeader: true,
     actions: {
       position: "right",
+      custom: [this.expand],
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -101,6 +116,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
   constructor(
     private necService: NecService,
     private toastrService: NbToastrService,
+    private windowService: NbWindowService,
     protected dateService: NbDateService<Date>,
     private domSanitizer: DomSanitizer
   ) {}
@@ -323,7 +339,7 @@ export class UploadReportComponent implements OnInit, OnDestroy {
       },
       (error) => {
         this.loading = false;
-        this.toastrService.warning(
+        this.toastrService.danger(
           "Batch Report Request Failed: " + error.error.errorMessage,
           "Batch Report Request",
           {
@@ -337,10 +353,24 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     );
   }
 
+  openFileRecords(event) {
+    const buttonsConfig: NbWindowControlButtonsConfig = {
+      minimize: false,
+      maximize: false,
+      fullScreen: false,
+      close: false,
+    };
+    this.windowService.open(BulkSingleRecordsComponent, {
+      // titleTemplate: TemplateRef<>,
+      context: {
+        title: event.data.batchId,
+        batchId: event.data.batchId,
+      },
+      buttons: buttonsConfig,
+    });
+  }
+
   getHtmlForCell(value: string) {
-    console.log("))))))))))))))))");
-    console.log(value);
-    console.log(typeof value);
     if (value === "0") {
       this.colour = "lightcoral";
       this.name = "UPLOADING";

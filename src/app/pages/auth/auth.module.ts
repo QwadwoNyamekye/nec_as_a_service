@@ -1,35 +1,25 @@
 import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
-import { AuthRoutingModule } from "./auth-routing.module";
-import { NbAuthComponent } from "./auth.component";
-import { NbLayoutModule } from "@nebular/theme";
-import { NbCardModule } from "@nebular/theme";
+import { Injector, NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
+import { RouterModule } from "@angular/router";
+import {
+  NbAuthJWTToken,
+  NbAuthModule,
+  NbPasswordAuthStrategy
+} from "@nebular/auth";
 import {
   NbAlertModule,
-  NbButtonModule,
-  NbCheckboxModule,
-  NbInputModule,
-  NbIconModule,
-  NbFormFieldModule,
+  NbButtonModule, NbCardModule, NbCheckboxModule, NbFormFieldModule, NbIconModule, NbInputModule, NbLayoutModule
 } from "@nebular/theme";
-import { LoginComponent } from "./login/login.component";
-import { LogoutComponent } from "./logout/logout.component";
-import { ReactiveFormsModule } from "@angular/forms";
-import { RequestPasswordComponent } from "./request-password/request-password.component";
-import { ChangePassword } from "./change-password/change-password.component";
-import {
-  NbPasswordAuthStrategy,
-  NbAuthModule,
-  NbAuthJWTToken,
-  NbTokenService,
-} from "@nebular/auth";
-import { NbIcon } from "@nebular/theme";
-import { Injector } from "@angular/core";
 import { environment } from "../../../environments/environment.prod";
 import { AuthAuthGuard } from "./auth-auth-guard.service";
+import { AuthRoutingModule } from "./auth-routing.module";
+import { NbAuthComponent } from "./auth.component";
+import { ChangePassword } from "./change-password/change-password.component";
+import { LoginComponent } from "./login/login.component";
+import { LogoutComponent } from "./logout/logout.component";
+import { RequestPasswordComponent } from "./request-password/request-password.component";
 
 export let AppInjector: Injector;
 
