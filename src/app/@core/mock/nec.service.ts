@@ -73,8 +73,6 @@ export class NecService {
     this.stompClient.connect(
       {},
       (frame) => {
-        console.log("+++++++++++++++++++++++++++");
-        console.log(this.errorToastr);
         if (errorToastr) {
           errorToastr.close();
           var value = this.toastrService.success(
@@ -452,6 +450,16 @@ export class NecService {
     this.checkJWTValid();
     return this.http
       .post(this.baseUrl + "/user/api/v1/change_status", user, {
+        headers: this.headers,
+      })
+      .pipe((response) => response);
+  }
+
+
+  authorizeUser(user) {
+    this.checkJWTValid();
+    return this.http
+      .post(this.baseUrl + "/user/api/v1/authorize_user", user, {
         headers: this.headers,
       })
       .pipe((response) => response);

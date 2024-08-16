@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { SingleNECComponent } from "./single/single.component";
-import { BulkNewUploadComponent } from "./bulk/new/new-bulk-upload.component";
 import { BulkCompletedUploadComponent } from "./bulk/completed/completed-bulk-upload.component";
-import { BulkProcessingUploadComponent } from "./bulk/processing/processing-bulk-upload.component";
-import { BulkSubmittedUploadComponent } from "./bulk/submitted/submitted-bulk-upload.component";
-import { BulkRejectedUploadComponent } from "./bulk/rejected/rejected-bulk-upload.component";
 import { BulkDeclinedUploadComponent } from "./bulk/declined/declined-bulk-upload.component";
+import { BulkNewUploadComponent } from "./bulk/new/new-bulk-upload.component";
+import { BulkProcessingUploadComponent } from "./bulk/processing/processing-bulk-upload.component";
+import { BulkRejectedUploadComponent } from "./bulk/rejected/rejected-bulk-upload.component";
+import { BulkSubmittedUploadComponent } from "./bulk/submitted/submitted-bulk-upload.component";
+import { SingleNECComponent } from "./single/single.component";
 
 const routes: Routes = [
   {

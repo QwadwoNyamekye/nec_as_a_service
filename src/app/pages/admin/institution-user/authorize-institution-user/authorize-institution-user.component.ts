@@ -1,19 +1,17 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { NbDialogRef, NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
-  selector: `ngx-user-edit-modal`,
+  selector: `ngx-institution-user-delete-modal`,
   template: `
     <nb-card>
       <nb-card-header
-        ><div class="text-center">
-          {{ "Change User Status: " + currentValues.name }}
-        </div></nb-card-header
+        ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
         <button nbButton hero status="success" (click)="submit()">
-          {{ this.getOption() }}
+          Authorize
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
           Dismiss
@@ -21,37 +19,29 @@ import { NecService } from "../../../../@core/mock/nec.service";
       </nb-card-body>
     </nb-card>
   `,
-  styleUrls: ["change-user-status.component.scss"],
+  styleUrls: ["authorize-institution-user.component.scss"],
 })
-export class ChangeUserStatusComponent implements OnInit {
-  @Input() currentValues: any;
+export class AuthorizeInstitutionUserComponent {
+  @Input() title: string;
+  @Input() data: any;
+
   response: any;
 
   constructor(
-    protected ref: NbDialogRef<ChangeUserStatusComponent>,
+    protected ref: NbDialogRef<AuthorizeInstitutionUserComponent>,
     public necService: NecService,
     private toastrService: NbToastrService
   ) {}
-
-  ngOnInit(): void {}
 
   dismiss() {
     this.ref.close();
   }
 
-  getOption() {
-    if (this.currentValues.status) {
-      return "Disable";
-    }
-    return "Enable";
-  }
-
   submit() {
     this.response = this.necService
-      .changeUserStatus({
-        email: this.currentValues.email,
+      .authorizeUser({
+        email: this.data.email,
         createdBy: this.necService.user.email,
-        status: !this.currentValues.status,
       })
       .subscribe(
         (response) => {
@@ -60,8 +50,8 @@ export class ChangeUserStatusComponent implements OnInit {
         },
         (error) => {
           this.toastrService.danger(
-            "User Status Change Failed: " + error.error.errorMessage,
-            "User Status Change",
+            "Unlock User Failed: " + error.error.errorMessage,
+            "Unlock User",
             {
               status: "danger",
               destroyByClick: true,
@@ -72,8 +62,8 @@ export class ChangeUserStatusComponent implements OnInit {
         () => {
           if (this.response.errorCode != "0") {
             this.toastrService.danger(
-              "User Status Change Failed: " + this.response.errorMessage,
-              "User Status Change",
+              "Unlock User Failed: " + this.response.errorMessage,
+              "Unlock User",
               {
                 status: "danger",
                 destroyByClick: true,
@@ -81,11 +71,11 @@ export class ChangeUserStatusComponent implements OnInit {
               }
             );
           } else {
-            this.toastrService.success(
-              "User Status Change Success",
-              "User Status Change",
-              { status: "success", destroyByClick: true, duration: 8000 }
-            );
+            this.toastrService.success("Unlock User Success", "Unlock User", {
+              status: "success",
+              destroyByClick: true,
+              duration: 8000,
+            });
             this.ref.close();
           }
         }

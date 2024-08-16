@@ -43,6 +43,9 @@ export class LoginComponent extends NbLoginComponent {
           if (this.errors[0] == "Token is empty or invalid.") {
             this.errors[0] = "Please check your username or password";
           }
+          else {
+            this.errors[0] = result.getResponse().errorMessage
+          }
         }
 
         const redirect = result.getRedirect();

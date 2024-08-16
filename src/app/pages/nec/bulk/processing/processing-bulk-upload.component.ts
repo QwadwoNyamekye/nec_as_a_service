@@ -150,9 +150,9 @@ export class BulkProcessingUploadComponent implements OnInit {
     } else if (event.action == "expand") {
       this.openFileRecords(event);
     } else if (event.action == "reject") {
-      if (this.necService.user.roleId == "3") {
+      if (this.necService.user.roleId == "4") {
         this.declineFileUpload(event);
-      } else if (this.necService.user.roleId == "4") {
+      } else if (this.necService.user.roleId == "3") {
         this.rejectFileUpload(event);
       }
     }

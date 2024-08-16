@@ -26,6 +26,7 @@ import { InstitutionDashboardComponent } from "./institution-dashboard/instituti
 import { AddInstutionUserFormComponent } from "./institution-user/add-institution-user-form/add-institution-user-form.component";
 import { ChangeInstitutionUserStatusComponent } from "./institution-user/change-institution-user-status/change-institution-user-status.component";
 import { DeleteInstitutionUserComponent } from "./institution-user/delete-institution-user/delete-institution-user.component";
+import { AuthorizeInstitutionUserComponent } from "./institution-user/authorize-institution-user/authorize-institution-user.component";
 import { EditInstitutionUserFormComponent } from "./institution-user/edit-institution-user-form/edit-institution-user-form.component";
 import { InstitutionUserDashboardComponent } from "./institution-user/institution-user-dashboard.component";
 import { ResetInstitutionUserPasswordComponent } from "./institution-user/reset-institution-user-password/reset-institution-user-password.component";
@@ -76,6 +77,7 @@ import { AdminDashboardComponent } from "./user-dashboard/user-dashboard.compone
     InstitutionUserDashboardComponent,
     ResetInstitutionUserPasswordComponent,
     DeleteInstitutionUserComponent,
+    AuthorizeInstitutionUserComponent,
     ChangeInstitutionUserStatusComponent,
     AddInstutionUserFormComponent,
     EditInstitutionUserFormComponent,

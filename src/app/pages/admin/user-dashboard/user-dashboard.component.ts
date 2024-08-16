@@ -9,6 +9,7 @@ import { DeleteUserComponent } from "./delete-user/delete-user.component";
 import { EditUserFormComponent } from "./edit-user-form/edit-user-form.component";
 import { ResetUserPasswordComponent } from "./reset-user-password/reset-user-password.component";
 import { UnlockUserComponent } from "./unlock-user/unlock-user.component";
+import { AuthorizeInstitutionUserComponent } from "../institution-user/authorize-institution-user/authorize-institution-user.component";
 
 @Component({
   selector: "ngx-admin-dashboard",
@@ -47,6 +48,19 @@ export class AdminDashboardComponent implements OnInit {
     );
   }
 
+  getHtmlForAuthorizedCell(value: string) {
+    if (value) {
+      this.colour = "green";
+      this.name = "AUTHORIZED";
+    } else {
+      this.colour = "red";
+      this.name = "UNAUTHORIZED";
+    }
+    return this.domSanitizer.bypassSecurityTrustHtml(
+      `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
+    );
+  }
+
   getHtmlForLockCell(value: string) {
     if (value) {
       this.colour = "red";
@@ -68,6 +82,11 @@ export class AdminDashboardComponent implements OnInit {
     actions: {
       position: "right",
       custom: [
+        {
+          name: "authorize",
+          title:
+            '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Authorize User Creation"></i>',
+        },
         {
           name: "edit",
           title:
@@ -124,6 +143,13 @@ export class AdminDashboardComponent implements OnInit {
       roleName: {
         title: "Role",
         type: "string",
+      },
+      authorized: {
+        title: "Authorized",
+        type: "html",
+        valuePrepareFunction: (_cell, row) => {
+          return this.getHtmlForAuthorizedCell(row.authorized);
+        },
       },
       institutionName: {
         title: "Institution Name",
@@ -190,6 +216,8 @@ export class AdminDashboardComponent implements OnInit {
       this.resetUserPassword(event);
     } else if (event.action == "delete") {
       this.deleteUser(event);
+    } else if (event.action == "authorize") {
+      this.authorizeUser(event);
     }
   }
 
@@ -201,6 +229,19 @@ export class AdminDashboardComponent implements OnInit {
       })
       .onClose.subscribe(() => {
         this.getUsers();
+      });
+  }
+
+  authorizeUser(event): void {
+    this.dialogService
+      .open(AuthorizeInstitutionUserComponent, {
+        context: {
+          title: "Authorize User Creation: " + event.data?.name + "?",
+          data: event.data,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers(event.data.code, event.data.type);
       });
   }
 

@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
-import { NbDialogService, NbWindowService } from "@nebular/theme";
+import { NbDialogService, NbWindowService, NbMenuItem } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
 import { NecService } from "../../../@core/mock/nec.service";
 import { AddInstutionUserFormComponent } from "./add-institution-user-form/add-institution-user-form.component";
 import { ChangeInstitutionUserStatusComponent } from "./change-institution-user-status/change-institution-user-status.component";
 import { DeleteInstitutionUserComponent } from "./delete-institution-user/delete-institution-user.component";
+import { AuthorizeInstitutionUserComponent } from "./authorize-institution-user/authorize-institution-user.component";
 import { EditInstitutionUserFormComponent } from "./edit-institution-user-form/edit-institution-user-form.component";
 import { ResetInstitutionUserPasswordComponent } from "./reset-institution-user-password/reset-institution-user-password.component";
 import { UnlockInstitutionUserComponent } from "./unlock-institution-user/unlock-institution-user.component";
@@ -29,6 +30,9 @@ export class InstitutionUserDashboardComponent implements OnInit {
   showInstitution: any;
   bankList: any;
   bankCode = this.necService.user.bankCode;
+  // userActionsList = [
+
+  // ];
 
   ngOnInit(): void {
     this.getBanksByInstitution();
@@ -49,6 +53,19 @@ export class InstitutionUserDashboardComponent implements OnInit {
     } else {
       this.colour = "red";
       this.name = "DISABLED";
+    }
+    return this.domSanitizer.bypassSecurityTrustHtml(
+      `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
+    );
+  }
+
+  getHtmlForAuthorizedCell(value: string) {
+    if (value) {
+      this.colour = "green";
+      this.name = "AUTHORIZED";
+    } else {
+      this.colour = "red";
+      this.name = "UNAUTHORIZED";
     }
     return this.domSanitizer.bypassSecurityTrustHtml(
       `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
@@ -76,6 +93,11 @@ export class InstitutionUserDashboardComponent implements OnInit {
     actions: {
       position: "right",
       custom: [
+        {
+          name: "authorize",
+          title:
+            '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Authorize User Creation"></i>',
+        },
         {
           name: "edit",
           title:
@@ -133,6 +155,13 @@ export class InstitutionUserDashboardComponent implements OnInit {
         title: "Role",
         type: "string",
       },
+      authorized: {
+        title: "Authorized",
+        type: "html",
+        valuePrepareFunction: (_cell, row) => {
+          return this.getHtmlForAuthorizedCell(row.authorized);
+        },
+      },
       institutionName: {
         title: "Institution Name",
         type: "string",
@@ -161,7 +190,7 @@ export class InstitutionUserDashboardComponent implements OnInit {
   constructor(
     protected necService: NecService,
     private windowService: NbWindowService,
-    private dialogService: NbDialogService,
+    public dialogService: NbDialogService,
     private domSanitizer: DomSanitizer
   ) {}
 
@@ -218,8 +247,28 @@ export class InstitutionUserDashboardComponent implements OnInit {
       this.resetUserPassword(event);
     } else if (event.action == "delete") {
       this.deleteUser(event);
+    } else if (event.action == "authorize") {
+      this.authorizeUser(event);
     }
   }
+  items: NbMenuItem[] = [
+    {
+      title: "Profile",
+      icon: "person-outline",
+    },
+    {
+      title: "Change Password",
+      icon: "lock-outline",
+    },
+    {
+      title: "Privacy Policy",
+      icon: { icon: "checkmark-outline", pack: "eva" },
+    },
+    {
+      title: "Logout",
+      icon: "unlock-outline",
+    },
+  ];
 
   addUser() {
     this.windowService
@@ -231,6 +280,19 @@ export class InstitutionUserDashboardComponent implements OnInit {
         if (event) {
           this.getUsers(event.institutionCode, event.type);
         }
+      });
+  }
+
+  authorizeUser(event): void {
+    this.dialogService
+      .open(AuthorizeInstitutionUserComponent, {
+        context: {
+          title: "Authorize User Creation: " + event.data?.name + "?",
+          data: event.data,
+        },
+      })
+      .onClose.subscribe(() => {
+        this.getUsers(event.data.code, event.data.type);
       });
   }
 

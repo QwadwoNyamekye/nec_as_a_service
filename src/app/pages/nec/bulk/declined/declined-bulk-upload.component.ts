@@ -1,7 +1,11 @@
 import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { NbDialogService, NbWindowControlButtonsConfig, NbWindowService } from "@nebular/theme";
+import {
+  NbDialogService,
+  NbWindowControlButtonsConfig,
+  NbWindowService,
+} from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
 import { DataSource } from "ng2-smart-table/lib/lib/data-source/data-source";
 import { Deferred } from "ng2-smart-table/lib/lib/helpers";
@@ -139,9 +143,9 @@ export class BulkDeclinedUploadComponent implements OnInit {
     } else if (event.action == "expand") {
       this.openFileRecords(event);
     } else if (event.action == "reject") {
-      if (this.necService.user.roleId == "4") {
+      if (this.necService.user.roleId == "3") {
         this.declineFileUpload(event);
-      } else if (this.necService.user.roleId == "3") {
+      } else if (this.necService.user.roleId == "4") {
         this.rejectFileUpload(event);
       }
     }

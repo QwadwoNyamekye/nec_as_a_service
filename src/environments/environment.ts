@@ -11,6 +11,7 @@
 export const environment = {
   production: true,
   websocket: "http://172.27.21.210:8088/nec",
-  baseUrl: "http://172.27.21.210:8089",
+  // baseUrl: "http://172.27.21.210:8089",
+  baseUrl: "http://10.1.15.164:8089",
   bankUrl: "http://172.27.10.230:8003",
 };

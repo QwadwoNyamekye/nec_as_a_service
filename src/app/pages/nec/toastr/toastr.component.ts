@@ -4,8 +4,8 @@ import {
   NbGlobalLogicalPosition,
   NbGlobalPhysicalPosition,
   NbGlobalPosition,
-  NbToastrService,
   NbToastrConfig,
+  NbToastrService,
 } from '@nebular/theme';
 
 @Component({

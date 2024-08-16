@@ -114,23 +114,24 @@ export function MENU_ITEMS() {
   } else if (["3", "4"].includes(user_role)) {
     bulk_nec_path["home"] = true;
     if (user_role == "4") {
+      sessionStorage.setItem("homePath", bulk_nec_submitted.link);
       bulk_nec_path.children = [
-        bulk_nec_submitted,
-        bulk_nec_processing,
-        bulk_nec_rejected,
-        bulk_nec_completed,
-      ];
-    } else if (user_role == "3") {
-      bulk_nec_path.children = [
-        bulk_nec_new,
         bulk_nec_submitted,
         bulk_nec_processing,
         bulk_nec_declined,
         bulk_nec_completed,
       ];
+    } else if (user_role == "3") {
+      sessionStorage.setItem("homePath", bulk_nec_new.link);
+      bulk_nec_path.children = [
+        bulk_nec_new,
+        bulk_nec_submitted,
+        bulk_nec_processing,
+        bulk_nec_rejected,
+        bulk_nec_completed,
+      ];
     }
     menu_items.push(bulk_nec_path);
-    sessionStorage.setItem("homePath", bulk_nec_path.link);
   } else if (user_role == "5") {
     nec_report_path["home"] = true;
     menu_items.push(nec_report_path, upload_report_path);

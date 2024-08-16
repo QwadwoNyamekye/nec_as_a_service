@@ -57,11 +57,9 @@ export class BulkRejectedUploadComponent implements OnInit {
   };
   customActions(roleId: string) {
     var custom = [];
-    if (roleId == "4") {
-      custom.push(this.process, this.reject, this.expand);
-    } else if (roleId == "3") {
-      custom.push(this.authorize, this.reject, this.expand);
-    }
+    if (["3","4"].includes(roleId)) {
+      custom.push(this.expand);
+    } 
     return custom;
   }
   settings = {
