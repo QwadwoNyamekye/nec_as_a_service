@@ -1,6 +1,6 @@
-<nb-card>
+<nb-card size="large">
   <nb-card-header>
-    <form class="form" [formGroup]="form" (ngSubmit)="getUsers()">
+    <form class="form" [formGroup]="form">
       <div class="row col-12">
         <div class="col-3">
           <nb-select fullWidth formControlName="bank">
@@ -10,7 +10,7 @@
           </nb-select>
         </div>
         <div class="col-1">
-          <button fullWidth nbButton outline status="primary" type="submit" shape="semi-round" size="small"
+          <button fullWidth nbButton outline status="primary" (click)="getUsers()" type="submit" shape="semi-round" size="small"
             [nbSpinner]="loading" nbSpinnerStatus="danger" [disabled]="loading || !form.valid">
             Submit
           </button>
@@ -24,7 +24,7 @@
     </form>
   </nb-card-header>
   <nb-card-body>
-    <ng2-smart-table class="order-table" [settings]="settings" [source]="source" (custom)="customFunction($event)">
+    <ng2-smart-table class="order-table" [settings]="settings" [source]="source">
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>

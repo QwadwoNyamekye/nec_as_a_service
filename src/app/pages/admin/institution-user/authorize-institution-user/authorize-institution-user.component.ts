@@ -50,8 +50,8 @@ export class AuthorizeInstitutionUserComponent {
         },
         (error) => {
           this.toastrService.danger(
-            "Unlock User Failed: " + error.error.errorMessage,
-            "Unlock User",
+            "User Authorization Failed: " + error.error.errorMessage,
+            "User Authorization",
             {
               status: "danger",
               destroyByClick: true,
@@ -62,8 +62,8 @@ export class AuthorizeInstitutionUserComponent {
         () => {
           if (this.response.errorCode != "0") {
             this.toastrService.danger(
-              "Unlock User Failed: " + this.response.errorMessage,
-              "Unlock User",
+              "User Authorization Failed: " + this.response.errorMessage,
+              "User Authorization",
               {
                 status: "danger",
                 destroyByClick: true,
@@ -71,11 +71,15 @@ export class AuthorizeInstitutionUserComponent {
               }
             );
           } else {
-            this.toastrService.success("Unlock User Success", "Unlock User", {
-              status: "success",
-              destroyByClick: true,
-              duration: 8000,
-            });
+            this.toastrService.success(
+              "User Authorization Success",
+              "Unlock User",
+              {
+                status: "success",
+                destroyByClick: true,
+                duration: 8000,
+              }
+            );
             this.ref.close();
           }
         }

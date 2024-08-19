@@ -30,7 +30,9 @@ export class UnlockInstitutionUserComponent implements OnInit {
     public necService: NecService,
     private toastrService: NbToastrService
   ) {}
+
   ngOnInit(): void {}
+
   dismiss() {
     this.ref.close();
   }

@@ -10,6 +10,8 @@ import { EditUserFormComponent } from "./edit-user-form/edit-user-form.component
 import { ResetUserPasswordComponent } from "./reset-user-password/reset-user-password.component";
 import { UnlockUserComponent } from "./unlock-user/unlock-user.component";
 import { AuthorizeInstitutionUserComponent } from "../institution-user/authorize-institution-user/authorize-institution-user.component";
+import { ActionsRendererComponent } from "../actions-component/actions.component";
+import { EventService } from "../../../@core/mock/event.service";
 
 @Component({
   selector: "ngx-admin-dashboard",
@@ -28,11 +30,16 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsers();
-    this.listener = (event: MessageEvent) => {
-      this.receivedData = event.data;
-      this.source.load(this.receivedData?.data);
-    };
-    window.addEventListener("message", this.listener);
+
+    // this.listener = (event: MessageEvent) => {
+    //   this.receivedData = event.data;
+    //   this.source.load(this.receivedData?.data);
+    // };
+    // window.addEventListener("message", this.listener);
+
+    this.eventService.customClick$.subscribe((event) => {
+      this.customFunction(event);
+    });
   }
 
   getHtmlForStatusCell(value: string) {
@@ -81,38 +88,6 @@ export class AdminDashboardComponent implements OnInit {
     // hideSubHeader: true,
     actions: {
       position: "right",
-      custom: [
-        {
-          name: "authorize",
-          title:
-            '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Authorize User Creation"></i>',
-        },
-        {
-          name: "edit",
-          title:
-            '<i class="nb-edit" data-toggle="tooltip" data-placement="top" title="Edit User"></i>',
-        },
-        {
-          name: "unlock",
-          title:
-            '<i class="nb-locked" data-toggle="tooltip" data-placement="top" title="Unlock User"></i>',
-        },
-        {
-          name: "reset",
-          title:
-            '<i class="nb-loop-circled" data-toggle="tooltip" data-placement="top" title="Reset User"></i>',
-        },
-        {
-          name: "userStatus",
-          title:
-            '<i class="nb-alert" data-toggle="tooltip" data-placement="top" title="Enable/Disable User"></i>',
-        },
-        {
-          name: "delete",
-          title:
-            '<i class="nb-trash" data-toggle="tooltip" data-placement="top" title="Delete User"></i>',
-        },
-      ],
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -173,6 +148,13 @@ export class AdminDashboardComponent implements OnInit {
           return this.getHtmlForStatusCell(row.status);
         },
       },
+      actions: {
+        title: "Actions",
+        type: "custom",
+        renderComponent: ActionsRendererComponent,
+        filter: false,
+        sort: false,
+      },
     },
   };
 
@@ -180,7 +162,8 @@ export class AdminDashboardComponent implements OnInit {
     private necService: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private eventService: EventService
   ) {}
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
@@ -206,6 +189,8 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   customFunction(event) {
+    console.log("******************");
+    console.log(event);
     if (event.action == "unlock") {
       this.unlockUser(event);
     } else if (event.action == "edit") {

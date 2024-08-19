@@ -11,6 +11,8 @@ import { AuthorizeInstitutionUserComponent } from "./authorize-institution-user/
 import { EditInstitutionUserFormComponent } from "./edit-institution-user-form/edit-institution-user-form.component";
 import { ResetInstitutionUserPasswordComponent } from "./reset-institution-user-password/reset-institution-user-password.component";
 import { UnlockInstitutionUserComponent } from "./unlock-institution-user/unlock-institution-user.component";
+import { ActionsRendererComponent } from "../actions-component/actions.component";
+import { EventService } from "../../../@core/mock/event.service";
 
 @Component({
   selector: "ngx-admin-institution-user-dashboard",
@@ -30,19 +32,21 @@ export class InstitutionUserDashboardComponent implements OnInit {
   showInstitution: any;
   bankList: any;
   bankCode = this.necService.user.bankCode;
-  // userActionsList = [
-
-  // ];
 
   ngOnInit(): void {
     this.getBanksByInstitution();
-    this.listener = (event: MessageEvent) => {
-      this.receivedData = event.data;
-      this.source.load(this.receivedData?.data);
-    };
-    window.addEventListener("message", this.listener);
+
+    // this.listener = (event: MessageEvent) => {
+    //   this.receivedData = event.data;
+    //   this.source.load(this.receivedData?.data);
+    // };
+    // window.addEventListener("message", this.listener);
+
     this.form = new FormGroup({
       bank: new FormControl(this.bankCode, Validators.required),
+    });
+    this.eventService.customClick$.subscribe((event) => {
+      this.customFunction(event);
     });
   }
 
@@ -90,40 +94,9 @@ export class InstitutionUserDashboardComponent implements OnInit {
       perPage: 13,
     },
     // hideSubHeader: true,
+    // mode: "inline",
     actions: {
       position: "right",
-      custom: [
-        {
-          name: "authorize",
-          title:
-            '<i class="nb-checkmark" data-toggle="tooltip" data-placement="top" title="Authorize User Creation"></i>',
-        },
-        {
-          name: "edit",
-          title:
-            '<i class="nb-edit" data-toggle="tooltip" data-placement="top" title="Edit User"></i>',
-        },
-        {
-          name: "unlock",
-          title:
-            '<i class="nb-locked" data-toggle="tooltip" data-placement="top" title="Unlock User"></i>',
-        },
-        {
-          name: "reset",
-          title:
-            '<i class="nb-loop-circled" data-toggle="tooltip" data-placement="top" title="Reset User"></i>',
-        },
-        {
-          name: "userStatus",
-          title:
-            '<i class="nb-alert" data-toggle="tooltip" data-placement="top" title="Enable/Disable User"></i>',
-        },
-        {
-          name: "delete",
-          title:
-            '<i class="nb-trash" data-toggle="tooltip" data-placement="top" title="Delete User"></i>',
-        },
-      ],
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -184,6 +157,13 @@ export class InstitutionUserDashboardComponent implements OnInit {
           return this.getHtmlForStatusCell(row.status);
         },
       },
+      actions: {
+        title: "Actions",
+        type: "custom",
+        renderComponent: ActionsRendererComponent,
+        filter: false,
+        sort: false,
+      },
     },
   };
 
@@ -191,7 +171,8 @@ export class InstitutionUserDashboardComponent implements OnInit {
     protected necService: NecService,
     private windowService: NbWindowService,
     public dialogService: NbDialogService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private eventService: EventService
   ) {}
 
   compare(a, b) {
@@ -251,24 +232,6 @@ export class InstitutionUserDashboardComponent implements OnInit {
       this.authorizeUser(event);
     }
   }
-  items: NbMenuItem[] = [
-    {
-      title: "Profile",
-      icon: "person-outline",
-    },
-    {
-      title: "Change Password",
-      icon: "lock-outline",
-    },
-    {
-      title: "Privacy Policy",
-      icon: { icon: "checkmark-outline", pack: "eva" },
-    },
-    {
-      title: "Logout",
-      icon: "unlock-outline",
-    },
-  ];
 
   addUser() {
     this.windowService
