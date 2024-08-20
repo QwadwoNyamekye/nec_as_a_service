@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { NbDialogRef, NbToastrService } from "@nebular/theme";
 import { NecService } from "../../../../@core/mock/nec.service";
 
@@ -21,7 +21,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
   `,
   styleUrls: ["authorize-institution-user.component.scss"],
 })
-export class AuthorizeInstitutionUserComponent {
+export class AuthorizeInstitutionUserComponent implements OnInit {
   @Input() title: string;
   @Input() data: any;
 
@@ -32,6 +32,8 @@ export class AuthorizeInstitutionUserComponent {
     public necService: NecService,
     private toastrService: NbToastrService
   ) {}
+
+  ngOnInit(): void {}
 
   dismiss() {
     this.ref.close();

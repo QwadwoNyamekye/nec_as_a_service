@@ -31,7 +31,8 @@ import { EditInstitutionUserFormComponent } from "./institution-user/edit-instit
 import { InstitutionUserDashboardComponent } from "./institution-user/institution-user-dashboard.component";
 import { ResetInstitutionUserPasswordComponent } from "./institution-user/reset-institution-user-password/reset-institution-user-password.component";
 import { UnlockInstitutionUserComponent } from "./institution-user/unlock-institution-user/unlock-institution-user.component";
-import { ActionsRendererComponent } from "./actions-component/actions.component";
+import { ActionsRendererComponent } from "./institution-user/actions-component/actions.component";
+import { ActionsRendererComponent as UserActionsRendererComponent } from "./user-dashboard/actions-component/actions.component";
 import { AddUserFormComponent } from "./user-dashboard/add-user-form/add-user-form.component";
 import { ChangeUserStatusComponent } from "./user-dashboard/change-user-status/change-user-status.component";
 import { DeleteUserComponent } from "./user-dashboard/delete-user/delete-user.component";
@@ -76,6 +77,7 @@ import { AdminDashboardComponent } from "./user-dashboard/user-dashboard.compone
     DeleteUserComponent,
     UnlockInstitutionUserComponent,
     ActionsRendererComponent,
+    UserActionsRendererComponent,
     InstitutionUserDashboardComponent,
     ResetInstitutionUserPasswordComponent,
     DeleteInstitutionUserComponent,

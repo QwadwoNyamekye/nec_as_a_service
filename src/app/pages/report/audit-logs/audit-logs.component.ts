@@ -91,10 +91,11 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.listener = (event: MessageEvent) => {
-      this.receivedData = event.data;
-      this.source.load(this.receivedData);
-    };
+    // this.listener = (event: MessageEvent) => {
+    //   this.receivedData = event.data;
+    //   this.source.load(this.receivedData);
+    // };
+    // window.addEventListener("message", this.listener);
 
     if (
       this.necService.user.roleId == "2" ||
@@ -106,8 +107,6 @@ export class AuditLogsComponent implements OnInit, OnDestroy {
     }
 
     this.max = this.dateService.addDay(this.dateService.today(), 0);
-
-    window.addEventListener("message", this.listener);
 
     this.form = new FormGroup({
       type: new FormControl("", Validators.required),

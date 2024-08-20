@@ -1,12 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { EventService } from "../../../@core/mock/event.service";
+import { EventService } from "../event.service";
 
 @Component({
   selector: "app-custom-renderer",
   template: `<div class="dropdown">
     <button class="dropdown-button"><i class="fa fa-cog"></i></button>
     <div class="dropdown-content">
-      <button class="dropdown-item" (click)="onClick('authorize')">
+      <button
+        class="dropdown-item"
+        (click)="onClick('authorize')"
+        *ngIf="!this.rowData.authorized"
+      >
         <i
           class="fa fa-check"
           data-toggle="tooltip"
@@ -93,10 +97,6 @@ export class ActionsRendererComponent implements OnInit {
   event = { action: "", data: {} };
 
   onClick(event) {
-    console.log("++++++++++++++++++++++++");
-    console.log(this.rowData);
-    console.log(typeof this.rowData.status);
-    console.log(this.rowData.status == true);
     this.event.action = event;
     this.event.data = this.rowData;
     this.eventService.emitCustomClick(this.event); // Emit the row data through the service

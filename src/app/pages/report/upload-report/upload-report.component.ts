@@ -123,14 +123,13 @@ export class UploadReportComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.necService.checkJWTValid();
-    this.listener = (event: MessageEvent) => {
-      this.receivedData = event.data;
-      this.source.load(this.receivedData);
-    };
+    // this.listener = (event: MessageEvent) => {
+    //   this.receivedData = event.data;
+    //   this.source.load(this.receivedData);
+    // };
+    // window.addEventListener("message", this.listener);
 
     this.max = this.dateService.addDay(this.dateService.today(), 0);
-
-    window.addEventListener("message", this.listener);
 
     this.form = new FormGroup({
       startDate: new FormControl("", Validators.required),

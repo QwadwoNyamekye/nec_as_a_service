@@ -10,8 +10,8 @@ import { EditUserFormComponent } from "./edit-user-form/edit-user-form.component
 import { ResetUserPasswordComponent } from "./reset-user-password/reset-user-password.component";
 import { UnlockUserComponent } from "./unlock-user/unlock-user.component";
 import { AuthorizeInstitutionUserComponent } from "../institution-user/authorize-institution-user/authorize-institution-user.component";
-import { ActionsRendererComponent } from "../actions-component/actions.component";
-import { EventService } from "../../../@core/mock/event.service";
+import { ActionsRendererComponent } from "./actions-component/actions.component";
+import { EventService } from "./event.service";
 
 @Component({
   selector: "ngx-admin-dashboard",
@@ -189,8 +189,6 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   customFunction(event) {
-    console.log("******************");
-    console.log(event);
     if (event.action == "unlock") {
       this.unlockUser(event);
     } else if (event.action == "edit") {

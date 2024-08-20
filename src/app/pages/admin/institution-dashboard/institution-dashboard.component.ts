@@ -122,12 +122,10 @@ export class InstitutionDashboardComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.listener = (event: MessageEvent) => {
-      console.log("!!!!!!!!!!!!!!!!");
-      console.log(event);
+    // this.listener = (event: MessageEvent) => {
       // this.receivedData = event.data.data;
       // this.source.load(this.receivedData.data);
-    };
+    // };
     // window.addEventListener("message", this.listener);
     this.getInstitutions();
   }

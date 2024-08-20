@@ -11,8 +11,8 @@ import { AuthorizeInstitutionUserComponent } from "./authorize-institution-user/
 import { EditInstitutionUserFormComponent } from "./edit-institution-user-form/edit-institution-user-form.component";
 import { ResetInstitutionUserPasswordComponent } from "./reset-institution-user-password/reset-institution-user-password.component";
 import { UnlockInstitutionUserComponent } from "./unlock-institution-user/unlock-institution-user.component";
-import { ActionsRendererComponent } from "../actions-component/actions.component";
-import { EventService } from "../../../@core/mock/event.service";
+import { ActionsRendererComponent } from "./actions-component/actions.component";
+import { EventService } from "./event.service";
 
 @Component({
   selector: "ngx-admin-institution-user-dashboard",
