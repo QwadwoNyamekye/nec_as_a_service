@@ -10,7 +10,15 @@ import { NecService } from "../../../../@core/mock/nec.service";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()">
+        <button
+          nbButton
+          hero
+          status="success"
+          (click)="submit()"
+          [nbSpinner]="loading"
+          nbSpinnerStatus="danger"
+          [disabled]="loading"
+        >
           Delete
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
@@ -26,7 +34,7 @@ export class DeleteInstitutionUserComponent {
   @Input() batchId: string;
   @Input() submittedBy: string;
   @Input() data: any;
-
+  loading: boolean = false;
   response: any;
 
   constructor(
@@ -40,6 +48,7 @@ export class DeleteInstitutionUserComponent {
   }
 
   submit() {
+    this.loading = true;
     this.response = this.necService
       .deleteUser({
         email: this.data.email,
@@ -48,8 +57,10 @@ export class DeleteInstitutionUserComponent {
       .subscribe(
         (response) => {
           this.response = response;
+          this.loading = false;
         },
         (error) => {
+          this.loading = false;
           this.toastrService.danger(
             this.data.name + " Deletion Failed: " + error.error.errorMessage,
             "Delete User",

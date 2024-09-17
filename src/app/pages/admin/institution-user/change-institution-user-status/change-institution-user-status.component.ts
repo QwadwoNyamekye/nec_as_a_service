@@ -10,7 +10,15 @@ import { NecService } from "../../../../@core/mock/nec.service";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()">
+        <button
+          nbButton
+          hero
+          status="success"
+          (click)="submit()"
+          [nbSpinner]="loading"
+          nbSpinnerStatus="danger"
+          [disabled]="loading"
+        >
           {{ this.getOption() }}
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
@@ -28,6 +36,7 @@ export class ChangeInstitutionUserStatusComponent implements OnInit {
   @Input() email: string;
   @Input() status: boolean;
   response: any;
+  loading: boolean = false;
 
   constructor(
     protected ref: NbDialogRef<ChangeInstitutionUserStatusComponent>,
@@ -49,6 +58,7 @@ export class ChangeInstitutionUserStatusComponent implements OnInit {
   }
 
   submit() {
+    this.loading = true;
     this.response = this.necService
       .changeUserStatus({
         email: this.email,
@@ -58,9 +68,11 @@ export class ChangeInstitutionUserStatusComponent implements OnInit {
       .subscribe(
         (response) => {
           this.response = response;
+          this.loading = false;
           // window.parent.postMessage(this.service.getUsers());
         },
         (error) => {
+          this.loading = false;
           this.toastrService.danger(
             "User Status Change Failed: " + error.error.errorMessage,
             "User Status Change",

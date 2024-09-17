@@ -45,6 +45,19 @@ export class InstitutionDashboardComponent implements OnInit {
     );
   }
 
+  getHtmlForAuthorizedCell(value: string) {
+    if (value) {
+      this.colour = "green";
+      this.name = "AUTHORIZED";
+    } else {
+      this.colour = "red";
+      this.name = "UNAUTHORIZED";
+    }
+    return this.domSanitizer.bypassSecurityTrustHtml(
+      `<nb-card-body style="color:white; background-color: ${this.colour}; border-radius: 30px; padding-top: 7px; padding-bottom: 7px;">${this.name}</nb-card-body>`
+    );
+  }
+
   settings = {
     pager: {
       perPage: 13,
@@ -111,6 +124,13 @@ export class InstitutionDashboardComponent implements OnInit {
         title: "Fee",
         type: "string",
       },
+      authorized: {
+        title: "Authorized",
+        type: "html",
+        valuePrepareFunction: (_cell, row) => {
+          return this.getHtmlForAuthorizedCell(row.authorized);
+        },
+      },
       createdAt: {
         title: "Created By",
         type: "string",
@@ -123,8 +143,8 @@ export class InstitutionDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     // this.listener = (event: MessageEvent) => {
-      // this.receivedData = event.data.data;
-      // this.source.load(this.receivedData.data);
+    // this.receivedData = event.data.data;
+    // this.source.load(this.receivedData.data);
     // };
     // window.addEventListener("message", this.listener);
     this.getInstitutions();

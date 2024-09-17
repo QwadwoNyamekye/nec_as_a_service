@@ -196,6 +196,14 @@ export class NecService {
       .pipe((response) => response);
   }
 
+  login(user) {
+    return this.http
+      .post(this.baseUrl + "/auth/api/v1/authenticate", user, {
+        // headers: this.headers,
+      })
+      .pipe((response) => response);
+  }
+
   changePassword(user) {
     return this.http
       .post(this.baseUrl + "/user/api/v1/change_password", user, {
@@ -454,7 +462,6 @@ export class NecService {
       })
       .pipe((response) => response);
   }
-
 
   authorizeUser(user) {
     this.checkJWTValid();

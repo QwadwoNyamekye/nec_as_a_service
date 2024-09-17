@@ -12,7 +12,15 @@ import { NecService } from "../../../../@core/mock/nec.service";
         </div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()">
+        <button
+          nbButton
+          hero
+          status="success"
+          (click)="submit()"
+          [nbSpinner]="loading"
+          nbSpinnerStatus="danger"
+          [disabled]="loading"
+        >
           Delete
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
@@ -26,6 +34,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
 export class DeleteUserComponent {
   @Input() currentValues: any;
   response: any;
+  loading: boolean = false;
 
   constructor(
     protected ref: NbDialogRef<DeleteUserComponent>,
@@ -38,6 +47,7 @@ export class DeleteUserComponent {
   }
 
   submit() {
+    this.loading = true;
     this.response = this.necService
       .deleteUser({
         email: this.currentValues.email,
@@ -46,8 +56,10 @@ export class DeleteUserComponent {
       .subscribe(
         (response) => {
           this.response = response;
+          this.loading = false;
         },
         (error) => {
+          this.loading = false;
           this.toastrService.danger(
             this.currentValues.name +
               " Deletion Failed: " +

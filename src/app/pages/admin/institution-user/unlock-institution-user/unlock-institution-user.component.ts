@@ -10,7 +10,15 @@ import { NecService } from "../../../../@core/mock/nec.service";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()">
+        <button
+          nbButton
+          hero
+          status="success"
+          (click)="submit()"
+          [nbSpinner]="loading"
+          nbSpinnerStatus="danger"
+          [disabled]="loading"
+        >
           Unlock
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
@@ -25,6 +33,7 @@ export class UnlockInstitutionUserComponent implements OnInit {
   @Input() title: string;
   @Input() email: string;
   response: any;
+  loading: boolean = false;
   constructor(
     protected ref: NbDialogRef<UnlockInstitutionUserComponent>,
     public necService: NecService,
@@ -38,6 +47,7 @@ export class UnlockInstitutionUserComponent implements OnInit {
   }
 
   submit() {
+    this.loading = true;
     this.response = this.necService
       .unlockUser({
         email: this.email,
@@ -46,9 +56,11 @@ export class UnlockInstitutionUserComponent implements OnInit {
       .subscribe(
         (response) => {
           this.response = response;
+          this.loading = false;
           // window.parent.postMessage(this.service.getUsers());
         },
         (error) => {
+          this.loading = false;
           this.toastrService.danger(
             "Unlock User Failed: " + error.error.errorMessage,
             "Unlock User",

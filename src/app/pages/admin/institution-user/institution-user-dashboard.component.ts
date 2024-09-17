@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
-import { NbDialogService, NbWindowService, NbMenuItem } from "@nebular/theme";
+import { NbDialogService, NbWindowService } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
 import { NecService } from "../../../@core/mock/nec.service";
 import { AddInstutionUserFormComponent } from "./add-institution-user-form/add-institution-user-form.component";
@@ -12,7 +12,7 @@ import { EditInstitutionUserFormComponent } from "./edit-institution-user-form/e
 import { ResetInstitutionUserPasswordComponent } from "./reset-institution-user-password/reset-institution-user-password.component";
 import { UnlockInstitutionUserComponent } from "./unlock-institution-user/unlock-institution-user.component";
 import { ActionsRendererComponent } from "./actions-component/actions.component";
-import { EventService } from "./event.service";
+import { InstitutionEventService } from "./event.service";
 
 @Component({
   selector: "ngx-admin-institution-user-dashboard",
@@ -172,7 +172,7 @@ export class InstitutionUserDashboardComponent implements OnInit {
     private windowService: NbWindowService,
     public dialogService: NbDialogService,
     private domSanitizer: DomSanitizer,
-    private eventService: EventService
+    private eventService: InstitutionEventService
   ) {}
 
   compare(a, b) {

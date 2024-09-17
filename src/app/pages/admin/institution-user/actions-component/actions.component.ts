@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { EventService } from "../event.service";
+import { InstitutionEventService } from "../event.service";
 
 @Component({
   selector: "app-custom-renderer",
@@ -90,7 +90,7 @@ export class ActionsRendererComponent implements OnInit {
   @Input() rowData: any;
   @Output() customClick = new EventEmitter<any>();
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventService: InstitutionEventService) {}
 
   ngOnInit(): void {}
 

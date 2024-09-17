@@ -10,7 +10,15 @@ import { NecService } from "../../../../@core/mock/nec.service";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()">
+        <button
+          nbButton
+          hero
+          status="success"
+          (click)="submit()"
+          [nbSpinner]="loading"
+          nbSpinnerStatus="danger"
+          [disabled]="loading"
+        >
           Authorize
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
@@ -24,7 +32,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
 export class AuthorizeInstitutionUserComponent implements OnInit {
   @Input() title: string;
   @Input() data: any;
-
+  loading: boolean = false;
   response: any;
 
   constructor(
@@ -40,6 +48,7 @@ export class AuthorizeInstitutionUserComponent implements OnInit {
   }
 
   submit() {
+    this.loading = true;
     this.response = this.necService
       .authorizeUser({
         email: this.data.email,
@@ -48,9 +57,11 @@ export class AuthorizeInstitutionUserComponent implements OnInit {
       .subscribe(
         (response) => {
           this.response = response;
+          this.loading = false;
           // window.parent.postMessage(this.service.getUsers());
         },
         (error) => {
+          this.loading = false;
           this.toastrService.danger(
             "User Authorization Failed: " + error.error.errorMessage,
             "User Authorization",

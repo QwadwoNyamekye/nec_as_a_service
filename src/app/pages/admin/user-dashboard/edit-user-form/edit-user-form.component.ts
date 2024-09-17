@@ -91,6 +91,7 @@ export class EditUserFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log("****************************")
     this.name = this.currentValues.name.split(" ");
     this.necService.getInstitutions().subscribe(
       (data) => {
@@ -177,6 +178,7 @@ export class EditUserFormComponent implements OnInit {
             destroyByClick: true,
             duration: 8000,
           });
+          console.log("+++++++++++++++++")
           this.windowRef.close();
         }
       }

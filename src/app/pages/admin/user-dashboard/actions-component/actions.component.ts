@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { EventService } from "../event.service";
+import { UserEventService } from "../event.service";
+import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
   selector: "app-custom-renderer",
@@ -38,7 +39,7 @@ import { EventService } from "../event.service";
           class="fa fa-undo"
           data-toggle="tooltip"
           data-placement="top"
-          title="Reset User"
+          title="Reset Password"
         ></i>
         Reset
       </button>
@@ -86,13 +87,20 @@ export class ActionsRendererComponent implements OnInit {
   @Input() rowData: any;
   @Output() customClick = new EventEmitter<any>();
 
-  constructor(private eventService: EventService) {}
+  constructor(
+    private eventService: UserEventService,
+    protected necService: NecService
+  ) {}
 
   ngOnInit(): void {}
 
-  event = { action: "", data: {} };
+  event = { action: "", data: {} }; //to match the expected data structure in the main components
 
   onClick(event) {
+    // console.log("++++++++++++++");
+    // console.log(event);
+    // console.log(this.rowData.email);
+    // console.log(this.necService.user.email);
     this.event.action = event;
     this.event.data = this.rowData;
     this.eventService.emitCustomClick(this.event); // Emit the row data through the service

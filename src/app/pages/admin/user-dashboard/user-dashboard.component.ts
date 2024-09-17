@@ -11,7 +11,7 @@ import { ResetUserPasswordComponent } from "./reset-user-password/reset-user-pas
 import { UnlockUserComponent } from "./unlock-user/unlock-user.component";
 import { AuthorizeInstitutionUserComponent } from "../institution-user/authorize-institution-user/authorize-institution-user.component";
 import { ActionsRendererComponent } from "./actions-component/actions.component";
-import { EventService } from "./event.service";
+import { UserEventService } from "./event.service";
 
 @Component({
   selector: "ngx-admin-dashboard",
@@ -27,6 +27,7 @@ export class AdminDashboardComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   users: any = [];
   row: any;
+  subsVar: any;
 
   ngOnInit(): void {
     this.getUsers();
@@ -37,7 +38,7 @@ export class AdminDashboardComponent implements OnInit {
     // };
     // window.addEventListener("message", this.listener);
 
-    this.eventService.customClick$.subscribe((event) => {
+    this.subsVar = this.eventService.customClick$.subscribe((event) => {
       this.customFunction(event);
     });
   }
@@ -163,7 +164,7 @@ export class AdminDashboardComponent implements OnInit {
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
     private domSanitizer: DomSanitizer,
-    private eventService: EventService
+    private eventService: UserEventService
   ) {}
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
@@ -229,6 +230,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   editUser(event): void {
+    console.log("!!!!!!!!!!!!!!!!!!!!");
     this.row = event;
     this.windowService
       .open(EditUserFormComponent, {
@@ -289,5 +291,11 @@ export class AdminDashboardComponent implements OnInit {
       .onClose.subscribe(() => {
         this.getUsers();
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subsVar) {
+      this.subsVar.unsubscribe();
+    }
   }
 }

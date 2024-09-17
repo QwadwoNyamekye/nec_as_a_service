@@ -16,6 +16,8 @@ import { SubmitForAuthorizationComponent } from "../modals/submit-for-authorizat
 import { SubmitForProcessingComponent } from "../modals/submit-for-processing/submit-for-processing.component";
 import { BulkSingleRecordsComponent } from "../modals/upload_file_single/upload_file_single.component";
 import { UploadFileComponent } from "./bulk-nec-request/bulk-nec-request.component";
+import { ActionsRendererComponent } from "./actions-component/actions.component";
+import { EventService } from "./event.service";
 
 @Component({
   selector: "ngx-bulk",
@@ -31,6 +33,7 @@ export class BulkNewUploadComponent implements OnInit {
   renderValue: string;
   listener: any;
   receivedData: any;
+  subsVar: any;
 
   getHtmlForCell(value: string) {
     if (value === "0") {
@@ -76,14 +79,14 @@ export class BulkNewUploadComponent implements OnInit {
     return custom;
   }
   settings = {
-    mode: "external",
+    mode: "custom",
     pager: {
       perPage: 13,
     },
     // hideSubHeader: true,
     actions: {
       position: "right",
-      custom: this.customActions(this.necService.user.roleId),
+      // custom: this.customActions(this.necService.user.roleId),
       add: false, //  if you want to remove add button
       edit: false, //  if you want to remove edit button
       delete: false, //  if you want to remove delete button
@@ -137,6 +140,13 @@ export class BulkNewUploadComponent implements OnInit {
           return new DatePipe("en-US").transform(date, "YYYY-MM-dd HH:mm:ss");
         },
       },
+      actions: {
+        title: "Actions",
+        type: "custom",
+        renderComponent: ActionsRendererComponent,
+        filter: false,
+        sort: false,
+      },
     },
   };
 
@@ -144,14 +154,19 @@ export class BulkNewUploadComponent implements OnInit {
     public necService: NecService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private eventService: EventService
   ) {}
 
   ngOnInit(): void {
     this.getNewUploadedFiles();
+    this.subsVar = this.eventService.customClick$.subscribe((event) => {
+      this.customFunction(event);
+    });
   }
 
   customFunction(event) {
+    console.log("##################");
     if (event.action == "process") {
       this.submitForProcessing(event);
     } else if (event.action == "submit") {
@@ -276,5 +291,11 @@ export class BulkNewUploadComponent implements OnInit {
       },
       buttons: buttonsConfig,
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subsVar) {
+      this.subsVar.unsubscribe();
+    }
   }
 }

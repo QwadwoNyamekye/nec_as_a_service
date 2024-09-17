@@ -10,7 +10,15 @@ import { NecService } from "../../../../@core/mock/nec.service";
         ><div class="text-center">{{ title }}</div></nb-card-header
       >
       <nb-card-body>
-        <button nbButton hero status="success" (click)="submit()">
+        <button
+          nbButton
+          hero
+          status="success"
+          (click)="submit()"
+          [nbSpinner]="loading"
+          nbSpinnerStatus="danger"
+          [disabled]="loading"
+        >
           Accept
         </button>
         <button nbButton hero status="danger" (click)="dismiss()">
@@ -26,7 +34,9 @@ export class ResetInstitutionUserPasswordComponent implements OnInit {
   @Input() batchId: string;
   @Input() submittedBy: string;
   @Input() email: string;
+  loading: boolean = false;
   response: any;
+  
   constructor(
     protected ref: NbDialogRef<ResetInstitutionUserPasswordComponent>,
     public necService: NecService,
@@ -37,6 +47,7 @@ export class ResetInstitutionUserPasswordComponent implements OnInit {
     this.ref.close();
   }
   submit() {
+    this.loading = true;
     this.response = this.necService
       .resetUserPassword({
         email: this.email,
@@ -45,8 +56,10 @@ export class ResetInstitutionUserPasswordComponent implements OnInit {
       .subscribe(
         (response) => {
           this.response = response;
+          this.loading = false;
         },
         (error) => {
+          this.loading = false;
           this.toastrService.danger(
             "User Password Reset Failed: " + error.error.errorMessage,
             "User Password Reset",

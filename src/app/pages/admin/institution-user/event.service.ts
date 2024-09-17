@@ -4,7 +4,7 @@ import { Subject } from "rxjs";
 @Injectable({
   providedIn: "root",
 })
-export class EventService {
+export class InstitutionEventService {
   private customClickSubject = new Subject<any>();
   customClick$ = this.customClickSubject.asObservable();
 
