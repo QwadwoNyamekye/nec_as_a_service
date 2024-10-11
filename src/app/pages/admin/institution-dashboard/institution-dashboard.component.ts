@@ -123,6 +123,7 @@ export class InstitutionDashboardComponent implements OnInit {
       fee: {
         title: "Fee",
         type: "string",
+        hide: this.necService.user.type != "G", //hides fees from bank since the user will be a bank
       },
       authorized: {
         title: "Authorized",

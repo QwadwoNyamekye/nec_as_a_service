@@ -32,6 +32,7 @@ export class InstitutionUserDashboardComponent implements OnInit {
   showInstitution: any;
   bankList: any;
   bankCode = this.necService.user.bankCode;
+  subsVar: any;
 
   ngOnInit(): void {
     this.getBanksByInstitution();
@@ -45,7 +46,7 @@ export class InstitutionUserDashboardComponent implements OnInit {
     this.form = new FormGroup({
       bank: new FormControl(this.bankCode, Validators.required),
     });
-    this.eventService.customClick$.subscribe((event) => {
+    this.subsVar = this.eventService.customClick$.subscribe((event) => {
       this.customFunction(event);
     });
   }
@@ -324,5 +325,11 @@ export class InstitutionUserDashboardComponent implements OnInit {
       .onClose.subscribe(() => {
         this.getUsers(event.data.code, event.data.type);
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subsVar) {
+      this.subsVar.unsubscribe();
+    }
   }
 }

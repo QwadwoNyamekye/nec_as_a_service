@@ -80,7 +80,11 @@ export class UploadFileComponent implements OnInit {
 
   onFileSelected(event: FileList) {
     for (let index = 0; index < event.length; index++) {
-      if (event.item(index).type == "text/csv") {
+      if (
+        ["text/csv", "application/vnd.ms-excel"].includes(
+          event.item(index).type
+        )
+      ) {
         this.fileType = true;
         this.filesToUpload.push(event.item(index));
       } else {

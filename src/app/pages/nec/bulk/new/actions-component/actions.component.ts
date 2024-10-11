@@ -35,7 +35,7 @@ import { NecService } from "../../../../../@core/mock/nec.service";
       </button>
       <button class="dropdown-item" (click)="onClick('expand')">
         <i
-          class="fa fa-unlock"
+          class="fa fa-list"
           data-toggle="tooltip"
           data-placement="top"
           title="Expand"
@@ -44,7 +44,7 @@ import { NecService } from "../../../../../@core/mock/nec.service";
       </button>
       <button class="dropdown-item" (click)="onClick('reject')">
         <i
-          class="fa fa-undo"
+          class="fa fa-ban"
           data-toggle="tooltip"
           data-placement="top"
           title="Reject File"

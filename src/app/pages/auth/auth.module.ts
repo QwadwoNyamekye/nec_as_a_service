@@ -6,11 +6,17 @@ import { RouterModule } from "@angular/router";
 import {
   NbAuthJWTToken,
   NbAuthModule,
-  NbPasswordAuthStrategy
+  NbPasswordAuthStrategy,
 } from "@nebular/auth";
 import {
   NbAlertModule,
-  NbButtonModule, NbCardModule, NbCheckboxModule, NbFormFieldModule, NbIconModule, NbInputModule, NbLayoutModule
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbFormFieldModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
 } from "@nebular/theme";
 import { environment } from "../../../environments/environment.prod";
 import { AuthAuthGuard } from "./auth-auth-guard.service";
@@ -20,6 +26,7 @@ import { ChangePassword } from "./change-password/change-password.component";
 import { LoginComponent } from "./login/login.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { RequestPasswordComponent } from "./request-password/request-password.component";
+import { HttpResponse } from "@angular/common/http";
 
 export let AppInjector: Injector;
 
@@ -54,6 +61,11 @@ const formSetting: any = {
           token: {
             class: NbAuthJWTToken,
             key: "token", // this parameter tells where to look for the token
+          },
+          messages: {
+            getter: (module: string, res: HttpResponse<String>) => {
+              sessionStorage.setItem("responseBody", JSON.stringify(res["body"]));
+            },
           },
           baseEndpoint: environment.baseUrl,
           login: {

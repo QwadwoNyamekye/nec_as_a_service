@@ -166,7 +166,6 @@ export class BulkNewUploadComponent implements OnInit {
   }
 
   customFunction(event) {
-    console.log("##################");
     if (event.action == "process") {
       this.submitForProcessing(event);
     } else if (event.action == "submit") {

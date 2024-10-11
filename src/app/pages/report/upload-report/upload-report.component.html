@@ -27,8 +27,8 @@
           </nb-select>
         </div>
         <div *ngIf="this.showInstitution" class="col-md-3">
-          <label class="text-label" for="text">Institutions:</label><br>
-          <nb-select fullWidth formControlName="code" placeholder="Select Institution">
+          <label class="text-label" for="text">Corporate:</label><br>
+          <nb-select fullWidth formControlName="code" placeholder="Select Corporate">
             <nb-option *ngFor="let i of this.institutions" [value]="i.code">
               {{ i.name }}
             </nb-option>

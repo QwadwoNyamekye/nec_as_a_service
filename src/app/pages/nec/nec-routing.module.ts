@@ -7,6 +7,7 @@ import { BulkProcessingUploadComponent } from "./bulk/processing/processing-bulk
 import { BulkRejectedUploadComponent } from "./bulk/rejected/rejected-bulk-upload.component";
 import { BulkSubmittedUploadComponent } from "./bulk/submitted/submitted-bulk-upload.component";
 import { SingleNECComponent } from "./single/single.component";
+import { ActionsRendererComponent } from "./bulk/new/actions-component/actions.component";
 
 const routes: Routes = [
   {
@@ -56,4 +57,5 @@ export const routedComponents = [
   BulkSubmittedUploadComponent,
   BulkRejectedUploadComponent,
   BulkDeclinedUploadComponent,
+  ActionsRendererComponent,
 ];

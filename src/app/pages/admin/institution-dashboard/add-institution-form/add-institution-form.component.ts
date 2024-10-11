@@ -23,15 +23,15 @@ import { NecService } from "../../../../@core/mock/nec.service";
         type="text"
         maxlength="12"
       />
-      <label class="text-label" for="subject">Fee:</label>
-      <input
-        nbInput
-        fullWidth
-        formControlName="fee"
-        id="subject"
-        type="number"
-      />
       <div *ngIf="this.necService.user.type == 'G'">
+        <label class="text-label" for="subject">Fee:</label>
+        <input
+          nbInput
+          fullWidth
+          formControlName="fee"
+          id="subject"
+          type="number"
+        />
         <label class="text-label" for="subject">{{ this.label }} Code:</label>
         <input
           nbInput

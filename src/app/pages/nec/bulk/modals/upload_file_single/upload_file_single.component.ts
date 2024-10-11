@@ -105,6 +105,8 @@ export class BulkSingleRecordsComponent implements OnDestroy {
   getSingleNECRecordsRequest() {
     this.necService.getFileRecords(this.batchId).subscribe(
       (data: any) => {
+        console.log("+++++++++++++++++");
+        console.log(data);
         this.singleNECList = data.sort(this.compare);
       },
       (error) => {},
@@ -166,32 +168,26 @@ export class BulkSingleRecordsComponent implements OnDestroy {
       showLabels: true,
       // showTitle: true,
       headers: [
+        "Account Number",
+        "Account Name",
+        "Account Status",
+        "Destination Bank",
+        "Institution Code",
+        "Bank Code",
         "Session ID",
-        "Src. Institution Code",
-        "Src. Institution",
-        "Destination Institution",
-        "Destination Account Number",
-        "Destination Institution Name",
-        "Destination Account Name",
+        "Status",
         "Action Code",
         "Created By",
-        "Narration",
         "Created At",
       ],
     };
     this.singleNECList.map((data) => {
       delete data.id;
-      delete data.trackingNum;
-      delete data.amount;
-      delete data.requestPayload;
-      delete data.requestTimestamp;
-      delete data.responsePayload;
-      delete data.responseTimestamp;
-      delete data.srcAccountNumber;
       delete data.batchId;
 
       return data;
     });
+
     new Angular5Csv(
       this.singleNECList,
       this.necService.user.institutionCode +
