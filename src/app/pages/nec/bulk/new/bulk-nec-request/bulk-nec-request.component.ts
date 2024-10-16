@@ -145,7 +145,7 @@ export class UploadFileComponent implements OnInit {
               }
             );
           } else {
-            this.toastrService.success("File Upload Success", "File Upload", {
+            this.toastrService.success("File Upload Success", "Bulk File Upload", {
               status: "success",
               destroyByClick: true,
               duration: 8000,

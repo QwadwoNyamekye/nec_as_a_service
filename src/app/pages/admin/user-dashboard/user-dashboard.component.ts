@@ -3,15 +3,15 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { NbDialogService, NbWindowService } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
 import { NecService } from "../../../@core/mock/nec.service";
+import { AuthorizeInstitutionUserComponent } from "../institution-user/authorize-institution-user/authorize-institution-user.component";
+import { ActionsRendererComponent } from "./actions-component/actions.component";
 import { AddUserFormComponent } from "./add-user-form/add-user-form.component";
 import { ChangeUserStatusComponent } from "./change-user-status/change-user-status.component";
 import { DeleteUserComponent } from "./delete-user/delete-user.component";
 import { EditUserFormComponent } from "./edit-user-form/edit-user-form.component";
+import { UserEventService } from "./event.service";
 import { ResetUserPasswordComponent } from "./reset-user-password/reset-user-password.component";
 import { UnlockUserComponent } from "./unlock-user/unlock-user.component";
-import { AuthorizeInstitutionUserComponent } from "../institution-user/authorize-institution-user/authorize-institution-user.component";
-import { ActionsRendererComponent } from "./actions-component/actions.component";
-import { UserEventService } from "./event.service";
 
 @Component({
   selector: "ngx-admin-dashboard",
@@ -153,6 +153,10 @@ export class AdminDashboardComponent implements OnInit {
         title: "Actions",
         type: "custom",
         renderComponent: ActionsRendererComponent,
+        valuePrepareFunction: (_cell, row, index) => {
+          // Pass both the row data and index
+          return { row, index };
+        },
         filter: false,
         sort: false,
       },
@@ -166,6 +170,7 @@ export class AdminDashboardComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private eventService: UserEventService
   ) {}
+
   compare(a, b) {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   }

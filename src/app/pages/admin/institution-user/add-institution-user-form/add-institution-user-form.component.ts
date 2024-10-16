@@ -160,10 +160,6 @@ export class AddInstutionUserFormComponent implements OnInit {
         (error) => {}
       );
 
-    console.log("+++++++++++++");
-    console.log(this.bank);
-    console.log(this.institutions);
-
     this.necService.getRoles().subscribe(
       (data) => {
         this.roles = data;

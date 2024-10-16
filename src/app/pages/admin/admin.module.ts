@@ -2,8 +2,10 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   NbActionsModule,
+  NbAutocompleteModule,
   NbButtonModule,
   NbCardModule,
+  NbContextMenuModule,
   NbIconModule,
   NbInputModule,
   NbListModule,
@@ -14,7 +16,6 @@ import {
   NbTabsetModule,
   NbUserModule,
   NbWindowModule,
-  NbContextMenuModule,
 } from "@nebular/theme";
 import { Ng2SmartTableModule } from "ng2-smart-table";
 import { ThemeModule } from "../../@theme/theme.module";
@@ -24,15 +25,15 @@ import { AuthorizeInstutionCreationComponent } from "./institution-dashboard/aut
 import { ChangeInstitutionStatusComponent } from "./institution-dashboard/change-institution-status/change-institution-status.component";
 import { EditInstitutionFormComponent } from "./institution-dashboard/edit-institution-form/edit-institution-form.component";
 import { InstitutionDashboardComponent } from "./institution-dashboard/institution-dashboard.component";
+import { ActionsRendererComponent } from "./institution-user/actions-component/actions.component";
 import { AddInstutionUserFormComponent } from "./institution-user/add-institution-user-form/add-institution-user-form.component";
+import { AuthorizeInstitutionUserComponent } from "./institution-user/authorize-institution-user/authorize-institution-user.component";
 import { ChangeInstitutionUserStatusComponent } from "./institution-user/change-institution-user-status/change-institution-user-status.component";
 import { DeleteInstitutionUserComponent } from "./institution-user/delete-institution-user/delete-institution-user.component";
-import { AuthorizeInstitutionUserComponent } from "./institution-user/authorize-institution-user/authorize-institution-user.component";
 import { EditInstitutionUserFormComponent } from "./institution-user/edit-institution-user-form/edit-institution-user-form.component";
 import { InstitutionUserDashboardComponent } from "./institution-user/institution-user-dashboard.component";
 import { ResetInstitutionUserPasswordComponent } from "./institution-user/reset-institution-user-password/reset-institution-user-password.component";
 import { UnlockInstitutionUserComponent } from "./institution-user/unlock-institution-user/unlock-institution-user.component";
-import { ActionsRendererComponent } from "./institution-user/actions-component/actions.component";
 import { ActionsRendererComponent as UserActionsRendererComponent } from "./user-dashboard/actions-component/actions.component";
 import { AddUserFormComponent } from "./user-dashboard/add-user-form/add-user-form.component";
 import { ChangeUserStatusComponent } from "./user-dashboard/change-user-status/change-user-status.component";
@@ -64,6 +65,7 @@ import { AdminDashboardComponent } from "./user-dashboard/user-dashboard.compone
     Ng2SmartTableModule,
     ReactiveFormsModule,
     NbContextMenuModule,
+    NbAutocompleteModule,
   ],
   declarations: [
     AdminDashboardComponent,

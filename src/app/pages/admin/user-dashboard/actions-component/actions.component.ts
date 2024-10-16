@@ -4,10 +4,9 @@ import {
   Input,
   OnInit,
   Output,
-  HostListener,
+  ElementRef,
 } from "@angular/core";
 import { UserEventService } from "../event.service";
-import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
   selector: "app-custom-renderer",
@@ -17,8 +16,19 @@ import { NecService } from "../../../../@core/mock/nec.service";
     (mouseleave)="onMouseLeave()"
   >
     <button class="dropdown-button"><i class="fa fa-cog"></i></button>
-    <div class="dropdown-content" [ngStyle]="dropdownStyle" *ngIf="isOpen">
-      <button class="dropdown-item" (click)="onClick('authorize')">
+    <div
+      class="dropdown-content"
+      [ngClass]="
+        this.dropdownPosition
+          ? 'dropdown-position-top'
+          : 'dropdown-position-bottom'
+      "
+    >
+      <button
+        class="dropdown-item"
+        (click)="onClick('authorize')"
+        *ngIf="!this.rowData.authorized"
+      >
         <i
           class="fa fa-check"
           data-toggle="tooltip"
@@ -50,7 +60,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
           class="fa fa-undo"
           data-toggle="tooltip"
           data-placement="top"
-          title="Reset Password"
+          title="Reset User"
         ></i>
         Reset
       </button>
@@ -97,53 +107,38 @@ export class ActionsRendererComponent implements OnInit {
   @Input() value: any;
   @Input() rowData: any;
   @Output() customClick = new EventEmitter<any>();
-  dropdownToggle = document.querySelector(".dropdown-button");
-  dropdownMenu = document.querySelector(".dropdown-content");
-  public isOpen = false;
-  public dropdownStyle = {};
+  dropdownPosition: boolean;
+  dynamicStyles = {};
 
-  constructor(
-    private eventService: UserEventService,
-    protected necService: NecService
-  ) {}
+  constructor(private eventService: UserEventService, private el: ElementRef) {}
 
   ngOnInit(): void {}
 
-  event = { action: "", data: {} }; //to match the expected data structure in the main components
+  onMouseEnter() {
+    this.setDropdownDirection();
+  }
+
+  onMouseLeave() {}
+
+  setDropdownDirection() {
+    const dropdownButton = this.el.nativeElement.querySelector("button");
+    const rect = dropdownButton.getBoundingClientRect();
+    console.log(rect);
+    const spaceAbove = rect.top; // Space above the button
+    const spaceBelow = window.innerHeight - rect.bottom; // Space below the button
+    // Check available space and set direction
+    if (spaceBelow > 150) {
+      this.dropdownPosition = true; // Open upwards
+    } else {
+      this.dropdownPosition = false; // Open downwards
+    }
+  }
+
+  event = { action: "", data: {} };
 
   onClick(event) {
     this.event.action = event;
     this.event.data = this.rowData;
     this.eventService.emitCustomClick(this.event); // Emit the row data through the service
-  }
-
-  onMouseEnter() {
-    this.isOpen = true;
-    this.updateDropdownPosition();
-  }
-
-  onMouseLeave() {
-    this.isOpen = false;
-  }
-
-  updateDropdownPosition() {
-    const dropdownMenu = document.querySelector(
-      ".dropdown-menu"
-    ) as HTMLElement;
-    if (dropdownMenu) {
-      const rect = dropdownMenu.getBoundingClientRect();
-      if (rect.bottom > window.innerHeight) {
-        this.dropdownStyle = { bottom: "100%" }; // Move it up
-      } else {
-        this.dropdownStyle = {}; // Reset if it fits
-      }
-    }
-  }
-
-  @HostListener("window:resize")
-  onResize() {
-    if (this.isOpen) {
-      this.updateDropdownPosition();
-    }
   }
 }

@@ -64,7 +64,7 @@ export class SubmitForProcessingComponent implements OnInit {
           } else {
             this.toastrService.success(
               "File Processing Success: " + this.response.errorMessage,
-              "File Processing",
+              "Bulk File Processing",
               { status: "success", destroyByClick: true, duration: 8000 }
             );
           }

@@ -3,15 +3,23 @@
     <form class="form" [formGroup]="form">
       <div class="row col-12">
         <div class="col-3">
-          <nb-select fullWidth formControlName="bank">
+          <!-- <nb-select fullWidth formControlName="bank">
             <nb-option *ngFor="let i of this.bankList" [value]="i">
               {{ i.name }}
             </nb-option>
-          </nb-select>
+          </nb-select> -->
+
+          <input #autoInput nbInput type="text" (input)="onChange()" placeholder="Select Institution"
+            [nbAutocomplete]="auto" formControlName="bank" fullWidth />
+          <nb-autocomplete #auto (selectedChange)="onSelectionChange($event)">
+            <nb-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+              {{ option.name }}
+            </nb-option>
+          </nb-autocomplete>
         </div>
         <div class="col-1">
-          <button fullWidth nbButton outline status="primary" (click)="getUsers()" type="submit" shape="semi-round" size="small"
-            [nbSpinner]="loading" nbSpinnerStatus="danger" [disabled]="loading || !form.valid">
+          <button fullWidth nbButton outline status="primary" (click)="getUsers()" type="submit" shape="semi-round"
+            size="small" [nbSpinner]="loading" nbSpinnerStatus="danger" [disabled]="loading || !form.valid">
             Submit
           </button>
         </div>

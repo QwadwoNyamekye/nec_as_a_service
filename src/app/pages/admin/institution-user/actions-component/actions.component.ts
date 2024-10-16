@@ -1,10 +1,10 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
-  ElementRef,
 } from "@angular/core";
 import { InstitutionEventService } from "../event.service";
 
@@ -115,12 +115,9 @@ export class ActionsRendererComponent implements OnInit {
     private el: ElementRef
   ) {}
 
-  ngOnInit(): void {
-    // this.dropdownPosition = this.value.index.row.index > 2;
-  }
+  ngOnInit(): void {}
 
   onMouseEnter() {
-    console.log("______________________");
     this.setDropdownDirection();
   }
 

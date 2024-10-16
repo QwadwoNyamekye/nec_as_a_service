@@ -1,18 +1,25 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
 import { NbDialogService, NbWindowService } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
+import { Observable, of } from "rxjs";
+import { map } from "rxjs/operators";
 import { NecService } from "../../../@core/mock/nec.service";
+import { ActionsRendererComponent } from "./actions-component/actions.component";
 import { AddInstutionUserFormComponent } from "./add-institution-user-form/add-institution-user-form.component";
+import { AuthorizeInstitutionUserComponent } from "./authorize-institution-user/authorize-institution-user.component";
 import { ChangeInstitutionUserStatusComponent } from "./change-institution-user-status/change-institution-user-status.component";
 import { DeleteInstitutionUserComponent } from "./delete-institution-user/delete-institution-user.component";
-import { AuthorizeInstitutionUserComponent } from "./authorize-institution-user/authorize-institution-user.component";
 import { EditInstitutionUserFormComponent } from "./edit-institution-user-form/edit-institution-user-form.component";
+import { InstitutionEventService } from "./event.service";
 import { ResetInstitutionUserPasswordComponent } from "./reset-institution-user-password/reset-institution-user-password.component";
 import { UnlockInstitutionUserComponent } from "./unlock-institution-user/unlock-institution-user.component";
-import { ActionsRendererComponent } from "./actions-component/actions.component";
-import { InstitutionEventService } from "./event.service";
 
 @Component({
   selector: "ngx-admin-institution-user-dashboard",
@@ -33,22 +40,42 @@ export class InstitutionUserDashboardComponent implements OnInit {
   bankList: any;
   bankCode = this.necService.user.bankCode;
   subsVar: any;
+  options: string[];
+  filteredOptions$: Observable<any>;
+  @ViewChild("autoInput") input;
 
   ngOnInit(): void {
     this.getBanksByInstitution();
 
-    // this.listener = (event: MessageEvent) => {
-    //   this.receivedData = event.data;
-    //   this.source.load(this.receivedData?.data);
-    // };
-    // window.addEventListener("message", this.listener);
-
     this.form = new FormGroup({
-      bank: new FormControl(this.bankCode, Validators.required),
+      bank: new FormControl("", Validators.required),
     });
+
     this.subsVar = this.eventService.customClick$.subscribe((event) => {
       this.customFunction(event);
     });
+  }
+
+  private filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.bankList.filter((optionValue) =>
+      optionValue.name.toLowerCase().includes(filterValue)
+    );
+  }
+
+  getFilteredOptions(value: string): Observable<string[]> {
+    return of(value).pipe(map((filterString) => this.filter(filterString)));
+  }
+
+  onChange() {
+    this.filteredOptions$ = this.getFilteredOptions(
+      this.input.nativeElement.value
+    );
+  }
+
+  onSelectionChange($event) {
+    this.input.nativeElement.value = $event.name; //sends only the bank name to the input element
+    this.filteredOptions$ = of(this.bankList);
   }
 
   getHtmlForStatusCell(value: string) {
@@ -162,7 +189,7 @@ export class InstitutionUserDashboardComponent implements OnInit {
         title: "Actions",
         type: "custom",
         renderComponent: ActionsRendererComponent,
-        valuePrepareFunction: (cell, row, index) => {
+        valuePrepareFunction: (_cell, row, index) => {
           // Pass both the row data and index
           return { row, index };
         },
@@ -209,11 +236,10 @@ export class InstitutionUserDashboardComponent implements OnInit {
       .subscribe(
         (data) => {
           this.bankList = data;
-          // if (this.necService.user.roleId == "1") {
           this.bankList = this.bankList.filter(
             (bank) => !bank.code.includes("INS-NEC-0000")
           );
-          // }
+          this.filteredOptions$ = of(this.bankList);
         },
         (_error) => {},
         () => {
