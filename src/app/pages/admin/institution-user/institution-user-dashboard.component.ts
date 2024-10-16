@@ -162,6 +162,10 @@ export class InstitutionUserDashboardComponent implements OnInit {
         title: "Actions",
         type: "custom",
         renderComponent: ActionsRendererComponent,
+        valuePrepareFunction: (cell, row, index) => {
+          // Pass both the row data and index
+          return { row, index };
+        },
         filter: false,
         sort: false,
       },
@@ -239,6 +243,9 @@ export class InstitutionUserDashboardComponent implements OnInit {
       .open(AddInstutionUserFormComponent, {
         title: `Add User`,
         windowClass: `admin-form-window`,
+        context: {
+          bank: this.form.value.bank,
+        },
       })
       .onClose.subscribe((event) => {
         if (event) {

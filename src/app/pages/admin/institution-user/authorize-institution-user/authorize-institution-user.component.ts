@@ -86,7 +86,7 @@ export class AuthorizeInstitutionUserComponent implements OnInit {
           } else {
             this.toastrService.success(
               "User Authorization Success",
-              "Unlock User",
+              "User Authorization",
               {
                 status: "success",
                 destroyByClick: true,

@@ -55,7 +55,7 @@ export class DeclineFileUploadComponent implements OnInit {
             this.toastrService.success(
               "Uploaded File Status Change: DENY Success: " +
                 this.response.errorMessage,
-              "File Processing",
+              "Bulk File Processing",
               { status: "success", destroyByClick: true, duration: 8000 }
             );
           }

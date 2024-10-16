@@ -22,7 +22,7 @@ export class InstitutionDashboardComponent implements OnInit {
   receivedData: any;
   institutions: any = [];
   row: any;
-  label = this.getLabel();
+  label = this.necService.user.type == "G" ? "Bank" : "Corporate";
 
   getLabel() {
     if (this.necService.user.type == "G") {

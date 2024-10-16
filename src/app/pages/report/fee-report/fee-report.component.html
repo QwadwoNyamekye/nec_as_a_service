@@ -36,11 +36,19 @@
       </div> <!--ROW END-->
 
       <div class="row">
-        <div class="col-md-2">
+        <div>
           <label class="text-label" for="text">&nbsp;</label><br>
           <button fullWidth nbButton type="button" [disabled]="!this.response || this.response.length == 0"
             status="primary" shape="semi-round" (click)="downloadAsCSV()">
             Download CSV
+          </button>
+        </div>
+        <div style="padding-left: 10px;">
+          <label class="text-label" for="text">&nbsp;</label><br>
+          <button fullWidth nbButton type="button"
+            [disabled]="!this.response || this.response.length == 0 || this.response.length == 0" status="primary"
+            shape="semi-round" (click)="downloadAsExcel()">
+            Download Excel
           </button>
         </div>
         <!-- <div class="col-md-2">

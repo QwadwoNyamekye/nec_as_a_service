@@ -1,12 +1,27 @@
 <nb-card-header>
-  <div class="container row">
-    <!-- <div class="row"> -->
-    <div class="col">{{ title }}</div>
-    <!-- <div class="row"> -->
-    <button style="float: right; margin-right: 10px; margin-bottom: 15px" status="primary" shape="semi-round"
-      (click)="downloadAsCSV()" nbButton>
-      Download CSV
-    </button>
+  <div class="container">
+    <div class="row">
+      <!-- <div class="row"> -->
+      <div class="col-7">{{ title }}</div>
+      <!-- <div class="row"> -->
+      <div class="row col-5">
+        <div>
+          <!-- <label class="text-label" for="text"></label> -->
+          <button fullWidth nbButton type="button" [disabled]="!this.singleNECList || this.singleNECList.length == 0"
+            status="primary" shape="semi-round" (click)="downloadAsCSV()">
+            Download CSV
+          </button>
+        </div>
+        <div style="padding-left: 10px;">
+          <!-- <label class="text-label" for="text">&nbsp;</label><br> -->
+          <button fullWidth nbButton type="button"
+            [disabled]="!this.singleNECList || this.singleNECList.length == 0 || this.singleNECList.length == 0" status="primary"
+            shape="semi-round" (click)="downloadAsExcel()">
+            Download Excel
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- <button style="float: right; margin-right: 10px; margin-bottom: 15px" status="primary" shape="semi-round"
       (click)="downloadAsPDF()" nbButton>
       Download PDF

@@ -14,6 +14,7 @@ import autotable from "jspdf-autotable";
 import { LocalDataSource } from "ng2-smart-table";
 import { NecService } from "../../../@core/mock/nec.service";
 import { BulkSingleRecordsComponent } from "../../nec/bulk/modals/upload_file_single/upload_file_single.component";
+import { ExcelService } from "../excel.service";
 
 @Component({
   selector: "ngx-upload-report",
@@ -118,7 +119,8 @@ export class UploadReportComponent implements OnInit, OnDestroy {
     private toastrService: NbToastrService,
     private windowService: NbWindowService,
     protected dateService: NbDateService<Date>,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private excelService: ExcelService
   ) {}
 
   ngOnInit() {
@@ -297,6 +299,15 @@ export class UploadReportComponent implements OnInit, OnDestroy {
         "_BULK_UPLOAD_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
+    );
+  }
+
+  downloadAsExcel() {
+    this.excelService.exportJsonToExcel(
+      this.response,
+      this.necService.user.institutionCode +
+        "_BULK_UPLOAD_REPORT" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss")
     );
   }
 

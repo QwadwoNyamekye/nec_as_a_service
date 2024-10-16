@@ -14,6 +14,7 @@ import {
   NbTabsetModule,
   NbUserModule,
   NbWindowModule,
+  NbContextMenuModule,
 } from "@nebular/theme";
 import { Ng2SmartTableModule } from "ng2-smart-table";
 import { ThemeModule } from "../../@theme/theme.module";
@@ -62,6 +63,7 @@ import { AdminDashboardComponent } from "./user-dashboard/user-dashboard.compone
     NbButtonModule,
     Ng2SmartTableModule,
     ReactiveFormsModule,
+    NbContextMenuModule,
   ],
   declarations: [
     AdminDashboardComponent,

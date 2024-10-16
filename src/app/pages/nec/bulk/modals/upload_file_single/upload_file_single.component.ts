@@ -6,6 +6,7 @@ import jsPDF from "jspdf";
 import autotable from "jspdf-autotable";
 import { LocalDataSource } from "ng2-smart-table";
 import { NecService } from "../../../../../@core/mock/nec.service";
+import { ExcelService } from "../../../../report/excel.service";
 
 @Component({
   selector: "ngx-single",
@@ -19,7 +20,6 @@ export class BulkSingleRecordsComponent implements OnDestroy {
   source: LocalDataSource = new LocalDataSource();
   singleNECList: any = [];
   stompClient: any;
-  response: any;
   listener: any;
   receivedData: any;
   loading: boolean = true;
@@ -88,7 +88,11 @@ export class BulkSingleRecordsComponent implements OnDestroy {
     },
   };
 
-  constructor(private necService: NecService, private windowRef: NbWindowRef) {}
+  constructor(
+    private necService: NecService,
+    private windowRef: NbWindowRef,
+    private excelService: ExcelService
+  ) {}
 
   ngOnInit() {
     this.getSingleNECRecordsRequest();
@@ -105,8 +109,6 @@ export class BulkSingleRecordsComponent implements OnDestroy {
   getSingleNECRecordsRequest() {
     this.necService.getFileRecords(this.batchId).subscribe(
       (data: any) => {
-        console.log("+++++++++++++++++");
-        console.log(data);
         this.singleNECList = data.sort(this.compare);
       },
       (error) => {},
@@ -194,6 +196,15 @@ export class BulkSingleRecordsComponent implements OnDestroy {
         "_SINGLE_NEC_REQUESTS_" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
+    );
+  }
+
+  downloadAsExcel() {
+    this.excelService.exportJsonToExcel(
+      this.singleNECList,
+      this.necService.user.institutionCode +
+        "_SINGLE_NEC_REQUESTS_" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss")
     );
   }
 

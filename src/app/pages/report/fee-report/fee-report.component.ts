@@ -8,6 +8,7 @@ import autotable from "jspdf-autotable";
 import { LocalDataSource } from "ng2-smart-table";
 import { NecService } from "../../../@core/mock/nec.service";
 import { Observable } from "rxjs";
+import { ExcelService } from "../excel.service";
 
 @Component({
   selector: "ngx-fee-report",
@@ -99,7 +100,8 @@ export class FeeReportComponent implements OnInit, OnDestroy {
   constructor(
     private necService: NecService,
     private toastrService: NbToastrService,
-    protected dateService: NbDateService<Date>
+    protected dateService: NbDateService<Date>,
+    private excelService: ExcelService
   ) {}
 
   ngOnInit() {
@@ -233,6 +235,15 @@ export class FeeReportComponent implements OnInit, OnDestroy {
         "_SINGLE_FEE_REPORT" +
         new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss"),
       options
+    );
+  }
+
+  downloadAsExcel() {
+    this.excelService.exportJsonToExcel(
+      this.response,
+      this.necService.user.institutionCode +
+        "_SINGLE_FEE_REPORT" +
+        new DatePipe("en-US").transform(Date.now(), "_YYYY-MM-dd_HH:mm:ss")
     );
   }
 

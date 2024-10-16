@@ -6,7 +6,11 @@ import {
   OnInit,
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { NB_AUTH_OPTIONS, NbAuthService, getDeepFromObject } from "@nebular/auth";
+import {
+  NB_AUTH_OPTIONS,
+  NbAuthService,
+  getDeepFromObject,
+} from "@nebular/auth";
 import { NecService } from "../../../@core/mock/nec.service";
 
 @Component({
@@ -19,7 +23,6 @@ export class ChangePassword implements OnInit {
   redirectDelay: number = 0;
   showMessages: any = {};
   strategy: string = "";
-
   submitted = false;
   errors: string[] = [];
   messages: string[] = [];
@@ -29,6 +32,20 @@ export class ChangePassword implements OnInit {
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
   passwordRegexInvalid: boolean;
   countdownMessage: string;
+
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
+
+  toggleShowCurrentPassword() {
+    this.showCurrentPassword = !this.showCurrentPassword;
+  }
+  toggleShowNewPassword() {
+    this.showNewPassword = !this.showNewPassword;
+  }
+  toggleShowConfirmPassword() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
 
   constructor(
     protected service: NbAuthService,
@@ -90,7 +107,7 @@ export class ChangePassword implements OnInit {
               }
               if (time == 0) {
                 router.navigate(["auth/login"]);
-                window.clearInterval(intervalId)
+                window.clearInterval(intervalId);
               }
               time--;
             },
@@ -105,8 +122,7 @@ export class ChangePassword implements OnInit {
         // }, this.redirectDelay);
         this.cd.detectChanges();
       },
-      (error) => {
-      }
+      (error) => {}
     );
   }
 

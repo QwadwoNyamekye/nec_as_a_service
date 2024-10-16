@@ -3,11 +3,12 @@
  * Copyright Akveo. All Rights Reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
-  ChangeDetectionStrategy,
-  Component
-} from "@angular/core";
-import { NbAuthResult, NbRequestPasswordComponent, getDeepFromObject } from "@nebular/auth";
+  NbAuthResult,
+  NbRequestPasswordComponent,
+  getDeepFromObject,
+} from "@nebular/auth";
 
 @Component({
   selector: "nb-request-password-page",
@@ -17,6 +18,7 @@ import { NbAuthResult, NbRequestPasswordComponent, getDeepFromObject } from "@ne
 })
 export class RequestPasswordComponent extends NbRequestPasswordComponent {
   requestPass(): void {
+    console.log("++++++++++++++");
     this.redirectDelay = this.getConfigValue(
       "forms.requestPassword.redirectDelay"
     );

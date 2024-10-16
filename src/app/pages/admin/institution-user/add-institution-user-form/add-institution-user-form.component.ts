@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { NbToastrService, NbWindowRef } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
@@ -27,15 +27,20 @@ import { NecService } from "../../../../@core/mock/nec.service";
         placeholder="Last Name"
       />
 
+      <label class="text-label" for="text">Username:</label>
+      <input
+        nbInput
+        fullWidth
+        formControlName="username"
+        id="text"
+        type="text"
+        placeholder="Username"
+      />
+
       <div class="row">
         <div class="col">
           <label class="text-label" for="text">{{ this.label }}:</label>
-          <nb-select
-            fullWidth
-            formControlName="institution"
-            [(selected)]="selectedItems"
-            placeholder="{{ this.label }}"
-          >
+          <nb-select fullWidth formControlName="institution">
             <nb-option *ngFor="let i of this.institutions" [value]="i.code">
               {{ i.name }}
             </nb-option>
@@ -92,6 +97,7 @@ import { NecService } from "../../../../@core/mock/nec.service";
   styleUrls: ["add-institution-user-form.component.scss"],
 })
 export class AddInstutionUserFormComponent implements OnInit {
+  @Input() bank: any;
   items: any;
   form: FormGroup;
   selectedOption: any;
@@ -104,8 +110,8 @@ export class AddInstutionUserFormComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   institutionCode: any;
   bankCode: any;
-  type: string = this.setType();
-  label = this.getLabel();
+  type: string = this.necService.user.type == "G" ? "B" : "C";
+  label = this.necService.user.type == "G" ? "Bank" : "Corporate";
   object: any;
 
   getLabel() {
@@ -154,6 +160,10 @@ export class AddInstutionUserFormComponent implements OnInit {
         (error) => {}
       );
 
+    console.log("+++++++++++++");
+    console.log(this.bank);
+    console.log(this.institutions);
+
     this.necService.getRoles().subscribe(
       (data) => {
         this.roles = data;
@@ -174,7 +184,8 @@ export class AddInstutionUserFormComponent implements OnInit {
     this.form = new FormGroup({
       firstName: new FormControl("", Validators.required),
       lastName: new FormControl("", Validators.required),
-      institution: new FormControl("", Validators.required),
+      username: new FormControl("", Validators.required),
+      institution: new FormControl(this.bank.code, Validators.required),
       role: new FormControl(this.roles[0], Validators.required),
       emailAddress: new FormControl("", [
         Validators.required,
@@ -189,9 +200,9 @@ export class AddInstutionUserFormComponent implements OnInit {
       this.necService.user.roleId == "4"
     ) {
       this.form.value.institution = this.necService.user.institutionCode;
-      this.form
-        .get("institution")
-        .patchValue(this.necService.user.institutionCode);
+      // this.form
+      //   .get("institution")
+      //   .patchValue(this.necService.user.institutionCode);
     }
   }
 
@@ -208,6 +219,7 @@ export class AddInstutionUserFormComponent implements OnInit {
     this.loading = true;
     this.object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
+      username: this.form.value.username,
       institutionCode: this.form.value.institution,
       bankCode: this.necService.user.institutionCode,
       type: this.getType(),

@@ -1,11 +1,29 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ElementRef,
+} from "@angular/core";
 import { InstitutionEventService } from "../event.service";
 
 @Component({
   selector: "app-custom-renderer",
-  template: `<div class="dropdown">
+  template: `<div
+    class="dropdown"
+    (mouseenter)="onMouseEnter()"
+    (mouseleave)="onMouseLeave()"
+  >
     <button class="dropdown-button"><i class="fa fa-cog"></i></button>
-    <div class="dropdown-content">
+    <div
+      class="dropdown-content"
+      [ngClass]="
+        this.dropdownPosition
+          ? 'dropdown-position-top'
+          : 'dropdown-position-bottom'
+      "
+    >
       <button
         class="dropdown-item"
         (click)="onClick('authorize')"
@@ -89,10 +107,38 @@ export class ActionsRendererComponent implements OnInit {
   @Input() value: any;
   @Input() rowData: any;
   @Output() customClick = new EventEmitter<any>();
+  dropdownPosition: boolean;
+  dynamicStyles = {};
 
-  constructor(private eventService: InstitutionEventService) {}
+  constructor(
+    private eventService: InstitutionEventService,
+    private el: ElementRef
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // this.dropdownPosition = this.value.index.row.index > 2;
+  }
+
+  onMouseEnter() {
+    console.log("______________________");
+    this.setDropdownDirection();
+  }
+
+  onMouseLeave() {}
+
+  setDropdownDirection() {
+    const dropdownButton = this.el.nativeElement.querySelector("button");
+    const rect = dropdownButton.getBoundingClientRect();
+    console.log(rect);
+    const spaceAbove = rect.top; // Space above the button
+    const spaceBelow = window.innerHeight - rect.bottom; // Space below the button
+    // Check available space and set direction
+    if (spaceBelow > 150) {
+      this.dropdownPosition = true; // Open upwards
+    } else {
+      this.dropdownPosition = false; // Open downwards
+    }
+  }
 
   event = { action: "", data: {} };
 

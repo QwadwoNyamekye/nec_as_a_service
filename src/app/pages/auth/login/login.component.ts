@@ -19,6 +19,7 @@ export class LoginComponent extends NbLoginComponent {
     }
     return "password";
   }
+
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
@@ -26,46 +27,52 @@ export class LoginComponent extends NbLoginComponent {
   login(): void {
     this.errors = [];
     this.submitted = true;
-    this.service.authenticate("email", this.user).subscribe(
-      (result: NbAuthResult) => {
-        this.submitted = false;
-        if (result.isSuccess()) {
-          // this.messages = result.getMessages();
-          this.messages = ["You have been successfully logged in."];
-          sessionStorage.setItem(
-            "user",
-            JSON.stringify(result.getResponse().body.user)
-          );
-          MENU_ITEMS();
-          sessionStorage.setItem("token", result.getResponse().body.token);
-          this.necService.initializeVars();
-          this.necService.initializeWebSocketConnection(
-            this.necService.errorToastr
-          );
-        } else {
-          this.responseBody = JSON.parse(
-            sessionStorage.getItem("responseBody")
-          );
-          this.errors[0] = "Login Error: " + this.responseBody["errorMessage"];
-          // if (this.errors[0] == "Token is empty or invalid.") {
-          //   this.errors[0] = "Please check your username or password";
-          // } else {
-          //   this.errors[0] = result.getResponse().errorMessage;
-          // }
-        }
-
-        const redirect = result.getRedirect();
-        if (redirect) {
-          setTimeout(() => {
-            return this.router.navigateByUrl(
-              sessionStorage.getItem("homePath")
+    this.service
+      .authenticate("email", {
+        username: this.user.email,
+        password: this.user.password,
+      })
+      .subscribe(
+        (result: NbAuthResult) => {
+          this.submitted = false;
+          if (result.isSuccess()) {
+            // this.messages = result.getMessages();
+            this.messages = ["You have been successfully logged in."];
+            sessionStorage.setItem(
+              "user",
+              JSON.stringify(result.getResponse().body.user)
             );
-          }, this.redirectDelay);
-        }
-        this.cd.detectChanges();
-      },
-      (error) => {},
-      () => {}
-    );
+            MENU_ITEMS();
+            sessionStorage.setItem("token", result.getResponse().body.token);
+            this.necService.initializeVars();
+            this.necService.initializeWebSocketConnection(
+              this.necService.errorToastr
+            );
+          } else {
+            this.responseBody = JSON.parse(
+              sessionStorage.getItem("responseBody")
+            );
+            this.errors[0] =
+              "Login Error: " + this.responseBody["errorMessage"];
+            // if (this.errors[0] == "Token is empty or invalid.") {
+            //   this.errors[0] = "Please check your username or password";
+            // } else {
+            //   this.errors[0] = result.getResponse().errorMessage;
+            // }
+          }
+
+          const redirect = result.getRedirect();
+          if (redirect) {
+            setTimeout(() => {
+              return this.router.navigateByUrl(
+                sessionStorage.getItem("homePath")
+              );
+            }, this.redirectDelay);
+          }
+          this.cd.detectChanges();
+        },
+        (error) => {},
+        () => {}
+      );
   }
 }

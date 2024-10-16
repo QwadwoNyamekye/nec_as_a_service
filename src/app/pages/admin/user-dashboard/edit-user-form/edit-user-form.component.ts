@@ -25,6 +25,15 @@ import { NecService } from "../../../../@core/mock/nec.service";
         id="text"
         type="text"
       />
+
+      <label class="text-label" for="text">Username:</label>
+      <input
+        nbInput
+        fullWidth
+        formControlName="username"
+        id="text"
+        type="text"
+      />
       <label class="text-label" for="text">Phone Number:</label>
       <input
         nbInput
@@ -118,6 +127,7 @@ export class EditUserFormComponent implements OnInit {
     this.form = new FormGroup({
       firstName: new FormControl(this.name[0], Validators.required),
       lastName: new FormControl(this.name[1], Validators.required),
+      // username: new FormControl(this.name, Validators.required),
       institution: new FormControl(
         this.currentValues.institutionCode,
         Validators.required

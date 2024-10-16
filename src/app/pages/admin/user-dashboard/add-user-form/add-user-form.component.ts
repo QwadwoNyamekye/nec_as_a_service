@@ -27,6 +27,16 @@ import { NecService } from "../../../../@core/mock/nec.service";
         placeholder="Last Name"
       />
 
+      <label class="text-label" for="text">Username:</label>
+      <input
+        nbInput
+        fullWidth
+        formControlName="username"
+        id="text"
+        type="text"
+        placeholder="Username"
+      />
+
       <div class="row">
         <!-- <div *ngIf="this.showInstitution" class="col">
           <label class="text-label" for="text">Institution:</label>
@@ -154,6 +164,7 @@ export class AddUserFormComponent implements OnInit {
     this.form = new FormGroup({
       firstName: new FormControl("", Validators.required),
       lastName: new FormControl("", Validators.required),
+      username: new FormControl("", Validators.required),
       institution: new FormControl(
         this.necService.user.bankCode,
         Validators.required
@@ -183,6 +194,7 @@ export class AddUserFormComponent implements OnInit {
     this.loading = true;
     var object = {
       name: this.form.value.firstName + " " + this.form.value.lastName,
+      username: this.form.value.username,
       institutionCode: this.institutionCode
         ? this.institutionCode
         : this.form.value.institution,

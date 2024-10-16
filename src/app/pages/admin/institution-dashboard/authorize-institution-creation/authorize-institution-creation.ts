@@ -40,7 +40,7 @@ export class AuthorizeInstutionCreationComponent implements OnInit {
       this.ref.close();
       this.toastrService.success(
         "Institution Already Authorized",
-        "Institution Creation",
+        "Institution Authorization",
         { status: "success", destroyByClick: true, duration: 8000 }
       );
     } else {
@@ -63,8 +63,8 @@ export class AuthorizeInstutionCreationComponent implements OnInit {
         },
         (error) => {
           this.toastrService.danger(
-            "Institution Creation Failed: " + error.error.errorMessage,
-            "Institution Creation",
+            "Institution Authorization Failed: " + error.error.errorMessage,
+            "Institution Authorization",
             {
               status: "danger",
               destroyByClick: true,
@@ -75,8 +75,8 @@ export class AuthorizeInstutionCreationComponent implements OnInit {
         () => {
           if (this.response.errorCode != "0") {
             this.toastrService.danger(
-              "Institution Creation Failed: " + this.response.errorMessage,
-              "Institution Creation",
+              "Institution Authorization Failed: " + this.response.errorMessage,
+              "Institution Authorization",
               {
                 status: "danger",
                 destroyByClick: true,
@@ -85,8 +85,8 @@ export class AuthorizeInstutionCreationComponent implements OnInit {
             );
           } else {
             this.toastrService.success(
-              "Institution Creation Success",
-              "Institution Creation",
+              "Institution Authorization Success",
+              "Institution Authorization",
               { status: "success", destroyByClick: true, duration: 8000 }
             );
             this.ref.close();

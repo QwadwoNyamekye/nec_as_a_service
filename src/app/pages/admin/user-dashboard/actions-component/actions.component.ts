@@ -1,12 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  HostListener,
+} from "@angular/core";
 import { UserEventService } from "../event.service";
 import { NecService } from "../../../../@core/mock/nec.service";
 
 @Component({
   selector: "app-custom-renderer",
-  template: `<div class="dropdown">
+  template: `<div
+    class="dropdown"
+    (mouseenter)="onMouseEnter()"
+    (mouseleave)="onMouseLeave()"
+  >
     <button class="dropdown-button"><i class="fa fa-cog"></i></button>
-    <div class="dropdown-content">
+    <div class="dropdown-content" [ngStyle]="dropdownStyle" *ngIf="isOpen">
       <button class="dropdown-item" (click)="onClick('authorize')">
         <i
           class="fa fa-check"
@@ -86,6 +97,10 @@ export class ActionsRendererComponent implements OnInit {
   @Input() value: any;
   @Input() rowData: any;
   @Output() customClick = new EventEmitter<any>();
+  dropdownToggle = document.querySelector(".dropdown-button");
+  dropdownMenu = document.querySelector(".dropdown-content");
+  public isOpen = false;
+  public dropdownStyle = {};
 
   constructor(
     private eventService: UserEventService,
@@ -97,12 +112,38 @@ export class ActionsRendererComponent implements OnInit {
   event = { action: "", data: {} }; //to match the expected data structure in the main components
 
   onClick(event) {
-    // console.log("++++++++++++++");
-    // console.log(event);
-    // console.log(this.rowData.email);
-    // console.log(this.necService.user.email);
     this.event.action = event;
     this.event.data = this.rowData;
     this.eventService.emitCustomClick(this.event); // Emit the row data through the service
+  }
+
+  onMouseEnter() {
+    this.isOpen = true;
+    this.updateDropdownPosition();
+  }
+
+  onMouseLeave() {
+    this.isOpen = false;
+  }
+
+  updateDropdownPosition() {
+    const dropdownMenu = document.querySelector(
+      ".dropdown-menu"
+    ) as HTMLElement;
+    if (dropdownMenu) {
+      const rect = dropdownMenu.getBoundingClientRect();
+      if (rect.bottom > window.innerHeight) {
+        this.dropdownStyle = { bottom: "100%" }; // Move it up
+      } else {
+        this.dropdownStyle = {}; // Reset if it fits
+      }
+    }
+  }
+
+  @HostListener("window:resize")
+  onResize() {
+    if (this.isOpen) {
+      this.updateDropdownPosition();
+    }
   }
 }

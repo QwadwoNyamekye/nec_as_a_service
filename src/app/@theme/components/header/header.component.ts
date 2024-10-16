@@ -43,7 +43,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = "default";
 
-  userMenu = [{ title: "Log out" }];
+  userMenu = [
+    { title: "Insitution: " + this.necService.user.institutionName },
+    { title: "Role: " + this.necService.user.roleName },
+    { title: "Log out" },
+  ];
 
   constructor(
     private sidebarService: NbSidebarService,
@@ -74,6 +78,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (!["G", "B"].includes(this.necService.user.type)) {
+      this.userMenu.splice(1, 0, {
+        title: "Bank: " + this.necService.user.bankName,
+      });
+    }
     this.currentTheme = this.themeService.currentTheme;
 
     // this.userService
