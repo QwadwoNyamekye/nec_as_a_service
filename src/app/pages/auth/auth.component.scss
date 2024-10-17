@@ -1,4 +1,4 @@
-@import './breakpoints';
+@import "./breakpoints";
 
 :host {
     $auth-layout-padding: 2.5rem;
@@ -32,7 +32,6 @@
         }
     }
 
-
     nb-layout .layout .layout-container .content .columns nb-layout-column {
         padding: $auth-layout-padding;
 
@@ -40,5 +39,4 @@
             padding: 0;
         }
     }
-
 }

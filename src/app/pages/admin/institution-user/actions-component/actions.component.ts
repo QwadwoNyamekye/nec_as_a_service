@@ -126,7 +126,6 @@ export class ActionsRendererComponent implements OnInit {
   setDropdownDirection() {
     const dropdownButton = this.el.nativeElement.querySelector("button");
     const rect = dropdownButton.getBoundingClientRect();
-    console.log(rect);
     const spaceAbove = rect.top; // Space above the button
     const spaceBelow = window.innerHeight - rect.bottom; // Space below the button
     // Check available space and set direction

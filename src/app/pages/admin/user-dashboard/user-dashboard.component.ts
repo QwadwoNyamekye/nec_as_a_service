@@ -235,7 +235,6 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   editUser(event): void {
-    console.log("!!!!!!!!!!!!!!!!!!!!");
     this.row = event;
     this.windowService
       .open(EditUserFormComponent, {

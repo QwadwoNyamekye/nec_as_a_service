@@ -1,4 +1,5 @@
 import { CommonModule } from "@angular/common";
+import { HttpResponse } from "@angular/common/http";
 import { Injector, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
@@ -26,7 +27,6 @@ import { ChangePassword } from "./change-password/change-password.component";
 import { LoginComponent } from "./login/login.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { RequestPasswordComponent } from "./request-password/request-password.component";
-import { HttpResponse } from "@angular/common/http";
 
 export let AppInjector: Injector;
 
@@ -64,7 +64,10 @@ const formSetting: any = {
           },
           messages: {
             getter: (module: string, res: HttpResponse<String>) => {
-              sessionStorage.setItem("responseBody", JSON.stringify(res["body"]));
+              sessionStorage.setItem(
+                "responseBody",
+                JSON.stringify(res["body"])
+              );
             },
           },
           baseEndpoint: environment.baseUrl,

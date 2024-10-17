@@ -106,6 +106,7 @@ export class EditInstitutionUserFormComponent implements OnInit {
             );
           }
         },
+        (error) => {},
         () => {}
       );
 

@@ -26,14 +26,6 @@ import { NecService } from "../../../../@core/mock/nec.service";
         type="text"
       />
 
-      <label class="text-label" for="text">Username:</label>
-      <input
-        nbInput
-        fullWidth
-        formControlName="username"
-        id="text"
-        type="text"
-      />
       <label class="text-label" for="text">Phone Number:</label>
       <input
         nbInput
@@ -100,7 +92,6 @@ export class EditUserFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("****************************")
     this.name = this.currentValues.name.split(" ");
     this.necService.getInstitutions().subscribe(
       (data) => {
@@ -123,11 +114,11 @@ export class EditUserFormComponent implements OnInit {
       },
       (error) => {}
     );
-    
+
     this.form = new FormGroup({
       firstName: new FormControl(this.name[0], Validators.required),
       lastName: new FormControl(this.name[1], Validators.required),
-      // username: new FormControl(this.name, Validators.required),
+      // userName: new FormControl(this.name, Validators.required),
       institution: new FormControl(
         this.currentValues.institutionCode,
         Validators.required
@@ -188,7 +179,6 @@ export class EditUserFormComponent implements OnInit {
             destroyByClick: true,
             duration: 8000,
           });
-          console.log("+++++++++++++++++")
           this.windowRef.close();
         }
       }

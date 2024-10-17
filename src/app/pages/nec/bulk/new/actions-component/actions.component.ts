@@ -73,8 +73,6 @@ export class ActionsRendererComponent implements OnInit {
     } else if (this.necService.user.roleId == "3") {
       this.isInitiator = true;
     }
-    console.log(this.isAuthorizer);
-    console.log(this.isInitiator);
   }
 
   event = { action: "", data: {} };

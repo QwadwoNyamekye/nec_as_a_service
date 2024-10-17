@@ -18,7 +18,6 @@ import {
 })
 export class RequestPasswordComponent extends NbRequestPasswordComponent {
   requestPass(): void {
-    console.log("++++++++++++++");
     this.redirectDelay = this.getConfigValue(
       "forms.requestPassword.redirectDelay"
     );
